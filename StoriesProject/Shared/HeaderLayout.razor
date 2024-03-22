@@ -1,0 +1,59 @@
+﻿@using CourseProject.Model.BaseEntity
+@using CourseProject.Shared.ComponentBase
+@inherits AuthorBaseComponent
+<style>
+    /*# Thêm vào*/
+    .in-header__nav .nav-item {
+        width: auto;
+        font-size: 16px;
+    }
+
+    .in-header__nav .underline {
+        display: none;
+        position: absolute;
+        left: 7px;l
+        bottom: -3px;
+        width: 50px;
+        height: 3px;
+        background: #ff620e;
+        border-radius: 9px;
+    }
+
+    .button_config {
+        float: left;
+        width: 80px;
+        height: 40px;
+        font-size: 13px;
+        text-align: center;
+        line-height: 40px;
+        color: #fff;
+        border-radius: 0 20px 20px 0;
+        cursor: pointer;
+        background-color: #ff620e;
+        font-weight: bold;
+    }
+
+    .p-detail, .p-index {
+        padding-top: unset !important;
+    }
+</style>
+<div class="in-header">
+    
+</div>
+@code {
+    [Parameter]
+    public int isSelected { get; set; }
+    private bool IsAuthen { get; set; } = false;
+    private string UserName { get; set; }
+    private long Coin { get; set; }
+    private string LinkAvatar { get; set; } = "//static.mkzcdn.com/home/assets/images/home/pic_login_defaulthead.png?v=5b80a2f";
+
+
+    private void GoToLoginPage()
+    {
+        if (!IsAuthen)
+        {
+            NavigateToUrl($"/login");
+        }
+    }
+}
