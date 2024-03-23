@@ -1,4 +1,4 @@
-﻿namespace CourseProject.API.Common.Constant
+﻿namespace CourseProject.Common.Constant
 {
     public class RoleConstant
     {

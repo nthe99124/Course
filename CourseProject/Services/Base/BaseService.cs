@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
 
-namespace CourseProject.API.Services.Base
+namespace CourseProject.Services.Base
 {
     public interface IBaseService
     {
@@ -25,7 +25,7 @@ namespace CourseProject.API.Services.Base
         protected IDistributedCacheCustom _cache;
         private readonly string _remoteServiceBaseUrl;
         private IHttpClientFactory _httpClientFactory;
-        
+
         public BaseService(IDistributedCacheCustom cache, IHttpClientFactory httpClientFactory, IConfiguration config, IJSRuntime js)
         {
             _cache = cache;
@@ -34,7 +34,7 @@ namespace CourseProject.API.Services.Base
             _js = js;
         }
 
-        public async Task<T> RequestPostAsync<T>(string url,object model = null)
+        public async Task<T> RequestPostAsync<T>(string url, object model = null)
         {
             try
             {
@@ -44,10 +44,10 @@ namespace CourseProject.API.Services.Base
                     var responseObject = await PostAsync<T>(httpClient, url, model, null);
                     if (responseObject != null && responseObject.IsSuccess)
                     {
-                        return responseObject.Data ?? default(T);
+                        return responseObject.Data ?? default;
                     }
 
-                    return default(T);
+                    return default;
                 }
             }
             catch (Exception ex)
@@ -85,10 +85,10 @@ namespace CourseProject.API.Services.Base
                     var responseObject = await PostAsync<T>(httpClient, url, model, accessToken);
                     if (responseObject != null && responseObject.IsSuccess)
                     {
-                        return responseObject.Data ?? default(T);
+                        return responseObject.Data ?? default;
                     }
 
-                    return default(T);
+                    return default;
                 }
             }
             catch (Exception ex)
@@ -144,10 +144,10 @@ namespace CourseProject.API.Services.Base
                     var responseObject = JsonConvert.DeserializeObject<ResponseOutput<T>>(responseStr);
                     if (responseObject != null && responseObject.IsSuccess)
                     {
-                        return responseObject.Data ?? default(T);
+                        return responseObject.Data ?? default;
                     }
 
-                    return default(T);
+                    return default;
                 }
             }
             catch (Exception ex)
@@ -166,7 +166,7 @@ namespace CourseProject.API.Services.Base
                     var response = await httpClient.GetAsync(_remoteServiceBaseUrl + url);
 
                     // Kiểm tra xem cuộc gọi API có thành công không
-                     response.EnsureSuccessStatusCode();
+                    response.EnsureSuccessStatusCode();
 
                     // Đọc nội dung phản hồi
                     var responseStr = await response.Content.ReadAsStringAsync();
@@ -175,10 +175,10 @@ namespace CourseProject.API.Services.Base
                     var responseObject = JsonConvert.DeserializeObject<ResponseOutput<T>>(responseStr);
                     if (responseObject != null && responseObject.IsSuccess)
                     {
-                        return responseObject.Data ?? default(T);
+                        return responseObject.Data ?? default;
                     }
 
-                    return default(T);
+                    return default;
                 }
             }
             catch (Exception ex)
@@ -187,7 +187,7 @@ namespace CourseProject.API.Services.Base
             }
         }
 
-        public async Task<ResponseOutput<T>> PostAsync<T>(HttpClient? httpClient, string url, object model = null, string? accessToken = null)
+        public async Task<ResponseOutput<T>> PostAsync<T>(HttpClient httpClient, string url, object model = null, string accessToken = null)
         {
             StringContent content = null;
             if (model != null)
@@ -233,7 +233,7 @@ namespace CourseProject.API.Services.Base
                     {
                         formData.Add(new StreamContent(item.OpenReadStream()), "file", item.Name);
                     }
-                    
+
 
                     var accessToken = await GetItemAsync("token");
                     // nếu có accessToken thì mới đưa Bearer Token vào

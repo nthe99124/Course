@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using CourseProject.API.Common.Attribute;
-using CourseProject.API.Common.Constant;
-using CourseProject.API.Common.Ulti;
-using CourseProject.API.Services;
+﻿using CourseProject.API.Common.Ulti;
+using CourseProject.API.Controller.Base;
 using CourseProject.Model.ViewModel;
+using Microsoft.AspNetCore.Mvc;
 
-namespace CourseProject.API.Controller.Base
+namespace CourseProject.API.Controller
 {
     public class FileController : BaseController
     {

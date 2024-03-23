@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc.Localization;
-using CourseProject.API.Services.Base;
-using CourseProject.Common.Cache;
+﻿using CourseProject.Common.Cache;
 using CourseProject.Common.MiddleWare;
 using CourseProject.Model.ViewModel;
+using CourseProject.Services.Base;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Localization;
 using System.Globalization;
 
 #region Config service
@@ -74,7 +74,7 @@ services.AddSingleton<IDistributedCacheCustom, DistributedCacheCustom>();
 
 #region Run service pipleline
 var app = builder.Build();
- 
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
