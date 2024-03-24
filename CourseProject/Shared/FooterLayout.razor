@@ -1,4 +1,24 @@
-﻿
-@code {
+﻿@using CourseProject.Shared.Footer
+@inject NavigationManager _navigationManager;
+@inherits AuthorBaseComponent
 
+@if (isUser)
+{
+    <FooterUser></FooterUser>
+}
+<ModalComponent></ModalComponent>
+<RatingComponent></RatingComponent>
+
+@code {
+    private bool isUser { get; set; } = true;
+    protected override async Task OnInitializedAsync()
+    {
+        var currentUri = _navigationManager.Uri;
+        var segments = currentUri.Split('/').ToList();
+        if (segments.Contains("teacher"))
+        {
+            // gồm dẫn teacher thì là sang phần teacher
+            isUser = false;
+        }
+    }
 }

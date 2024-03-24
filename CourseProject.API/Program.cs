@@ -141,6 +141,8 @@ services.AddScoped<IUnitOfWork, UnitOfWork>();
 // mỗi lần gọi 1 phát tạo insert nên dùng luôn Transient
 
 //Service
+services.AddScoped<IAccountService, AccountService>();
+services.AddScoped<ICourseService, CourseService>();
 
 //Ulti
 services.AddTransient<IFileUlti, FileUlti>();

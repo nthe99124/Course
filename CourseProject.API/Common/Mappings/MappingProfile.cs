@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CourseProject.Model.BaseEntity;
 using CourseProject.Model.ViewModel.Accountant;
 
 namespace CourseProject.API.Common.Mappings
@@ -7,7 +8,7 @@ namespace CourseProject.API.Common.Mappings
     {
         public MappingProfile()
         {
-
+            CreateMap<AccountRegister, Account>();
         }
     }
 }

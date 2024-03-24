@@ -1,0 +1,100 @@
+﻿@page "/register"
+@using CourseProject.Common.Constant
+@using CourseProject.Model.ViewModel.Account
+@using CourseProject.Model.ViewModel.Accountant
+@using StoriesProject.Services
+@using System.Text.Json
+
+@inject IAccountService _accountService;
+@inherits BaseComponentCustom
+<Toasts class="p-3" Messages="messages" Placement="toastsPlacement" />
+<section class="category-course-list-area">
+    <div class="container">
+        <div class="row mb-5 mt-3">
+            <div class="col-md-12 text-center">
+                <h1 class="fw-700">Đăng ký</h1>
+                <p class="text-14px">Đăng ký và bắt đầu học</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 d-none d-lg-block text-center">
+                <img class="mt-5" width="80%" src="https://4user.net/uploads/system/sign_up.png">
+            </div>
+            <div class="col-lg-6">
+                <div class="sign-up-form">
+                    <div id="sign_up">
+                        <div class="form-group">
+                            <label for="first_name">Tên</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white" for="first_name"><i class="fas fa-user"></i></span>
+                                <input type="text" data-field="first_name" class="form-control" placeholder="Tên" data-rule="required" data-name="Tên" @bind="accRegister.FirstName">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="last_name">Họ</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white" for="last_name"><i class="fas fa-user"></i></span>
+                                <input type="text" data-field="last_name" class="form-control" placeholder="Họ" data-rule="required" data-name="Họ" @bind="accRegister.LastName">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="registration-email">Email</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white" for="email"><i class="fas fa-envelope"></i></span>
+                                <input type="email" data-field="email" class="form-control" placeholder="Email" data-rule="required|email" data-name="Email" @bind="accRegister.Email">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="registration-password">Mật khẩu</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white" for="password"><i class="fas fa-key"></i></span>
+                                <input type="password" data-field="password" class="form-control" placeholder="Mật khẩu" data-rule="required|password" data-name="Mật khẩu" id="registration-password" required="" @bind="accRegister.Password">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <button class="btn red radius-5 mt-4 w-100" @onclick="(() => RegisterAction(accRegister))">Đăng ký</button>
+                        </div>
+
+                        <div class="form-group mt-4 mb-0 text-center">
+                            Đã có tài khoản?
+                            <a class="text-15px fw-700" @onclick='() => NavigateToUrl("/login")'>Đăng nhập</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@code {
+    private AccountRegister accRegister { get; set; } = new AccountRegister();
+
+    private async Task RegisterAction(AccountRegister accRegister)
+    {
+        var messError = await InvokeAsync<string>("validateForm", "sign_up");
+        if (string.IsNullOrEmpty(messError))
+        {
+            var res = await _accountService.Register(accRegister);
+            if (res != null && res.IsSuccess)
+            {
+                ShowMessage(ToastType.Success, res.Data);
+                await Task.Delay(2000);
+
+                NavigateToUrl($"/login");
+            }
+            else
+            {
+                ShowMessage(ToastType.Danger, res.Data);
+            }
+        }
+        else
+        {
+            ShowMessage(ToastType.Danger, messError, ToastsPlacement.MiddleCenter);
+        }
+    }
+}

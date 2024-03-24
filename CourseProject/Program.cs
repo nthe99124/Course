@@ -1,9 +1,13 @@
-﻿using CourseProject.Common.Cache;
+﻿using Blazorise;
+using Blazorise.Bootstrap;
+using CourseProject.Common.Cache;
 using CourseProject.Common.MiddleWare;
 using CourseProject.Model.ViewModel;
+using CourseProject.Services;
 using CourseProject.Services.Base;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Localization;
+using StoriesProject.Services;
 using System.Globalization;
 
 #region Config service
@@ -62,7 +66,11 @@ services.AddHttpContextAccessor();
 #region Config Service
 services.AddScoped(typeof(IResponseOutput<>), typeof(ResponseOutput<>));
 services.AddScoped<IBaseService, BaseService>();
+services.AddScoped<IAccountService, AccountService>();
+services.AddScoped<ICourseService, CourseService>();
 #endregion  
+
+services.AddBlazorBootstrap();
 
 #region Config cache
 //TODO: hiện tại đang làm cache distributed => sau có cần cache khác thì custom thêm

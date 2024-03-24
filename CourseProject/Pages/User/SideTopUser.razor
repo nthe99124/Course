@@ -1,0 +1,16 @@
+﻿@inherits AuthorBaseComponent
+
+<div class="page-header-area my-course-area bg-danger">
+    <div class="container-fluid py-5 position-relative">
+        <div class="image-placeholder-1"></div>
+        <img src="https://4user.net/uploads/system/course_page_banner.png" style="min-width: 100%; height: 100%; position: absolute; bottom: 0px; right: 0px;">
+        <div class="container" style="position: inherit;">
+            <h1 class="page-title py-5 text-white print-hidden position-relative" style="z-index: 22;">@message</h1>
+            <img class="w-sm-25" src="https://4user.net/assets/frontend/default/img/brd-book.png" style="height: 100%; position: absolute; right: 0; bottom: 0px; z-index: 5;">
+        </div>
+    </div>
+</div>
+@code {
+    [Parameter]
+    public string message { get; set; }
+}

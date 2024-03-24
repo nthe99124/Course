@@ -8,12 +8,19 @@ namespace CourseProject.API.Common.Repository
     public interface IUnitOfWork : IDisposable
     {
         public ILogEntryRepository LogEntryRepository { get; }
+        public IAccountRepository AccountRepository { get; }
+        public ICourseRepository CourseRepository { get; }
+        public ICourseTagRepository CourseTagRepository { get; }
+        public ITagRepository TagRepository { get; }
+        public IRoleAccountRepository RoleAccountRepository { get; }
+        public IRoleRepository RoleRepository { get; }
+
         DbSet<T> Set<T>() where T : class;
         int Commit();
         Task<int> CommitAsync();
-        IEnumerable<T> SqlQuery<T>(string query, SqlParameter[]? array = null) where T : class, new();
-        DataTable SqlQuery(string query, SqlParameter[]? array = null);
-        Task<int> SqlCommand(string query, SqlParameter[]? array = null);
+        IEnumerable<T> SqlQuery<T>(string query, SqlParameter[] array = null) where T : class, new();
+        DataTable SqlQuery(string query, SqlParameter[] array = null);
+        Task<int> SqlCommand(string query, SqlParameter[] array = null);
     }
 
     public class UnitOfWork : IUnitOfWork
@@ -42,6 +49,83 @@ namespace CourseProject.API.Common.Repository
             }
         }
 
+        private IAccountRepository _accountRepository;
+        public IAccountRepository AccountRepository
+        {
+            get
+            {
+                if (_accountRepository == null)
+                {
+                    _accountRepository = new AccountRepository(_context);
+                }
+                return _accountRepository;
+            }
+        }
+
+        private ICourseTagRepository _courseTagRepository;
+        public ICourseTagRepository CourseTagRepository
+        {
+            get
+            {
+                if (_courseTagRepository == null)
+                {
+                    _courseTagRepository = new CourseTagRepository(_context);
+                }
+                return _courseTagRepository;
+            }
+        }
+
+        private ICourseRepository _courseRepository;
+        public ICourseRepository CourseRepository
+        {
+            get
+            {
+                if (_courseRepository == null)
+                {
+                    _courseRepository = new CourseRepository(_context);
+                }
+                return _courseRepository;
+            }
+        }
+
+        private ITagRepository _tagRepository;
+        public ITagRepository TagRepository
+        {
+            get
+            {
+                if (_tagRepository == null)
+                {
+                    _tagRepository = new TagRepository(_context);
+                }
+                return _tagRepository;
+            }
+        }
+
+        private IRoleAccountRepository _roleAccountRepository;
+        public IRoleAccountRepository RoleAccountRepository
+        {
+            get
+            {
+                if (_roleAccountRepository == null)
+                {
+                    _roleAccountRepository = new RoleAccountRepository(_context);
+                }
+                return _roleAccountRepository;
+            }
+        }
+
+        private IRoleRepository _roleRepository;
+        public IRoleRepository RoleRepository
+        {
+            get
+            {
+                if (_roleRepository == null)
+                {
+                    _roleRepository = new RoleRepository(_context);
+                }
+                return _roleRepository;
+            }
+        }
         #endregion
 
         public DbSet<T> Set<T>() where T : class
@@ -74,7 +158,7 @@ namespace CourseProject.API.Common.Repository
         /// <param name="query"></param>
         /// <param name="array"></param>
         /// <returns></returns>
-        public IEnumerable<T> SqlQuery<T>(string query, SqlParameter[]? array = null) where T : class, new()
+        public IEnumerable<T> SqlQuery<T>(string query, SqlParameter[] array = null) where T : class, new()
         {
             try
             {
@@ -99,7 +183,7 @@ namespace CourseProject.API.Common.Repository
                 throw;
             }
         }
-        public DataTable SqlQuery(string query, SqlParameter[]? array = null)
+        public DataTable SqlQuery(string query, SqlParameter[] array = null)
         {
             var dt = new DataTable();
             try
@@ -146,7 +230,7 @@ namespace CourseProject.API.Common.Repository
             }
         }
 
-        public async Task<int> SqlCommand(string query, SqlParameter[]? array = null)
+        public async Task<int> SqlCommand(string query, SqlParameter[] array = null)
         {
             try
             {

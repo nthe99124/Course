@@ -7,7 +7,7 @@ namespace CourseProject.API.Common.Ulti
     {
         /// <summary>
         /// Hàm encode password với md5
-        /// CreatedBy ntthe 25.02.2024
+        /// CreatedBy ntthe 24.03.2024
         /// </summary>
         /// <param name="originalPassword"></param>
         /// <returns></returns>

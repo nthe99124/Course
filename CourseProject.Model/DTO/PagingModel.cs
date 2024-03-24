@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace CourseProject.Model.DTO
+﻿namespace CourseProject.Model.DTO
 {
     public class SortedPaging
     {
@@ -10,7 +8,7 @@ namespace CourseProject.Model.DTO
 
     public class PagingResultDTO<T>
     {
-        public IEnumerable<T>? Data { get; set; }
+        public IEnumerable<T> Data { get; set; }
         public int PageIndex { get; set; }
         public int PageSize { get; set; }
 

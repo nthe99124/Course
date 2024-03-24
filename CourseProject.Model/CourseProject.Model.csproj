@@ -3,16 +3,34 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
 	<EnableDefaultContentItems>false</EnableDefaultContentItems>
 	<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="BaseEntity\Account.cs" />
+    <Compile Include="BaseEntity\Chapter.cs" />
+    <Compile Include="BaseEntity\Course.cs" />
+    <Compile Include="BaseEntity\CourseTag.cs" />
+    <Compile Include="BaseEntity\Lession.cs" />
     <Compile Include="BaseEntity\LogEntry.cs" />
+    <Compile Include="BaseEntity\CourseAccount.cs" />
+    <Compile Include="BaseEntity\Role.cs" />
+    <Compile Include="BaseEntity\RoleAccount.cs" />
+    <Compile Include="BaseEntity\Tag.cs" />
+    <Compile Include="DTO\Account\AccountAuthenDTO.cs" />
+    <Compile Include="DTO\Account\AccountGenericDTO.cs" />
     <Compile Include="DTO\PagingModel.cs" />
     <Compile Include="Enum\DataType.cs" />
-    <Compile Include="ViewModel\Accountant\UserInforGeneric.cs" />
+    <Compile Include="ViewModel\Account\AccountUpdate.cs" />
+    <Compile Include="ViewModel\Account\AccountRegister.cs" />
+    <Compile Include="ViewModel\Account\ChangPasswordVM.cs" />
+    <Compile Include="ViewModel\Account\LoginResponse.cs" />
+    <Compile Include="ViewModel\Account\LoginViewModel.cs" />
+    <Compile Include="ViewModel\Account\UserInforGeneric.cs" />
+    <Compile Include="ViewModel\Course\MyCourseVM.cs" />
+    <Compile Include="ViewModel\Course\CourseGeneric.cs" />
     <Compile Include="ViewModel\ResponseOutput.cs" />
     <Compile Include="ViewModel\RestOutput.cs" />
     <Compile Include="ViewModel\RestPagingOutput.cs" />

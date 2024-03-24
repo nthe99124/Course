@@ -1,0 +1,35 @@
+﻿@page "/user/user_photo"
+@inherits AuthorBaseComponent
+
+<SideTopUser message="Cập nhật ảnh người dùng"></SideTopUser>
+<div class="user-dashboard-area pt-3">
+    <div class="container">
+        <div class="row">
+            <SideLeftUser isSelected=6></SideLeftUser>
+            <div class="col-md-8 col-lg-9 mt-4 mt-md-0">
+                <form class="w-100 bg-white radius-10 p-4 box-shadow-5" action="https://4user.net/home/update_profile/update_photo" enctype="multipart/form-data" method="post">
+                    <div class="row">
+                        <div class="col-12 border-bottom mb-3 pb-3">
+                            <h4>Ảnh hồ sơ</h4>
+                            <p>Cập nhật ảnh của bạn</p>
+                        </div>
+
+                        <div class="col-12 mb-3">
+                            <label class="text-dark fw-600" for="email">Upload image</label>
+                            <div class="input-group">
+                                <input type="file" class="form-control" name="user_image" id="user_image">
+                            </div>
+                        </div>
+
+                        <div class="col-12 pt-4">
+                            <button class="btn red px-5 py-2 radius-8"> <i class="fas fa-upload"></i> Tải lên</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+
+}
