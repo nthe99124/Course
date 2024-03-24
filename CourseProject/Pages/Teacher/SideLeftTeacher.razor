@@ -1,0 +1,32 @@
+﻿@inherits AuthorBaseComponent
+
+<div class="left-side-menu left-side-menu-detached active">
+    <div class="leftbar-user active">
+        <a href="javascript: void(0);">
+            <img src="https://4user.net/uploads/user_image/placeholder.png" alt="user-image" height="42" class="rounded-circle shadow-sm">
+            <span class="leftbar-user-name">nguyent the</span>
+        </a>
+    </div>
+
+    <!--- Sidemenu -->
+    <ul class="metismenu side-nav side-nav-light in">
+        <li class="side-nav-title side-nav-item">Điều hướng</li>
+        <li class="side-nav-item @(isSelected == 0 ? "active": "") " @onclick='() => NavigateToUrl(" /teacher/become_an_instructor")'>
+            <a class="side-nav-link active">
+                <i class="dripicons-archive"></i>
+                <span>Trở thành giảng viên</span>
+            </a>
+        </li>
+        <li class="side-nav-item @(isSelected == 1 ? "active": "") " @onclick='() => NavigateToUrl(" /user/user_profile")'>
+            <a class="side-nav-link">
+                <i class="dripicons-user"></i>
+                <span>Quản lý hồ sơ</span>
+            </a>
+        </li>
+    </ul>
+</div>
+
+@code {
+    [Parameter]
+    public int isSelected { get; set; }
+}

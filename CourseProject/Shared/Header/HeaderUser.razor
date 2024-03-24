@@ -1,0 +1,313 @@
+﻿@inherits AuthorBaseComponent
+
+<div class="sub-header py-0">
+    <div class="container-xl">
+        <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-10 col-sm-12">
+                <div class="icon icon-left">
+                    <ul class="nav">
+                        <li class="nav-item px-2">
+                            <a href="tel:+143-52-9933631"><i class="fas fa-headphones"></i> +143-52-9933631</a>
+                        </li>
+                        <div class="vartical"></div>
+                        <li class="nav-item px-2">
+                            <a href="mailto:academy@example.com"><i class="fas fa-envelope"></i> academy@example.com</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-lg-6 col-md-2 d-none d-lg-block col-sm-12">
+                <div class="icon right-icon">
+                    <ul class="nav justify-content-end">
+
+                        <a href="#" class="invisible" onclick="actionTo('https://demo.creativeitem.com/academy/home/dark_and_light_mode')"><i class="fas fa-moon"></i></a>
+
+                        <li class="nav-item align-items-center d-flex">
+                            <form action="#" method="POST" class="language-control select-box">
+                                <select class="select-control form-select nice-select" onchange="switch_language(this.value)">
+                                    <option value="english">English</option>
+                                    <option value="vietnamese" selected="">Vietnamese</option>
+                                </select>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="menu-area bg-white box-shadow">
+    <div class="container-xl">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <ul class="mobile-header-buttons">
+                <li><a class="mobile-nav-trigger" href="#mobile-primary-nav">Menu<span></span></a></li>
+                <li><a class="mobile-search-trigger" href="#mobile-search">Search<span></span></a></li>
+            </ul>
+
+            <a href="https://4user.net/" class="navbar-brand pt-2 mt-1">
+                <img src="https://4user.net/uploads/system/1088cfbd540321e61be04e54d0502a70.png" alt="" height="60">
+            </a>
+            <div class="cart-box menu-icon-box d-block d-lg-none" id="cart_items">
+                <div class="icon">
+                    <a href="https://4user.net/home/shopping_cart"><i class="fas fa-shopping-cart"></i></a>
+                    <span class="number">1</span>
+                </div>
+
+                <!-- Cart Dropdown goes here -->
+                <div class="dropdown course-list-dropdown corner-triangle top-right" style="display: none;">
+                    <!-- Just remove the display none from the css to make it work -->
+                    <div class="list-wrapper">
+                        <div class="item-list">
+                            <ul>
+                                <li>
+                                    <div class="item clearfix">
+                                        <div class="item-image">
+                                            <a href="">
+                                                <img src="https://4user.net/uploads/thumbnails/course_thumbnails/optimized/course_thumbnail_default_831709917460.jpg" alt="" class="img-fluid">
+                                            </a>
+                                        </div>
+                                        222222
+                                        <div class="item-details">
+                                            <a href="">
+                                                <div class="course-name">Practical Exam PRJ</div>
+                                                <div class="instructor-name">4 User</div>
+                                                <div class="item-price">
+                                                    <span class="current-price">₫300,000</span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="dropdown-footer">
+                            <div class="cart-total-price clearfix">
+                                <span>Tổng cộng:</span>
+                                <div class="float-end">
+                                    <span class="current-price">₫300,000</span>
+                                    <!-- <span class="original-price">$94.99</span> -->
+                                </div>
+                            </div>
+                            <a href="https://4user.net/home/shopping_cart">Vào giỏ hàng</a>
+                        </div>
+                    </div>
+                    <div class="empty-box text-center d-none">
+                        <p>Giỏ hàng của bạn trống.</p>
+                        <a href="">Keep Shopping</a>
+                    </div>
+                </div>
+            </div>
+            <div class="main-nav-wrap">
+                <div class="mobile-overlay"></div>
+
+                <ul class="mobile-main-nav">
+                    <div class="mobile-menu-helper-top"></div>
+                    <li class="dropdown-user-info">
+                        <a href="javascript:;" class="radius-top-10">
+                            <div class="clearfix">
+                                <div class="user-image float-start">
+                                    <img src="@(LinkAvatar != null ? LinkAvatar: "https://4user.net/uploads/user_image/placeholder.png")" alt="">
+                                </div>
+                                <div class="user-details">
+                                    <div class="user-name">
+                                        <span class="hi">Xin chào,</span>
+                                        @FullName
+                                    </div>
+                                    <div class="user-email">
+                                        <span class="email">@Email</span>
+                                        <span class="welcome">Chào mừng trở lại</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="has-children text-nowrap fw-bold">
+                        <a href="" class="nav-link header-dropdown px-3 text-nowrap" id="navbarDropdown1">
+                            <i class="fas fa-bars text-16px"></i>
+                            <span class="fw-500">Danh mục</span>
+                            <span class="has-sub-category"><i class="fas fa-angle-right"></i></span>
+                        </a>
+
+                        <ul class="category corner-triangle top-left is-hidden pb-0">
+                            <li class="go-back"><a href=""><i class="fas fa-angle-left"></i>Menu</a></li>
+                            <li class="all-category-devided mb-0 p-0">
+                                <a @onclick='() => NavigateToUrl("/course")' class="py-3">
+                                    <span class="icon"><svg fill="#a1a7b3" xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 0 448 512"><path d="M388.32,104.1a4.66,4.66,0,0,0-4.4-4c-2,0-37.23-.8-37.23-.8s-21.61-20.82-29.62-28.83V503.2L442.76,472S388.72,106.5,388.32,104.1ZM288.65,70.47a116.67,116.67,0,0,0-7.21-17.61C271,32.85,255.42,22,237,22a15,15,0,0,0-4,.4c-.4-.8-1.2-1.2-1.6-2C223.4,11.63,213,7.63,200.58,8c-24,.8-48,18-67.25,48.83-13.61,21.62-24,48.84-26.82,70.06-27.62,8.4-46.83,14.41-47.23,14.81-14,4.4-14.41,4.8-16,18-1.2,10-38,291.82-38,291.82L307.86,504V65.67a41.66,41.66,0,0,0-4.4.4S297.86,67.67,288.65,70.47ZM233.41,87.69c-16,4.8-33.63,10.4-50.84,15.61,4.8-18.82,14.41-37.63,25.62-50,4.4-4.4,10.41-9.61,17.21-12.81C232.21,54.86,233.81,74.48,233.41,87.69ZM200.58,24.44A27.49,27.49,0,0,1,215,28c-6.4,3.2-12.81,8.41-18.81,14.41-15.21,16.42-26.82,42-31.62,66.45-14.42,4.41-28.83,8.81-42,12.81C131.33,83.28,163.75,25.24,200.58,24.44ZM154.15,244.61c1.6,25.61,69.25,31.22,73.25,91.66,2.8,47.64-25.22,80.06-65.65,82.47-48.83,3.2-75.65-25.62-75.65-25.62l10.4-44s26.82,20.42,48.44,18.82c14-.8,19.22-12.41,18.81-20.42-2-33.62-57.24-31.62-60.84-86.86-3.2-46.44,27.22-93.27,94.47-97.68,26-1.6,39.23,4.81,39.23,4.81L221.4,225.39s-17.21-8-37.63-6.4C154.15,221,153.75,239.8,154.15,244.61ZM249.42,82.88c0-12-1.6-29.22-7.21-43.63,18.42,3.6,27.22,24,31.23,36.43Q262.63,78.68,249.42,82.88Z"></path></svg></span>
+                                    <span>Khóa học</span>
+                                </a>
+                            </li>
+
+                            <li class="all-category-devided mb-0 p-0">
+                                <a href="https://4user.net/home/exercise" class="py-3">
+                                    <span class="icon"><i class="fas fa-graduation-cap"></i></span>
+                                    <span>Bài tập</span>
+                                </a>
+                            </li>
+
+
+                            <li class="all-category-devided m-0 p-0">
+                                <a href="https://4user.net/ebook" class="py-3">
+                                    <span class="icon"><i class="fas fa-cart-arrow-down"></i></span>
+                                    <span>Cửa hàng tài khoản</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <div class="sign-in-box btn-group d-none">
+
+                        <button type="button" class="btn btn-sign-in" data-toggle="modal" data-target="#signInModal">Log In</button>
+
+                        <button type="button" class="btn btn-sign-up" data-toggle="modal" data-target="#signUpModal">Sign Up</button>
+
+                    </div>
+                    <li class="user-dropdown-menu-item" @onclick='() => NavigateToUrl("/user/my_courses")'><a><i class="far fa-gem"></i>Khóa học của tôi</a></li>
+                    <li class="user-dropdown-menu-item" @onclick='() => NavigateToUrl("/user/my_wishlist")'><a><i class="far fa-heart"></i>Khóa học yêu thích</a></li>
+                    <li class="user-dropdown-menu-item" @onclick='() => NavigateToUrl("/user/purchase_history")'><a><i class="fas fa-shopping-cart"></i>Lịch sử mua hàng</a></li>
+                    <li class="user-dropdown-menu-item" @onclick='() => NavigateToUrl("/user/user_profile")'><a ><i class="fas fa-user"></i>Hồ sơ người dùng</a></li>
+                    <li class="dropdown-user-logout user-dropdown-menu-item radius-bottom-10" @onclick='() => NavigateToUrl("/user/logout")'><a class="radius-bottom-10 py-3"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+                    <div class="mobile-menu-helper-bottom"></div>
+                </ul>
+            </div>
+
+            <form class="inline-form me-2" action="https://4user.net/home/search" method="get" style="width: 100%;">
+                <div class="input-group search-box mobile-search">
+                    <input type="text" name="query" value="" class="form-control" placeholder="Tìm kiếm các khóa học">
+                    <div class="input-group-append">
+                        <button class="btn" type="submit"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </form>
+
+
+            <div class="instructor-box menu-icon-box ms-md-3 d-none d-lg-block">
+                <div class="icon" @onclick='() => NavigateToUrl("/teacher/become_an_instructor")'>
+                    <a style="border: 1px solid transparent; margin: 0px; padding: 0px 10px; font-size: 14px; width: max-content; border-radius: 5px; height: 40px; line-height: 40px;">Giảng viên</a>
+                </div>
+            </div>
+
+            <div class="instructor-box menu-icon-box d-none d-lg-block">
+                <div class="icon" @onclick='() => NavigateToUrl("/user/my_courses")'>
+                    <a style="border: 1px solid transparent; margin: 0px; padding: 0px 10px; font-size: 14px; width: max-content; border-radius: 5px; height: 40px; line-height: 40px;">Khóa học của tôi</a>
+                </div>
+            </div>
+
+            <div class="wishlist-box menu-icon-box" id="wishlist_items">
+                <div class="icon">
+                    <a href=""><i class="far fa-heart"></i></a>
+                    <span class="number">0</span>
+                </div>
+                <div class="dropdown course-list-dropdown corner-triangle top-right radius-8">
+                    <div class="list-wrapper radius-8">
+                        <div class="item-list radius-8">
+                            <ul>
+                            </ul>
+                        </div>
+                        <div class="dropdown-footer radius-8">
+                            <a href="https://4user.net/home/my_wishlist">Vào danh sách yêu thích</a>
+                        </div>
+                    </div>
+                    <div class="empty-box text-center d-none">
+                        <p>Danh sách yêu thích của bạn trống.</p>
+                        <a href="">Khám phá các khóa học</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cart-box menu-icon-box d-none d-lg-block" id="cart_items">
+                <div class="icon">
+                    <a href="https://4user.net/home/shopping_cart"><i class="fas fa-shopping-cart"></i></a>
+                    <span class="number">1</span>
+                </div>
+
+                <!-- Cart Dropdown goes here -->
+                <div class="dropdown course-list-dropdown corner-triangle top-right" style="display: none;">
+                    <!-- Just remove the display none from the css to make it work -->
+                    <div class="list-wrapper">
+                        <div class="item-list">
+                            <ul>
+                                <li>
+                                    <div class="item clearfix">
+                                        <div class="item-image">
+                                            <a href="">
+                                                <img src="https://4user.net/uploads/thumbnails/course_thumbnails/optimized/course_thumbnail_default_831709917460.jpg" alt="" class="img-fluid">
+                                            </a>
+                                        </div>
+                                        222222
+                                        <div class="item-details">
+                                            <a href="">
+                                                <div class="course-name">Practical Exam PRJ</div>
+                                                <div class="instructor-name">4 User</div>
+                                                <div class="item-price">
+                                                    <span class="current-price">₫300,000</span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="dropdown-footer">
+                            <div class="cart-total-price clearfix">
+                                <span>Tổng cộng:</span>
+                                <div class="float-end">
+                                    <span class="current-price">₫300,000</span>
+                                    <!-- <span class="original-price">$94.99</span> -->
+                                </div>
+                            </div>
+                            <a href="https://4user.net/home/shopping_cart">Vào giỏ hàng</a>
+                        </div>
+                    </div>
+                    <div class="empty-box text-center d-none">
+                        <p>Giỏ hàng của bạn trống.</p>
+                        <a href="">Keep Shopping</a>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="user-box menu-icon-box">
+                <div class="icon">
+                    <a href="javascript:;">
+                        <img src="https://4user.net/uploads/user_image/placeholder.png" alt="" class="img-fluid">
+                    </a>
+                </div>
+                <div class="dropdown user-dropdown corner-triangle top-right radius-10">
+                    <ul class="user-dropdown-menu radius-10">
+                    </ul>
+                </div>
+            </div>
+
+
+
+            <span class="signin-box-move-desktop-helper"></span>
+            <!--  sign-in-box end -->
+
+
+        </nav>
+    </div>
+</div>
+
+@code {
+    private string Email { get; set; }
+    private string FullName { get; set; }
+    private string LinkAvatar { get; set; }
+
+    protected override async Task HandleAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // var userInfor = await GetUserInfor();
+            // if (userInfor != null)
+            // {
+            //     Email = userInfor.Email;
+            //     FullName = userInfor.FullName;
+            //     LinkAvatar = userInfor.ImgAvatar;
+            //     StateHasChanged();
+            // }
+        }
+    }
+}

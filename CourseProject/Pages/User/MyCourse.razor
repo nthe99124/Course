@@ -1,0 +1,111 @@
+﻿@page "/user/my_courses"
+@using CourseProject.Model.BaseEntity
+
+@inject ICourseService _courseService;
+@inherits AuthorBaseComponent
+
+<SideTopUser message="Khóa học của tôi"></SideTopUser>
+<div class="user-dashboard-area pt-3">
+    <div class="container">
+        <div class="row">
+            <SideLeftUser isSelected=0></SideLeftUser>
+            <div class="col-md-8 col-lg-9 mt-4 mt-md-0">
+                <div class="row align-items-baseline bg-white radius-8 box-shadow-3 mx-0">
+                    <div class="col-lg-6 py-2">
+                        <div class="btn-group">
+                            <a class="btn bg-background dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                                Danh mục
+                            </a>
+
+                            <div class="dropdown-menu">
+                            </div>
+                        </div>
+
+                        <div class="btn-group" @onclick='() => NavigateToUrl("/user/my_courses")'>
+                            <a class="btn bg-background" disabled="">Đặt lại</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 py-2">
+                        <form action="javascript:;">
+                            <div class="input-group common-search-box">
+                                <input type="text" class="form-control py-2" placeholder="Tìm kiếm khóa học của tôi" onkeyup="getCoursesBySearchString(this.value)">
+                                <dib class="input-group-button">
+                                    <button class="btn" type="submit"><i class="fas fa-search"></i></button>
+                                </dib>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="row mt-3 no-gutters" id="my_courses_area">
+                    <div class="col-sm-6 col-md-6 col-lg-4">
+                        @if (listMyCourse != null && listMyCourse.Count > 0)
+                        {
+                            @for (int i = 0; i < listMyCourse.Count; i++)
+                            {
+                                var currentItem = listMyCourse[i];
+                                <div class="course-box-wrap p-0">
+                                    <div class="course-box p-0">
+                                        <a @onclick="(() => NavigateToDetails(currentItem.Id))">
+                                            <div class="course-image">
+                                                <img src="@GetLinkImage(currentItem.ImgCourse)" alt="" class="img-fluid">
+                                                <span class="play-btn"></span>
+                                            </div>
+                                        </a>
+                                        <div class="pb-2" id="course_info_view_72">
+                                            <div class="course-details">
+                                                <a @onclick="(() => NavigateToDetails(currentItem.Id))">
+                                                    <h5 class="title">Workshop PRJ301</h5>
+                                                </a>
+                                                <div class="progress" style="height: 5px;">
+                                                    <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                @* <small class="text-12px">0% Đã hoàn thành</small> *@
+                                                <div class="rating your-rating-box text-start mt-1" style="position: unset;">
+                                                    <i class="fas fa-star @(currentItem.Rating == 1 ? "filled":"")"></i>
+                                                    <i class="fas fa-star @(currentItem.Rating == 2 ? "filled":"")"></i>
+                                                    <i class="fas fa-star @(currentItem.Rating == 3 ? "filled":"")"></i>
+                                                    <i class="fas fa-star @(currentItem.Rating == 4 ? "filled":"")"></i>
+                                                    <i class="fas fa-star @(currentItem.Rating == 5 ? "filled":"")"></i>
+                                                    @* <a href="javascript:;" id="edit_rating_btn_72" onclick="toggleRatingView('72')" style="color: #2a303b; float: right; font-size: 13px;">Chỉnh sửa xếp hạng</a>
+                                            <p class="your-rating-text">
+
+                                            <a href="javascript:;" class="hidden" id="cancel_rating_btn_72" onclick="toggleRatingView('72')" style="color: #2a303b">Hủy xếp hạng</a>
+                                            </p> *@
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 px-4 py-1">
+                                                    <a @onclick="(() => NavigateToDetails(currentItem.Id))" class="btn red radius-5 w-100">Bắt đầu bài học</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/Page/User/myCourse.js"></script>
+@code {
+    private List<MyCourseVM> listMyCourse { get; set; }
+    private Guid detailID { get; set; }
+
+    protected override async Task HandleAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            listMyCourse = await _courseService.GetListCourseByUser();
+            StateHasChanged();
+        }
+    }
+
+    private void NavigateToDetails(Guid detailId)
+    {
+        NavigateToUrl($"/course/details/{detailId}");
+    }
+}

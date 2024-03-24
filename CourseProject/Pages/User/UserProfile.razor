@@ -1,0 +1,76 @@
+﻿@page "/user/user_profile"
+@inherits AuthorBaseComponent
+
+<SideTopUser message="Hồ sơ người dùng"></SideTopUser>
+<div class="user-dashboard-area pt-3">
+    <div class="container">
+        <div class="row">
+            <SideLeftUser isSelected=4></SideLeftUser>
+            <div class="col-md-8 col-lg-9 mt-4 mt-md-0">
+                <form class="w-100 bg-white radius-10 p-4 box-shadow-5" action="https://4user.net/home/update_profile/update_basics" method="post">
+                    <div class="row">
+                        <div class="col-12 border-bottom mb-3 pb-3">
+                            <h4>Chỉnh sửa hồ sơ</h4>
+                            <p>Thêm thông tin về bản thân để chia sẻ trên hồ sơ của bạn</p>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="text-dark " for="FristName">Tên</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                <input type="text" class="form-control" name="first_name" id="FristName" placeholder="Tên" value="nguyent">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text-dark " for="FristName">Họ</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                <input type="text" class="form-control" name="last_name" placeholder="Họ" value="the">
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-3">
+
+                            <div class="form-group">
+                                <label class="text-dark " for="Biography">Tiểu sử</label>
+                                <div id="mceu_2" class="mce-tinymce mce-container mce-panel" hidefocus="1" tabindex="-1" role="application" style="visibility: hidden; border-width: 1px; width: 100%;"><div id="mceu_2-body" class="mce-container-body mce-stack-layout"><div id="mceu_3" class="mce-top-part mce-container mce-stack-layout-item mce-first"><div id="mceu_3-body" class="mce-container-body"><div id="mceu_4" class="mce-toolbar-grp mce-container mce-panel mce-first mce-last" hidefocus="1" tabindex="-1" role="group"><div id="mceu_4-body" class="mce-container-body mce-stack-layout"><div id="mceu_5" class="mce-container mce-toolbar mce-stack-layout-item mce-first mce-last" role="toolbar"><div id="mceu_5-body" class="mce-container-body mce-flow-layout"><div id="mceu_6" class="mce-container mce-flow-layout-item mce-first mce-last mce-btn-group" role="group"><div id="mceu_6-body"><div id="mceu_0" class="mce-widget mce-btn mce-first" tabindex="-1" aria-pressed="false" role="button" aria-label="Bold"><button id="mceu_0-button" role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-bold"></i></button></div><div id="mceu_1" class="mce-widget mce-btn mce-last" tabindex="-1" aria-pressed="false" role="button" aria-label="Italic"><button id="mceu_1-button" role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-italic"></i></button></div></div></div></div></div></div></div></div></div><div id="mceu_7" class="mce-edit-area mce-container mce-panel mce-stack-layout-item mce-last" hidefocus="1" tabindex="-1" role="group" style="border-width: 1px 0px 0px;"><iframe id="Biography_ifr" frameborder="0" allowtransparency="true" title="Rich Text Area. Press ALT-F9 for menu. Press ALT-F10 for toolbar. Press ALT-0 for help" style="width: 100%; height: 100px; display: block;"></iframe></div></div></div><textarea class="form-control author-biography-editor" name="biography" id="Biography" style="display: none;" aria-hidden="true"></textarea>
+                            </div>
+
+
+
+                            <hr class="my-5 bg-secondary">
+
+                            <label class="text-dark ">Thêm liên kết twitter của bạn</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="fab fa-twitter"></i></span>
+                                <input type="text" class="form-control" maxlength="60" name="twitter_link" placeholder="Liên kết Twitter" value="">
+                            </div>
+
+
+                            <label class="text-dark ">Thêm liên kết facebook của bạn</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="fab fa-facebook"></i></span>
+                                <input type="text" class="form-control" maxlength="60" name="facebook_link" placeholder="Liên kết Facebook" value="">
+                            </div>
+
+
+                            <label class="text-dark ">Thêm liên kết linkedin của bạn</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="fab fa-linkedin"></i></span>
+                                <input type="text" class="form-control" maxlength="60" name="linkedin_link" placeholder="Liên kết Linkedin" value="">
+                            </div>
+                        </div>
+
+                        <div class="col-12 pt-4">
+                            <button class="btn red px-5 py-2 radius-8">Lưu</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/Page/User/userProfile.js"></script>
+@code {
+
+}

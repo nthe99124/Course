@@ -16,7 +16,7 @@ namespace CourseProject.API.Services
     public class LogEntryService : BaseService, ILogEntryService
     {
         private readonly IConfiguration _config;
-        public LogEntryService(IHttpContextAccessor httpContextAccessor, 
+        public LogEntryService(IHttpContextAccessor httpContextAccessor,
                                 IDistributedCacheCustom cache,
                                 IUnitOfWork unitOfWork, IMapper mapper,
                                 IConfiguration config) : base(httpContextAccessor, cache, unitOfWork, mapper)
@@ -26,7 +26,7 @@ namespace CourseProject.API.Services
 
         /// <summary>
         /// Thực hiện insert log gọi bđb nhưng không cần hứng
-        /// CreatedBy ntthe 25.02.2024
+        /// CreatedBy ntthe 24.03.2024
         /// </summary>
         /// <param name="message"></param>
         /// <param name="requestApi"></param>
@@ -37,7 +37,7 @@ namespace CourseProject.API.Services
 
         /// <summary>
         /// Thực hiện insert log gọi bđb nhưng không cần hứng
-        /// CreatedBy ntthe 25.02.2024
+        /// CreatedBy ntthe 24.03.2024
         /// </summary>
         /// <param name="message"></param>
         /// <param name="requestApi"></param>

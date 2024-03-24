@@ -1,0 +1,34 @@
+﻿@page "/user/my_wishlist"
+@using CourseProject.Shared.ComponentBase
+@inherits AuthorBaseComponent
+
+<link rel="stylesheet" href="css/Page/User/myEbook.css">
+<SideTopUser message="Khóa học yêu thích"></SideTopUser>
+<div class="user-dashboard-area pt-3">
+    <div class="container">
+        <div class="row">
+            <SideLeftUser isSelected=2></SideLeftUser>
+            <div class="col-md-8 col-lg-9 mt-4 mt-md-0">
+                <div class="row radius-8 box-shadow-4 mx-0">
+                    <div class="ms-auto col-lg-6 px-3 py-2">
+                        <form action="javascript:;">
+                            <div class="input-group common-search-box">
+                                <input type="text" class="form-control py-2" placeholder="Tìm kiếm danh sách mong muốn của tôi" onkeyup="getMyWishListsBySearchString(this.value)">
+                                <dib class="input-group-button">
+                                    <button class="btn" type="submit"><i class="fas fa-search"></i></button>
+                                </dib>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="row no-gutters mt-3" id="my_wishlists_area">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/Page/User/myWishlist.js"></script>
+@code {
+
+}

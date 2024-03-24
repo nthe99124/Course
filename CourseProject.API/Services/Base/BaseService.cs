@@ -2,6 +2,7 @@
 using CourseProject.API.Common.Cache;
 using CourseProject.API.Common.Constant;
 using CourseProject.API.Common.Repository;
+using CourseProject.Model.DTO.Accountant;
 using System.Net.WebSockets;
 using System.Security.Claims;
 using System.Text.Json;
@@ -22,24 +23,24 @@ namespace CourseProject.API.Services.Base
             _mapper = mapper;
         }
 
-        //public AccountGenericDTO? GetUserAuthen()
-        //{
-        //    var userInfor = new AccountGenericDTO();
-        //    var userContext = _httpContextAccessor?.HttpContext?.User;
-        //    if (userContext != null && userContext.Identity != null && userContext.Identity.IsAuthenticated)
-        //    {
-        //        userInfor.UserName = userContext?.FindFirst(JwtRegisteredClaimsNamesConstant.Sub)?.Value;
-        //        userInfor.Coin = long.Parse(userContext?.FindFirst(JwtRegisteredClaimsNamesConstant.Coin)?.Value);
-        //        userInfor.AccoutantId = Guid.Parse(userContext?.FindFirst(JwtRegisteredClaimsNamesConstant.AccId)?.Value);
-        //        userInfor.RoleList = userContext.FindAll(JwtRegisteredClaimsNamesConstant.Role).Select(c => c.Value).ToList();
-        //    }
-        //    else
-        //    {
-        //        return null;
-        //    }
+        public AccountGenericDTO GetUserAuthen()
+        {
+            var userInfor = new AccountGenericDTO();
+            var userContext = _httpContextAccessor?.HttpContext?.User;
+            if (userContext != null && userContext.Identity != null && userContext.Identity.IsAuthenticated)
+            {
+                userInfor.UserName = userContext?.FindFirst(JwtRegisteredClaimsNamesConstant.Sub)?.Value;
+                userInfor.Coin = long.Parse(userContext?.FindFirst(JwtRegisteredClaimsNamesConstant.Coin)?.Value);
+                userInfor.AccoutantId = Guid.Parse(userContext?.FindFirst(JwtRegisteredClaimsNamesConstant.AccId)?.Value);
+                userInfor.RoleList = userContext.FindAll(JwtRegisteredClaimsNamesConstant.Role).Select(c => c.Value).ToList();
+            }
+            else
+            {
+                return null;
+            }
 
-        //    return userInfor;
-        //}
+            return userInfor;
+        }
 
         //public Dictionary<string, Role>? GetRoleAuthen()
         //{

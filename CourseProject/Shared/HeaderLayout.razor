@@ -1,59 +1,55 @@
-﻿@using CourseProject.Model.BaseEntity
-@using CourseProject.Shared.ComponentBase
+﻿@using CourseProject.Shared.Header
+@inject NavigationManager _navigationManager;
 @inherits AuthorBaseComponent
-<style>
-    /*# Thêm vào*/
-    .in-header__nav .nav-item {
-        width: auto;
-        font-size: 16px;
-    }
 
-    .in-header__nav .underline {
-        display: none;
-        position: absolute;
-        left: 7px;l
-        bottom: -3px;
-        width: 50px;
-        height: 3px;
-        background: #ff620e;
-        border-radius: 9px;
-    }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.3.1/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.3.1/css/fontawesome.min.css">
+<link rel="stylesheet" href="https://4user.net/assets/backend/css/font-awesome-icon-picker/fontawesome-iconpicker.min.css" >
+<link rel="stylesheet" href="css/Common/main.css">
+<link rel="stylesheet" href="css/Common/responsive.css">
+<link rel="stylesheet" href="css/Common/custom.css">
+<link rel="stylesheet" href="css/Lib/tagify.css">
+<link rel="stylesheet" href="css/Lib/jquery.webui-popover.min.css">
+<link rel="stylesheet" href="css/Lib/slick.css">
+<link rel="stylesheet" href="css/Lib/slick-theme.css">
+<link rel="stylesheet" href="css/Lib/toastr.css">
+<script src="js/site.js"></script>
+@if (isUser)
+{
+    <HeaderUser></HeaderUser>
+}
+else
+{
+    <HeaderTeacher></HeaderTeacher>
+}
+<Toasts class="p-3" Messages="messages" Placement="toastsPlacement" />
 
-    .button_config {
-        float: left;
-        width: 80px;
-        height: 40px;
-        font-size: 13px;
-        text-align: center;
-        line-height: 40px;
-        color: #fff;
-        border-radius: 0 20px 20px 0;
-        cursor: pointer;
-        background-color: #ff620e;
-        font-weight: bold;
-    }
-
-    .p-detail, .p-index {
-        padding-top: unset !important;
-    }
-</style>
-<div class="in-header">
-    
-</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="js/Lib/modernizr-3.5.0.min.js"></script>
+<script src="js/Lib/popper.min.js"></script>
+<script src="js/Lib/bootstrap.min.js"></script>
+<script src="js/Lib/slick.min.js"></script>
+<script src="js/Lib/jquery.webui-popover.min.js"></script>
+<script src="js/Common/main.js"></script>
+<script src="js/Lib/toastr.min.js"></script>
+<script src="js/Lib/jquery.form.min.js"></script>
+<script src="js/Lib/jQuery.tagify.js"></script>
 @code {
-    [Parameter]
-    public int isSelected { get; set; }
-    private bool IsAuthen { get; set; } = false;
-    private string UserName { get; set; }
-    private long Coin { get; set; }
-    private string LinkAvatar { get; set; } = "//static.mkzcdn.com/home/assets/images/home/pic_login_defaulthead.png?v=5b80a2f";
-
-
-    private void GoToLoginPage()
+    private bool isUser { get; set; } = true;
+    protected override async Task HandleAfterRenderAsync(bool firstRender)
     {
-        if (!IsAuthen)
+        var currentUri = _navigationManager.Uri;
+        var segments = currentUri.Split('/').ToList();
+        if (segments.Contains("teacher"))
         {
-            NavigateToUrl($"/login");
+            // gồm dẫn teacher thì là sang phần teacher
+            isUser = false;
+            StateHasChanged();
+        }
+        else
+        {
+            isUser = true;
+            StateHasChanged();
         }
     }
 }

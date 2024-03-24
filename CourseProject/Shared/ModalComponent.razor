@@ -1,0 +1,54 @@
+﻿<!-- (Ajax Modal)-->
+<div class="modal fade" id="modal_ajax">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn btn-secondary btn-close ms-auto" data-bs-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body" style="overflow:auto;">
+            </div>
+            <!--<div class="modal-footer">-->
+            <!--    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="lesson_preview" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content course-preview-modal">
+            <div class="modal-header">
+                <h5 class="lesson_preview_header"></h5>
+                <button type="button" class="close" data-bs-dismiss="modal" onclick="window.location.reload()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- (Normal Modal)-->
+<div class="modal fade" id="modal-4">
+    <div class="modal-dialog">
+        <div class="modal-content" style="margin-top:100px;">
+
+            <div class="modal-header">
+                <h5 class="modal-title text-center">Bạn có chắc không ?</h5>
+                <button type="button" class="btn btn-outline-secondary px-1 py-0" data-bs-dismiss="modal" aria-hidden="true"><i class="fas fa-times-circle"></i></button>
+            </div>
+
+
+            <div class="modal-footer" style="margin:0px; border-top:0px; text-align:center;">
+                <a href="#" class="btn btn-danger btn-yes" id="delete_link">Có</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Không</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/Shared/ajaxModel.js"></script>
+
+@code {
+
+}

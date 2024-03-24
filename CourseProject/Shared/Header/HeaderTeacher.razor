@@ -1,0 +1,96 @@
+﻿@inherits AuthorBaseComponent
+<link rel="stylesheet" href="https://4user.net/assets/backend/css/vendor/jquery-jvectormap-1.2.2.css"  >
+<link rel="stylesheet" href="https://4user.net/assets/backend/css/vendor/dataTables.bootstrap4.css" >
+<link rel="stylesheet" href="https://4user.net/assets/backend/css/vendor/responsive.bootstrap4.css" >
+<link rel="stylesheet" href="https://4user.net/assets/backend/css/vendor/buttons.bootstrap4.css" >
+<link rel="stylesheet" href="https://4user.net/assets/backend/css/vendor/select.bootstrap4.css">
+<link rel="stylesheet" href="https://4user.net/assets/backend/css/vendor/summernote-bs4.css">
+<link rel="stylesheet" href="https://4user.net/assets/backend/css/vendor/fullcalendar.min.css">
+<link rel="stylesheet" href="https://4user.net/assets/backend/css/vendor/dropzone.css">
+<!-- App css -->
+<link rel="stylesheet" href="https://4user.net/assets/backend/css/app.min.css">
+<link rel="stylesheet" href="https://4user.net/assets/backend/css/icons.min.css">
+
+<link rel="stylesheet" href="https://4user.net/assets/backend/css/main.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/7.4.47/css/materialdesignicons.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dripicons/2.0.0/webfont.min.css">
+
+<div class="navbar-custom topnav-navbar topnav-navbar-dark">
+    <div class="container-fluid">
+        <!-- LOGO -->
+        <a href="https://4user.net/User" class="topnav-logo" style="min-width: unset;">
+            <span class="topnav-logo-lg">
+                <img src="https://4user.net/uploads/system/2178a85d98105125bd097efba25a803b.png" alt="" height="40">
+            </span>
+            <span class="topnav-logo-sm">
+                <img src="https://4user.net/uploads/system/2178a85d98105125bd097efba25a803b.png" alt="" height="40">
+            </span>
+        </a>
+
+        <ul class="list-unstyled topbar-right-menu float-right mb-0">
+            <li class="dropdown notification-list topbar-dropdown">
+                <a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                    <span class="align-middle text-18"><i class="fas fa-language"></i></span> <i class="mdi mdi-chevron-down"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated topbar-dropdown-menu" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-59px, 72px, 0px);">
+
+                    <a href="javascript:void(0);" onclick="switch_language('english')" class="dropdown-item notify-item">
+                        <span class="align-middle">English</span>
+                    </a>
+                    <!-- item-->
+
+                </div>
+            </li>
+
+
+            <li class="dropdown notification-list">
+                <a class="nav-link dropdown-toggle nav-user arrow-none mr-0" data-toggle="dropdown" id="topbar-userdrop" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    <span class="account-user-avatar">
+                        <img src="https://4user.net/uploads/user_image/placeholder.png" alt="user-image" class="rounded-circle">
+                    </span>
+                    <span style="color: #fff;">
+                        <span class="account-user-name">nguyent the</span>
+                        <span class="account-position">
+                            Sinh viên
+                        </span>
+                    </span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated topbar-dropdown-menu profile-dropdown" aria-labelledby="topbar-userdrop">
+                    <!-- item-->
+                    <div class=" dropdown-header noti-title">
+                        <h6 class="text-overflow m-0">Chào mừng !</h6>
+                    </div>
+
+                    <!-- Account -->
+                    <a href="https://4user.net/home/profile/user_profile" class="dropdown-item notify-item">
+                        <i class="mdi mdi-account-circle mr-1"></i>
+                        <span>Tài khoản của tôi</span>
+                    </a>
+
+
+                    <!-- Logout-->
+                    <a href="https://4user.net/login/logout" class="dropdown-item notify-item">
+                        <i class="mdi mdi-logout mr-1"></i>
+                        <span>Đăng xuất</span>
+                    </a>
+
+                </div>
+            </li>
+        </ul>
+        <a class="button-menu-mobile disable-btn">
+            <div class="lines">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </a>
+        <div class="visit_website" @onclick='() => NavigateToUrl("/home")'>
+            <h4 style="color: #fff; float: left;" class="d-none d-md-inline-block"> 4User Academy</h4>
+            <a target="" class="btn btn-outline-light ml-3 d-none d-md-inline-block">Truy cập trang web</a>
+        </div>
+    </div>
+</div>
+@code {
+
+}

@@ -1,0 +1,36 @@
+﻿@page "/user/purchase_history"
+@inherits AuthorBaseComponent
+
+<SideTopUser message="Lịch sử mua hàng"></SideTopUser>
+<div class="user-dashboard-area pt-3">
+    <div class="container">
+        <div class="row">
+            <SideLeftUser isSelected=3></SideLeftUser>
+            <div class="col-md-8 col-lg-9 mt-4 mt-md-0">
+                <ul class="purchase-history-list">
+                    <li class="purchase-history-list-header radius-8 box-shadow-3 mx-0 py-3">
+                        <div class="row">
+                            <div class="col-5 ps-4 fw-bold"> Khóa học đã mua</div>
+                            <div class="col-7 hidden-xxs hidden-xs">
+                                <div class="row">
+                                    <div class="col-3 fw-bold"> Ngày </div>
+                                    <div class="col-2 fw-bold"> Giá </div>
+                                    <div class="col-4 fw-bold"> Phương thức thanh toán </div>
+                                    <div class="col-3 fw-bold"> Hành động </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="row" style="text-align: center;">
+                            Không tìm thấy hồ sơ
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+
+}

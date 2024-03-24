@@ -11,12 +11,12 @@ namespace CourseProject.API.Repositories.Base
 {
     public interface IBaseRepository<T>
     {
-        Task<PagingResultDTO<T>?> GetPaging(int pageSize = 0, int pageIndex = 0, Expression<Func<T, bool>>? predicateFilter = null, List<SortedPaging>? sortList = null);
-        Task<IEnumerable<T>?> GetDataLimit(int limitValue = 0, List<SortedPaging>? sortList = null, Expression<Func<T, bool>>? predicateFilter = null);
+        Task<PagingResultDTO<T>> GetPaging(int pageSize = 0, int pageIndex = 0, Expression<Func<T, bool>> predicateFilter = null, List<SortedPaging> sortList = null);
+        Task<IEnumerable<T>> GetDataLimit(int limitValue = 0, List<SortedPaging> sortList = null, Expression<Func<T, bool>> predicateFilter = null);
         Task<IEnumerable<T>> GetAll();
         IEnumerable<T> Get();
         Task<IEnumerable<T>> FindBy(Expression<Func<T, bool>> predicate);
-        Task<T?> FirstOrDefault(Expression<Func<T, bool>> predicate);
+        Task<T> FirstOrDefault(Expression<Func<T, bool>> predicate);
         Task<bool> CheckExitsByCondition(Expression<Func<T, bool>> predicate);
         void Create(T entity);
         Task CreateAsync(T entity);
@@ -26,14 +26,14 @@ namespace CourseProject.API.Repositories.Base
         void DeleteRange(IEnumerable<T> entity);
         void DeleteRangeByCondition(Expression<Func<T, bool>> predicate);
         Task BulkInsert(IEnumerable<T> listEntity);
-        IEnumerable<N> ExecuteStoredProcedureObject<N>(string nameProcedure, SqlParameter[]? array = null) where N : class;
-        (List<T1>, List<T2>, List<T3>) ExecuteStoredProcedureMultiObject<T1, T2, T3>(string nameProcedure, DynamicParameters? array);
-        Task<IEnumerable<N>?> GetDataBySorted<N>(IEnumerable<N>? data, List<SortedPaging>? sortList = null) where N : class;
+        IEnumerable<N> ExecuteStoredProcedureObject<N>(string nameProcedure, SqlParameter[] array = null) where N : class;
+        (List<T1>, List<T2>, List<T3>) ExecuteStoredProcedureMultiObject<T1, T2, T3>(string nameProcedure, DynamicParameters array);
+        Task<IEnumerable<N>> GetDataBySorted<N>(IEnumerable<N> data, List<SortedPaging> sortList = null) where N : class;
     }
     public abstract class BaseRepository<T> : IBaseRepository<T> where T : class
     {
         protected readonly DbSet<T> _dbset;
-        readonly CourseContext _context;
+        protected readonly CourseContext _context;
         protected BaseRepository(CourseContext context)
         {
             _dbset = context.Set<T>();
@@ -51,7 +51,7 @@ namespace CourseProject.API.Repositories.Base
         /// <param name="predicateFilter"></param>
         /// <param name="sortList"></param>
         /// <returns></returns>
-        public async Task<PagingResultDTO<T>?> GetPaging(int pageSize = 0, int pageIndex = 0, Expression<Func<T, bool>>? predicateFilter = null, List<SortedPaging>? sortList = null)
+        public async Task<PagingResultDTO<T>> GetPaging(int pageSize = 0, int pageIndex = 0, Expression<Func<T, bool>> predicateFilter = null, List<SortedPaging> sortList = null)
         {
             // phân 2 task => , 1 task lấy data
 
@@ -101,13 +101,13 @@ namespace CourseProject.API.Repositories.Base
 
         /// <summary>
         /// Hàm lấy dữ liệu bản theo số ghi cao nhất thấp nhất theo điều kiện lọc theo sort
-        /// CreatedBy ntthe 29.02.2024
+        /// CreatedBy ntthe 24.03.2024
         /// </summary>
         /// <param name="limitValue"></param>
         /// <param name="predicateFilter"></param>
         /// <param name="sortList"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<T>?> GetDataLimit(int limitValue = 0, List<SortedPaging>? sortList = null, Expression<Func<T, bool>>? predicateFilter = null)
+        public async Task<IEnumerable<T>> GetDataLimit(int limitValue = 0, List<SortedPaging> sortList = null, Expression<Func<T, bool>> predicateFilter = null)
         {
             if (limitValue > 0)
             {
@@ -123,13 +123,13 @@ namespace CourseProject.API.Repositories.Base
 
         /// <summary>
         /// Hàm lấy dữ liệu lọc
-        /// CreatedBy ntthe 29.02.2024
+        /// CreatedBy ntthe 24.03.2024
         /// </summary>
         /// <param name="predicateFilter"></param>
         /// <returns></returns>
-        private async Task<IEnumerable<T>> GetDataByCondition(Expression<Func<T, bool>>? predicateFilter = null)
+        private async Task<IEnumerable<T>> GetDataByCondition(Expression<Func<T, bool>> predicateFilter = null)
         {
-            IEnumerable<T>? data = null;
+            IEnumerable<T> data = null;
             if (predicateFilter != null)
             {
                 data = _dbset.Where(predicateFilter);
@@ -144,17 +144,17 @@ namespace CourseProject.API.Repositories.Base
 
         /// <summary>
         /// Hàm lấy dữ liệu theo sort
-        /// CreatedBy ntthe 29.02.2024
+        /// CreatedBy ntthe 24.03.2024
         /// </summary>
         /// <param name="predicateFilter"></param>
         /// <param name="sortList"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<N>?> GetDataBySorted<N>(IEnumerable<N>? data, List<SortedPaging>? sortList = null) where N : class
+        public async Task<IEnumerable<N>> GetDataBySorted<N>(IEnumerable<N> data, List<SortedPaging> sortList = null) where N : class
         {
             // sort lại custom
             if (data != null && data.Count() > 0 && sortList != null && sortList.Count > 0)
             {
-                IOrderedEnumerable<N>? orderedData = null;
+                IOrderedEnumerable<N> orderedData = null;
                 foreach (var item in sortList)
                 {
                     // lần đầu thì order thường, sau đó thì then
@@ -205,7 +205,7 @@ namespace CourseProject.API.Repositories.Base
         {
             return await Task.Run(() => _dbset.Where(predicate).AsEnumerable());
         }
-        public async Task<T?> FirstOrDefault(Expression<Func<T, bool>> predicate)
+        public async Task<T> FirstOrDefault(Expression<Func<T, bool>> predicate)
         {
             return await Task.Run(() => _dbset.Where(predicate).AsEnumerable().FirstOrDefault());
         }
@@ -258,7 +258,7 @@ namespace CourseProject.API.Repositories.Base
             await _context.BulkInsertAsync(listEntity);
         }
 
-        public IEnumerable<N> ExecuteStoredProcedureObject<N>(string nameProcedure, SqlParameter[]? array = null) where N: class
+        public IEnumerable<N> ExecuteStoredProcedureObject<N>(string nameProcedure, SqlParameter[] array = null) where N: class
         {
             try
             {
@@ -295,7 +295,7 @@ namespace CourseProject.API.Repositories.Base
         }
 
         //TODO: ntthe nghiên cứu tối ưu lại k chơi cứng thế này
-        public (List<T1>, List<T2>, List<T3>) ExecuteStoredProcedureMultiObject<T1, T2, T3>(string nameProcedure, DynamicParameters? array)
+        public (List<T1>, List<T2>, List<T3>) ExecuteStoredProcedureMultiObject<T1, T2, T3>(string nameProcedure, DynamicParameters array)
         {
             using var connection = _context.Database.GetDbConnection();
             connection.Open();

@@ -1,10 +1,12 @@
-﻿@using Microsoft.JSInterop;
+﻿@using CourseProject.Model.ViewModel.Account
+@using Microsoft.JSInterop;
 @using System.Net;
 @using CourseProject.Model.ViewModel.Accountant
 @using System.Text.Json
 @inject NavigationManager _navigationManager;
 @inject IJSRuntime _js;
 @inject IConfiguration config;
+
 @code {
     #region TODO: các hàm dùng chung cho các form từ js => nên tách ra dạng mixin
     protected async Task<string> GetSessionStorage(string key)
@@ -22,7 +24,7 @@
         await _js.InvokeAsync<string>("removeSessionStorage", key);
     }
 
-    protected async Task<UserInforGeneric?> GetUserInfor()
+    protected async Task<UserInforGeneric> GetUserInfor()
     {
         var userInforJson = await GetSessionStorage("userInfor");
         if (!string.IsNullOrEmpty(userInforJson))
@@ -56,5 +58,40 @@
         var baseUrlApiImage = config.GetSection("BaseUrlApiImage").Value;
         return baseUrlApiImage + imgFileName;
     }
+
+    #region show toast
+    protected ToastsPlacement toastsPlacement = ToastsPlacement.TopRight;
+    protected List<ToastMessage> messages = new List<ToastMessage>();
+    protected void ShowMessage(ToastType toastType, string message, ToastsPlacement placement = ToastsPlacement.TopRight, string title = null)
+    {
+        toastsPlacement = placement;
+        if (string.IsNullOrEmpty(title))
+        {
+            switch (toastType)
+            {
+                case ToastType.Success:
+                    title = "Thành công";
+                    break;
+                case ToastType.Info:
+                    title = "Thông báo";
+                    break;
+                case ToastType.Danger:
+                    title = "Lỗi";
+                    break;
+            }    
+        }
+        
+        messages.Add(CreateToastMessage(toastType, message, title));
+    }
+
+    private ToastMessage CreateToastMessage(ToastType toastType, string message, string title = null)
+    => new ToastMessage
+        {
+            Type = toastType,
+            Title = title,
+            // HelpText = $"{DateTime.Now}",
+            Message = message,
+        };
+    #endregion
     #endregion
 }

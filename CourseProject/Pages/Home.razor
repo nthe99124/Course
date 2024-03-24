@@ -1,0 +1,702 @@
+﻿@page "/home"
+@using CourseProject.Model.BaseEntity
+@inject ICourseService _courseService;
+@inherits BaseComponentCustom
+
+<div class="home-banner-area py-5" id="home-banner-area">
+    <div class="container-lg">
+        <div class="d-flex ">
+            <div class="col row align-items-center position-relative baner-home">
+                <div class="col-md-6 p-0 p-md-5 order-sm-1 order-2">
+                    <div class="home-banner-wrap">
+                        <h4 class="fw-bold">Tham gia học tập với chi phí thấp hơn</h4>
+                        <p>Học bất kỳ chủ đề nào, bất cứ lúc nào. Khám phá hàng nghìn khóa học với mức giá thấp nhất từ trước đến nay!</p>
+                    </div>
+
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12 order-md-2 order-sm-2 order-1 pt-0 pt-md-5 ">
+                    <div id="tilt">
+                        <img src="https://4user.net/uploads/system/b2851b930bc4347bd28767266674df84.jpg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="component-margin mb-5">
+    <div class="">
+        <div class="partners-banner-module--wrapper--2-SKh p-5 container-lg">
+            <div class="partners-banner-module--content--bYVF_">
+                <h2 class="partners-banner-module--heading--21OVA">Được hơn 200 công ty và hàng triệu học viên trên khắp thế giới tin dùng</h2>
+                <ul class="ud-unstyled-list partner-logos-module--list--2hIZ_">
+                    <li class="partner-logos-module--item--1KtIF"><img src="https://4user.net/assets/frontend/default/img/volkswagen.svg" alt="Volkswagen logo" width="48" height="48" loading="lazy"></li>
+                    <li class="partner-logos-module--item--1KtIF"><img src="https://4user.net/assets/frontend/default/img/samsung.svg" alt="Samsung logo" width="101" height="34" loading="lazy"></li>
+                    <li class="partner-logos-module--item--1KtIF"><img src="https://4user.net/assets/frontend/default/img/cisco.svg" alt="Cisco logo" width="87" height="40" loading="lazy"></li>
+                    <li class="partner-logos-module--item--1KtIF"><img src="https://4user.net/assets/frontend/default/img/att.svg" alt="ATT&amp;T logo" width="97" height="40" loading="lazy"></li>
+                    <li class="partner-logos-module--item--1KtIF"><img src="https://4user.net/assets/frontend/default/img/procter_gamble.svg" alt="Procter &amp; Gamble logo" width="48" height="48" loading="lazy"></li>
+                    <li class="partner-logos-module--item--1KtIF"><img src="https://4user.net/assets/frontend/default/img/hewlett_packard_enterprise.svg" alt="Hewlett Packard Enterprise logo" width="94" height="40" loading="lazy"></li>
+                    <li class="partner-logos-module--item--1KtIF"><img src="https://4user.net/assets/frontend/default/img/citi.svg" alt="Citi logo" width="62" height="40" loading="lazy"></li>
+                    <li class="partner-logos-module--item--1KtIF"><img src="https://4user.net/assets/frontend/default/img/ericsson.svg" alt="Ericsson logo" width="55" height="48" loading="lazy"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="course-carousel-area">
+    <div class="container-lg">
+        <div class="row">
+            <div class="col">
+                <h3 class="course-carousel-title">
+                    <span class="header-underline-2">Các khóa học hàng đầu</span>
+                </h3>
+
+                <!-- page loader -->
+                <div class="animated-loader" style="display: none;"><div class="spinner-border text-secondary" role="status"></div></div>
+
+                <div class="course-carousel shown-after-loading slick-initialized slick-slider" style="">
+                    <button class="slick-prev slick-arrow" aria-label="Previous" type="button" style="">Previous</button>
+                    <div class="slick-list draggable">
+                        <div class="slick-track" style="opacity: 1; width: 3978px; transform: translate3d(-884px, 0px, 0px);">
+                            @if (listGoodCourse != null && listGoodCourse.Count > 0)
+                            {
+                                for (int i = 0; i < listGoodCourse.Count; i++)
+                                {
+                                    var currentItem = listGoodCourse[i];
+                                    <div class="course-box-wrap slick-slide slick-cloned" style="width: 221px;" tabindex="-1" data-slick-index="-4" aria-hidden="true" @onclick="(() => NavigateToDetails(currentItem.Id))">
+                                        <a onclick="return check_action(this);" class="has-popover" tabindex="-1">
+                                            <div class="course-box">
+                                                <div class="course-image">
+                                                    <!-- course price -->
+                                                    <p class="price text-right d-inline-block float-end">@currentItem.Price</p>
+                                                    <img src="@GetLinkImage(currentItem.ImgCourse)" alt="" class="img-fluid">
+                                                </div>
+                                                <div class="course-details">
+                                                    <div class="row mb-3">
+                                                        @if(currentItem.TagList != null && currentItem.TagList.Count > 0)
+                                                        {
+                                                            for (int j = 0; j < currentItem.TagList.Count; j++)
+                                                            {
+                                                                var currentTag = currentItem.TagList[j];
+                                                                <div class="col-12">
+                                                                    <span class="badge badge-primary text-11px">@currentTag</span>
+                                                                </div>
+                                                            }
+                                                        }
+                                                    </div>
+
+                                                    <h5 class="title">@currentItem.CourseName</h5>
+                                                    <div class="rating">
+                                                        <i class="fas fa-star @(currentItem.Rating == 1 ? "filled":"")"></i>
+                                                        <i class="fas fa-star @(currentItem.Rating == 2 ? "filled":"")"></i>
+                                                        <i class="fas fa-star @(currentItem.Rating == 3 ? "filled":"")"></i>
+                                                        <i class="fas fa-star @(currentItem.Rating == 4 ? "filled":"")"></i>
+                                                        <i class="fas fa-star @(currentItem.Rating == 5 ? "filled":"")"></i>
+                                                        <div class="d-inline-block">
+                                                            <span class="text-dark ms-1 text-12px">(@currentItem.Rating)</span>
+                                                            <span class="text-dark text-12px text-muted ms-2">(@currentItem.TotalPerRating Đánh giá)</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="floating-user d-inline-block">
+                                                                <img src="@GetLinkImage(currentItem.ImgTeacher)" width="30px" data-bs-toggle="tooltip" data-bs-placement="top" title="" onclick="return check_action(this,'https://4user.net/home/instructor_page/92');" data-bs-original-title="FLOWteam " aria-label="FLOWteam ">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <button class="btn-compare-sm float-end" onclick="return check_action(this, 'https://4user.net/home/compare?course-1=pro192-java-core-java-oop&amp;&amp;course-id-1=41');" tabindex="-1"><i class="fas fa-retweet"></i>Compare</button>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="w-100 d-flex text-dark border-top py-1">
+                                                        <div class="">
+                                                            <i class="text-danger far fa-clock text-14px"></i>
+                                                            <span class="text-muted text-12px">@currentItem.TotalHourTime Giờ</span>
+                                                        </div>
+                                                        <div class="ms-auto">
+                                                            <i class="text-primary far fa-list-alt text-14px"></i>
+                                                            <span class="text-muted text-12px">@currentItem.TotalLectures Lectures</span>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </a>
+
+                                        <div class="webui-popover-content">
+                                            <div class="course-popover-content">
+                                                <div class="last-updated">Cập nhật lần cuối @currentItem.ModifiedDate</div>
+
+                                                <div class="course-title" @onclick="(() => NavigateToDetails(currentItem.Id))">
+                                                    <a class="text-decoration-none text-15px" tabindex="-1">@currentItem.CourseName</a>
+                                                </div>
+                                                <div class="course-meta">
+                                                    <span class="">
+                                                        <i class="fas fa-play-circle"></i>
+                                                        @currentItem.TotalLectures Bài học
+                                                    </span>
+                                                    <span class="">
+                                                        <i class="far fa-clock"></i>
+                                                        @currentItem.TotalHourTime Giờ
+                                                    </span>
+                                                    <span class=""><i class="fas fa-closed-captioning"></i>Vietnamese</span>
+                                                </div>
+                                                <div class="course-subtitle">@currentItem.Description</div>
+                                                <div class="what-will-learn">
+                                                    @currentItem.BenefitsOfCourse
+                                                </div>
+                                                <div class="popover-btns">
+                                                    <button type="button" class="btn red add-to-cart-btn  big-cart-button-41" id="" onclick="handleCartItems(this)" tabindex="-1">
+                                                        Thêm vào giỏ hàng
+                                                    </button>
+                                                    <button type="button" class="wishlist-btn " title="Add to wishlist" onclick="handleWishList(this)" id="" tabindex="-1"><i class="fas fa-heart"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <button class="slick-next slick-arrow" aria-label="Next" type="button" style="">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <div class="container-lg">
+        <div class="row">
+            <div class="col">
+                <h3 class="course-carousel-title">
+                    <span class="header-underline-2">Top tài khoản hàng đầu</span>
+                </h3>
+
+                <!-- page loader -->
+                <div class="animated-loader" style="display: none;"><div class="spinner-border text-secondary" role="status"></div></div>
+
+                <div class="course-carousel shown-after-loading slick-initialized slick-slider" style="">
+                    <button class="slick-prev slick-arrow" aria-label="Previous" type="button" style="">Previous</button>
+                    <div class="slick-list draggable">
+                        <div class="slick-track" style="opacity: 1; width: 3942px; transform: translate3d(-876px, 0px, 0px);">
+                            <div class="course-box-wrap slick-slide slick-cloned" style="width: 219px;" tabindex="-1" data-slick-index="-4" aria-hidden="true">
+                                <div class="card ebook-card pt-4 px-4 margin-right">
+                                    <img src="https://4user.net/uploads/ebook/thumbnails/category_thumbnails/9a76f7e6d654be6af1d77bf40ba5f224.jpg" class="card-img-top position-relative image" alt="ebook image" height="auto">
+                                    <div class="card-body text-center">
+                                        <div class="mt-5">
+                                            <h5>Tài khoản CodePen</h5>
+                                        </div>
+                                    </div>
+                                    <div class="view-details">
+                                        <a href="https://4user.net/ebook/ebook_details/t%C3%A0i-kho%E1%BA%A3n-codepen/22" class="d-block text-white" tabindex="-1">Xem chi tiết</a>
+                                    </div>
+                                </div>
+                            </div><div class="course-box-wrap slick-slide slick-cloned" style="width: 219px;" tabindex="-1" data-slick-index="-3" aria-hidden="true">
+                                <div class="card ebook-card pt-4 px-4 margin-right">
+                                    <img src="https://4user.net/uploads/ebook/thumbnails/category_thumbnails/88cc8747a15e3c9d904c434c9216c13b.jpg" class="card-img-top position-relative image" alt="ebook image" height="auto">
+                                    <div class="card-body text-center">
+                                        <div class="mt-5">
+                                            <h5>Tài khoản Instagram</h5>
+                                        </div>
+                                    </div>
+                                    <div class="view-details">
+                                        <a href="https://4user.net/ebook/ebook_details/t%C3%A0i-kho%E1%BA%A3n-instagram/24" class="d-block text-white" tabindex="-1">Xem chi tiết</a>
+                                    </div>
+                                </div>
+                            </div><div class="course-box-wrap slick-slide slick-cloned" style="width: 219px;" tabindex="-1" data-slick-index="-2" aria-hidden="true">
+                                <div class="card ebook-card pt-4 px-4 margin-right">
+                                    <img src="https://4user.net/uploads/ebook/thumbnails/category_thumbnails/c7d24093b274f00d6796cd98fe35c73b.jpg" class="card-img-top position-relative image" alt="ebook image" height="auto">
+                                    <div class="card-body text-center">
+                                        <div class="mt-5">
+                                            <h5>Tài Khoản Github</h5>
+                                        </div>
+                                    </div>
+                                    <div class="view-details">
+                                        <a href="https://4user.net/ebook/ebook_details/t%C3%A0i-kho%E1%BA%A3n-github/26" class="d-block text-white" tabindex="-1">Xem chi tiết</a>
+                                    </div>
+                                </div>
+                            </div><div class="course-box-wrap slick-slide slick-cloned" style="width: 219px;" tabindex="-1" data-slick-index="-1" aria-hidden="true">
+                                <div class="card ebook-card pt-4 px-4 margin-right">
+                                    <img src="https://4user.net/uploads/ebook/thumbnails/category_thumbnails/category-thumbnail.png" class="card-img-top position-relative image" alt="ebook image" height="auto">
+                                    <div class="card-body text-center">
+                                        <div class="mt-5">
+                                            <h5>NetFlix</h5>
+                                        </div>
+                                    </div>
+                                    <div class="view-details">
+                                        <a href="https://4user.net/ebook/ebook_details/netflix/33" class="d-block text-white" tabindex="-1">Xem chi tiết</a>
+                                    </div>
+                                </div>
+                            </div><div class="course-box-wrap slick-slide slick-current slick-active" style="width: 219px;" tabindex="0" data-slick-index="0" aria-hidden="false">
+                                <div class="card ebook-card pt-4 px-4 margin-right">
+                                    <img src="https://4user.net/uploads/ebook/thumbnails/category_thumbnails/b110cc2fca7456a4ad6095864fbb3b6d.jpg" class="card-img-top position-relative image" alt="ebook image" height="auto">
+                                    <div class="card-body text-center">
+                                        <div class="mt-5">
+                                            <h5>Tài khoản Facebook</h5>
+                                        </div>
+                                    </div>
+                                    <div class="view-details">
+                                        <a href="https://4user.net/ebook/ebook_details/t%C3%A0i-kho%E1%BA%A3n-facebook/15" class="d-block text-white" tabindex="0">Xem chi tiết</a>
+                                    </div>
+                                </div>
+                            </div><div class="course-box-wrap slick-slide slick-active" style="width: 219px;" tabindex="0" data-slick-index="1" aria-hidden="false">
+                                <div class="card ebook-card pt-4 px-4 margin-right">
+                                    <img src="https://4user.net/uploads/ebook/thumbnails/category_thumbnails/e51bc34920edc921fe4cf1e7df28920f.jpg" class="card-img-top position-relative image" alt="ebook image" height="auto">
+                                    <div class="card-body text-center">
+                                        <div class="mt-5">
+                                            <h5>Tài khoản Google</h5>
+                                        </div>
+                                    </div>
+                                    <div class="view-details">
+                                        <a href="https://4user.net/ebook/ebook_details/t%C3%A0i-kho%E1%BA%A3n-google/17" class="d-block text-white" tabindex="0">Xem chi tiết</a>
+                                    </div>
+                                </div>
+                            </div><div class="course-box-wrap slick-slide slick-active" style="width: 219px;" tabindex="0" data-slick-index="2" aria-hidden="false">
+                                <div class="card ebook-card pt-4 px-4 margin-right">
+                                    <img src="https://4user.net/uploads/ebook/thumbnails/category_thumbnails/db759d90a06d75a24c4da6febd646d41.jpg" class="card-img-top position-relative image" alt="ebook image" height="auto">
+                                    <div class="card-body text-center">
+                                        <div class="mt-5">
+                                            <h5>Tài khoản Tiktok</h5>
+                                        </div>
+                                    </div>
+                                    <div class="view-details">
+                                        <a href="https://4user.net/ebook/ebook_details/t%C3%A0i-kho%E1%BA%A3n-tiktok/16" class="d-block text-white" tabindex="0">Xem chi tiết</a>
+                                    </div>
+                                </div>
+                            </div><div class="course-box-wrap slick-slide slick-active" style="width: 219px;" tabindex="0" data-slick-index="3" aria-hidden="false">
+                                <div class="card ebook-card pt-4 px-4 margin-right">
+                                    <img src="https://4user.net/uploads/ebook/thumbnails/category_thumbnails/9a76f7e6d654be6af1d77bf40ba5f224.jpg" class="card-img-top position-relative image" alt="ebook image" height="auto">
+                                    <div class="card-body text-center">
+                                        <div class="mt-5">
+                                            <h5>Tài khoản CodePen</h5>
+                                        </div>
+                                    </div>
+                                    <div class="view-details">
+                                        <a href="https://4user.net/ebook/ebook_details/t%C3%A0i-kho%E1%BA%A3n-codepen/22" class="d-block text-white" tabindex="0">Xem chi tiết</a>
+                                    </div>
+                                </div>
+                            </div><div class="course-box-wrap slick-slide" style="width: 219px;" tabindex="-1" data-slick-index="4" aria-hidden="true">
+                                <div class="card ebook-card pt-4 px-4 margin-right">
+                                    <img src="https://4user.net/uploads/ebook/thumbnails/category_thumbnails/88cc8747a15e3c9d904c434c9216c13b.jpg" class="card-img-top position-relative image" alt="ebook image" height="auto">
+                                    <div class="card-body text-center">
+                                        <div class="mt-5">
+                                            <h5>Tài khoản Instagram</h5>
+                                        </div>
+                                    </div>
+                                    <div class="view-details">
+                                        <a href="https://4user.net/ebook/ebook_details/t%C3%A0i-kho%E1%BA%A3n-instagram/24" class="d-block text-white" tabindex="-1">Xem chi tiết</a>
+                                    </div>
+                                </div>
+                            </div><div class="course-box-wrap slick-slide" style="width: 219px;" tabindex="-1" data-slick-index="5" aria-hidden="true">
+                                <div class="card ebook-card pt-4 px-4 margin-right">
+                                    <img src="https://4user.net/uploads/ebook/thumbnails/category_thumbnails/c7d24093b274f00d6796cd98fe35c73b.jpg" class="card-img-top position-relative image" alt="ebook image" height="auto">
+                                    <div class="card-body text-center">
+                                        <div class="mt-5">
+                                            <h5>Tài Khoản Github</h5>
+                                        </div>
+                                    </div>
+                                    <div class="view-details">
+                                        <a href="https://4user.net/ebook/ebook_details/t%C3%A0i-kho%E1%BA%A3n-github/26" class="d-block text-white" tabindex="-1">Xem chi tiết</a>
+                                    </div>
+                                </div>
+                            </div><div class="course-box-wrap slick-slide" style="width: 219px;" tabindex="-1" data-slick-index="6" aria-hidden="true">
+                                <div class="card ebook-card pt-4 px-4 margin-right">
+                                    <img src="https://4user.net/uploads/ebook/thumbnails/category_thumbnails/category-thumbnail.png" class="card-img-top position-relative image" alt="ebook image" height="auto">
+                                    <div class="card-body text-center">
+                                        <div class="mt-5">
+                                            <h5>NetFlix</h5>
+                                        </div>
+                                    </div>
+                                    <div class="view-details">
+                                        <a href="https://4user.net/ebook/ebook_details/netflix/33" class="d-block text-white" tabindex="-1">Xem chi tiết</a>
+                                    </div>
+                                </div>
+                            </div><div class="course-box-wrap slick-slide slick-cloned" style="width: 219px;" tabindex="-1" data-slick-index="7" aria-hidden="true">
+                                <div class="card ebook-card pt-4 px-4 margin-right">
+                                    <img src="https://4user.net/uploads/ebook/thumbnails/category_thumbnails/b110cc2fca7456a4ad6095864fbb3b6d.jpg" class="card-img-top position-relative image" alt="ebook image" height="auto">
+                                    <div class="card-body text-center">
+                                        <div class="mt-5">
+                                            <h5>Tài khoản Facebook</h5>
+                                        </div>
+                                    </div>
+                                    <div class="view-details">
+                                        <a href="https://4user.net/ebook/ebook_details/t%C3%A0i-kho%E1%BA%A3n-facebook/15" class="d-block text-white" tabindex="-1">Xem chi tiết</a>
+                                    </div>
+                                </div>
+                            </div><div class="course-box-wrap slick-slide slick-cloned" style="width: 219px;" tabindex="-1" data-slick-index="8" aria-hidden="true">
+                                <div class="card ebook-card pt-4 px-4 margin-right">
+                                    <img src="https://4user.net/uploads/ebook/thumbnails/category_thumbnails/e51bc34920edc921fe4cf1e7df28920f.jpg" class="card-img-top position-relative image" alt="ebook image" height="auto">
+                                    <div class="card-body text-center">
+                                        <div class="mt-5">
+                                            <h5>Tài khoản Google</h5>
+                                        </div>
+                                    </div>
+                                    <div class="view-details">
+                                        <a href="https://4user.net/ebook/ebook_details/t%C3%A0i-kho%E1%BA%A3n-google/17" class="d-block text-white" tabindex="-1">Xem chi tiết</a>
+                                    </div>
+                                </div>
+                            </div><div class="course-box-wrap slick-slide slick-cloned" style="width: 219px;" tabindex="-1" data-slick-index="9" aria-hidden="true">
+                                <div class="card ebook-card pt-4 px-4 margin-right">
+                                    <img src="https://4user.net/uploads/ebook/thumbnails/category_thumbnails/db759d90a06d75a24c4da6febd646d41.jpg" class="card-img-top position-relative image" alt="ebook image" height="auto">
+                                    <div class="card-body text-center">
+                                        <div class="mt-5">
+                                            <h5>Tài khoản Tiktok</h5>
+                                        </div>
+                                    </div>
+                                    <div class="view-details">
+                                        <a href="https://4user.net/ebook/ebook_details/t%C3%A0i-kho%E1%BA%A3n-tiktok/16" class="d-block text-white" tabindex="-1">Xem chi tiết</a>
+                                    </div>
+                                </div>
+                            </div><div class="course-box-wrap slick-slide slick-cloned" style="width: 219px;" tabindex="-1" data-slick-index="10" aria-hidden="true">
+                                <div class="card ebook-card pt-4 px-4 margin-right">
+                                    <img src="https://4user.net/uploads/ebook/thumbnails/category_thumbnails/9a76f7e6d654be6af1d77bf40ba5f224.jpg" class="card-img-top position-relative image" alt="ebook image" height="auto">
+                                    <div class="card-body text-center">
+                                        <div class="mt-5">
+                                            <h5>Tài khoản CodePen</h5>
+                                        </div>
+                                    </div>
+                                    <div class="view-details">
+                                        <a href="https://4user.net/ebook/ebook_details/t%C3%A0i-kho%E1%BA%A3n-codepen/22" class="d-block text-white" tabindex="-1">Xem chi tiết</a>
+                                    </div>
+                                </div>
+                            </div><div class="course-box-wrap slick-slide slick-cloned" style="width: 219px;" tabindex="-1" data-slick-index="11" aria-hidden="true">
+                                <div class="card ebook-card pt-4 px-4 margin-right">
+                                    <img src="https://4user.net/uploads/ebook/thumbnails/category_thumbnails/88cc8747a15e3c9d904c434c9216c13b.jpg" class="card-img-top position-relative image" alt="ebook image" height="auto">
+                                    <div class="card-body text-center">
+                                        <div class="mt-5">
+                                            <h5>Tài khoản Instagram</h5>
+                                        </div>
+                                    </div>
+                                    <div class="view-details">
+                                        <a href="https://4user.net/ebook/ebook_details/t%C3%A0i-kho%E1%BA%A3n-instagram/24" class="d-block text-white" tabindex="-1">Xem chi tiết</a>
+                                    </div>
+                                </div>
+                            </div><div class="course-box-wrap slick-slide slick-cloned" style="width: 219px;" tabindex="-1" data-slick-index="12" aria-hidden="true">
+                                <div class="card ebook-card pt-4 px-4 margin-right">
+                                    <img src="https://4user.net/uploads/ebook/thumbnails/category_thumbnails/c7d24093b274f00d6796cd98fe35c73b.jpg" class="card-img-top position-relative image" alt="ebook image" height="auto">
+                                    <div class="card-body text-center">
+                                        <div class="mt-5">
+                                            <h5>Tài Khoản Github</h5>
+                                        </div>
+                                    </div>
+                                    <div class="view-details">
+                                        <a href="https://4user.net/ebook/ebook_details/t%C3%A0i-kho%E1%BA%A3n-github/26" class="d-block text-white" tabindex="-1">Xem chi tiết</a>
+                                    </div>
+                                </div>
+                            </div><div class="course-box-wrap slick-slide slick-cloned" style="width: 219px;" tabindex="-1" data-slick-index="13" aria-hidden="true">
+                                <div class="card ebook-card pt-4 px-4 margin-right">
+                                    <img src="https://4user.net/uploads/ebook/thumbnails/category_thumbnails/category-thumbnail.png" class="card-img-top position-relative image" alt="ebook image" height="auto">
+                                    <div class="card-body text-center">
+                                        <div class="mt-5">
+                                            <h5>NetFlix</h5>
+                                        </div>
+                                    </div>
+                                    <div class="view-details">
+                                        <a href="https://4user.net/ebook/ebook_details/netflix/33" class="d-block text-white" tabindex="-1">Xem chi tiết</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><button class="slick-next slick-arrow" aria-label="Next" type="button" style="">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="home-fact-area">
+    <div class="container-lg">
+        <div class="row">
+            <div class="col-md-4 d-flex">
+                <div class="home-fact-box d-flex align-items-center justify-content-center mr-md-auto mr-auto">
+                    <i class="fas fa-play"></i>
+                    <div class="text-box">
+                        <h4>Nhiều khóa học trực tuyến</h4>
+                        <p>Khám phá nhiều chủ đề mới</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 d-flex">
+                <div class="home-fact-box d-flex align-items-center justify-content-center mr-md-auto mr-auto">
+                    <i class="fas fa-star"></i>
+                    <div class="text-box">
+                        <h4>Hướng dẫn của chuyên gia</h4>
+                        <p>Tìm khóa học phù hợp với bạn</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 d-flex">
+                <div class="home-fact-box mr-md-auto d-flex justify-content-center align-items-center mr-auto">
+                    <i class="fas fa-sync-alt"></i>
+                    <div class="text-box">
+                        <h4>Truy cập trọn đời</h4>
+                        <p>Học theo lịch trình của bạn</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="course-carousel-area">
+    <div class="container-lg">
+        <div class="row">
+            <div class="col">
+                <h3 class="course-carousel-title">
+                    <span class="header-underline-2">Top 10 Khóa học mới nhất</span>
+                </h3>
+
+                <!-- page loader -->
+                <div class="animated-loader" style="display: none;"><div class="spinner-border text-secondary" role="status"></div></div>
+
+                <div class="course-carousel shown-after-loading slick-initialized slick-slider" style="">
+                    <button class="slick-prev slick-arrow" aria-label="Previous" type="button" style="">Previous</button>
+                    <div class="slick-list draggable">
+                        <div class="slick-track" style="opacity: 1; width: 5304px; transform: translate3d(-884px, 0px, 0px);">
+                            @if (listNewCourse != null && listNewCourse.Count > 0)
+                            {
+                                for (int i = 0; i < listNewCourse.Count; i++)
+                                {
+                                    var currentItem = listNewCourse[i];
+                                    <div class="course-box-wrap slick-slide slick-cloned" style="width: 221px;" tabindex="-1" data-slick-index="-4" aria-hidden="true" @onclick="(() => NavigateToDetails(currentItem.Id))">
+                                        <a onclick="return check_action(this);" class="has-popover" tabindex="-1">
+                                            <div class="course-box">
+                                                <div class="course-image">
+                                                    <!-- course price -->
+                                                    <p class="price text-right d-inline-block float-end">@currentItem.Price</p>
+                                                    <img src="@GetLinkImage(currentItem.ImgCourse)" alt="" class="img-fluid">
+                                                </div>
+                                                <div class="course-details">
+                                                    <div class="row mb-3">
+                                                        @if(currentItem.TagList != null && currentItem.TagList.Count > 0)
+                                                        {
+                                                            for (int j = 0; j < currentItem.TagList.Count; j++)
+                                                            {
+                                                                var currentTag = currentItem.TagList[j];
+                                                                <div class="col-12">
+                                                                    <span class="badge badge-primary text-11px">@currentTag</span>
+                                                                </div>
+                                                            }
+                                                        }
+                                                    </div>
+
+                                                    <h5 class="title">@currentItem.CourseName</h5>
+                                                    <div class="rating">
+                                                        <i class="fas fa-star @(currentItem.Rating == 1 ? "filled":"")"></i>
+                                                        <i class="fas fa-star @(currentItem.Rating == 2 ? "filled":"")"></i>
+                                                        <i class="fas fa-star @(currentItem.Rating == 3 ? "filled":"")"></i>
+                                                        <i class="fas fa-star @(currentItem.Rating == 4 ? "filled":"")"></i>
+                                                        <i class="fas fa-star @(currentItem.Rating == 5 ? "filled":"")"></i>
+                                                        <div class="d-inline-block">
+                                                            <span class="text-dark ms-1 text-12px">(@currentItem.Rating)</span>
+                                                            <span class="text-dark text-12px text-muted ms-2">(@currentItem.TotalPerRating Đánh giá)</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="floating-user d-inline-block">
+                                                                <img src="@GetLinkImage(currentItem.ImgTeacher)" width="30px" data-bs-toggle="tooltip" data-bs-placement="top" title="" onclick="return check_action(this,'https://4user.net/home/instructor_page/92');" data-bs-original-title="FLOWteam " aria-label="FLOWteam ">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <button class="btn-compare-sm float-end" onclick="return check_action(this, 'https://4user.net/home/compare?course-1=pro192-java-core-java-oop&amp;&amp;course-id-1=41');" tabindex="-1"><i class="fas fa-retweet"></i>Compare</button>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="w-100 d-flex text-dark border-top py-1">
+                                                        <div class="">
+                                                            <i class="text-danger far fa-clock text-14px"></i>
+                                                            <span class="text-muted text-12px">@currentItem.TotalHourTime Giờ</span>
+                                                        </div>
+                                                        <div class="ms-auto">
+                                                            <i class="text-primary far fa-list-alt text-14px"></i>
+                                                            <span class="text-muted text-12px">@currentItem.TotalLectures Lectures</span>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </a>
+
+                                        <div class="webui-popover-content">
+                                            <div class="course-popover-content">
+                                                <div class="last-updated">Cập nhật lần cuối @currentItem.ModifiedDate</div>
+
+                                                <div class="course-title" @onclick="(() => NavigateToDetails(currentItem.Id))">
+                                                    <a class="text-decoration-none text-15px" tabindex="-1">@currentItem.CourseName</a>
+                                                </div>
+                                                <div class="course-meta">
+                                                    <span class="">
+                                                        <i class="fas fa-play-circle"></i>
+                                                        @currentItem.TotalLectures Bài học
+                                                    </span>
+                                                    <span class="">
+                                                        <i class="far fa-clock"></i>
+                                                        @currentItem.TotalHourTime Giờ
+                                                    </span>
+                                                    <span class=""><i class="fas fa-closed-captioning"></i>Vietnamese</span>
+                                                </div>
+                                                <div class="course-subtitle">@currentItem.Description</div>
+                                                <div class="what-will-learn">
+                                                    @currentItem.BenefitsOfCourse
+                                                </div>
+                                                <div class="popover-btns">
+                                                    <button type="button" class="btn red add-to-cart-btn  big-cart-button-41" id="" onclick="handleCartItems(this)" tabindex="-1">
+                                                        Thêm vào giỏ hàng
+                                                    </button>
+                                                    <button type="button" class="wishlist-btn " title="Add to wishlist" onclick="handleWishList(this)" id="" tabindex="-1"><i class="fas fa-heart"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <button class="slick-next slick-arrow" aria-label="Next" type="button" style="">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="courses-business">
+    <div class="container-lg">
+        <div class="col-12">
+            <h4 class="fw-700 w-100">
+                <span class="header-underline-2">LMS Academy Bussiness</span>
+            </h4>
+        </div>
+        <ul class="speech-items">
+            <li>
+                <div class="speech-item">
+                    <div class="row align-items-center">
+                        <div class="col-lg-3 col-md-5">
+                            <div class="speech-item-img px-5 px-md-0">
+                                <img src="https://demo.creativeitem.com/academy/uploads/system/motivations/j5RFaPEOmiB6vIpkYyeg.png" alt="">
+                            </div>
+                        </div>
+                        <div class="col-lg-9 col-md-7">
+                            <div class="speech-item-content">
+                                <p class="no">1</p>
+                                <div class="inner">
+                                    <h4 class="title">"Unleashing Your Inner Champion"</h4>
+                                    <p class="info">Embrace your untapped potential, push your limits, and unlock the champion within you. This motivational title encourages you to tap into your inner strength, overcome obstacles, and strive for excellence in all areas of your life.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="speech-item">
+                    <div class="row align-items-center">
+                        <div class="col-lg-3 col-md-5">
+                            <div class="speech-item-img px-5 px-md-0">
+                                <img src="https://demo.creativeitem.com/academy/uploads/system/motivations/KdG0F96izHqPESACT3ye.png" alt="">
+                            </div>
+                        </div>
+                        <div class="col-lg-9 col-md-7">
+                            <div class="speech-item-content">
+                                <p class="no">3</p>
+                                <div class="inner">
+                                    <h4 class="title">
+                                        "Embracing the Journey of Growth"
+                                    </h4>
+                                    <p class="info">
+                                        Life is a constant journey of growth and self-improvement. This motivational title reminds you to embrace challenges, learn from failures, and celebrate successes along the way. Embrace the journey of personal and professional development.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="speech-item">
+                    <div class="row align-items-center">
+                        <div class="col-lg-3 col-md-5">
+                            <div class="speech-item-img px-5 px-md-0">
+                                <img src="https://demo.creativeitem.com/academy/uploads/system/motivations/Q4eZP09Ar5zEcifsKp2h.png" alt="">
+                            </div>
+                        </div>
+                        <div class="col-lg-9 col-md-7">
+                            <div class="speech-item-content">
+                                <p class="no">4</p>
+                                <div class="inner">
+                                    <h4 class="title">
+                                        "Igniting the Spark of Possibility"
+                                    </h4>
+                                    <p class="info">
+                                        Within each of us lies a spark of possibility waiting to be ignited. This motivational title inspires you to dream big, believe in yourself, and pursue your passions with unwavering determination.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="container-lg pt-5">
+    <div class="row justify-content-evenly py-3 mb-4">
+        <div class="col-md-6  mt-3 mt-md-0">
+            <div class="become-user-label mt-3" style="background-image: url('https://4user.net/assets/frontend/default/img/Group 18132.png')">
+                <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-8 student-body-text">
+                        <h3 class="pb-4 fw-700">Tham gia ngay để bắt đầu học</h3>
+                        <a class="btn px-4 py-2" @onclick='() => NavigateToUrl(" /register")'>Bắt đầu</a>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-4">
+                        <img class="man" src="https://4user.net/assets/frontend/default/img/student-1.png">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="become-user-label mt-3" style="background-image: url('https://4user.net/assets/frontend/default/img/Group 18131.png')">
+                <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-8 student-body-text">
+                        <h3 class="pb-4 fw-700">Trở thành giảng viên mới</h3>
+                        <a class="btn px-4 py-2" @onclick='() => NavigateToUrl("/teacher/become_an_instructor")'>Tham gia ngay</a>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-4">
+                        <img class="man" src="https://4user.net/assets/frontend/default/img/student-2.png">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="js/Page/home.js"></script>
+@code {
+    private List<CourseGeneric> listGoodCourse { get; set; }
+    private List<CourseGeneric> listNewCourse { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        //TODO: ntthe cái náy sẽ xử lý lại chỉ request 1 lần, và cache lại, request này sập server
+        var taskGoodCourse = _courseService.GetTop10GoodCourse();
+        var taskNewCourse = _courseService.GetTop10NewCourse();
+
+        // ntthe tạm thời không tách nữa mà vẫn cho gọi tới server nhưng không đợi nhau
+        await Task.WhenAll(taskGoodCourse,  taskNewCourse);
+
+        listGoodCourse = await taskGoodCourse;
+        listNewCourse = await taskNewCourse;
+        StateHasChanged();
+    }
+
+    private void NavigateToDetails(Guid detailId)
+    {
+        NavigateToUrl($"/course/details/{detailId}");
+    }
+}
