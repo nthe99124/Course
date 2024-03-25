@@ -52,5 +52,18 @@ namespace CourseProject.API.Controller
             _res.SuccessEventHandler(dataResult);
             return Ok(_res);
         }
+
+        /// <summary>
+        /// Hàm xử lý lấy chi tiết khóa học
+        /// CreatedBy ntthe 24.03.2024
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetDetailCourse")]
+        public IActionResult GetDetailCourse(Guid courseId)
+        {
+            var dataResult = _courseService.GetDetailCourse(courseId);
+            _res.SuccessEventHandler(dataResult);
+            return Ok(_res);
+        }
     }
 }

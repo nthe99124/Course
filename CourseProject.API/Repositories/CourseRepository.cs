@@ -4,14 +4,15 @@ using CourseProject.Model.BaseEntity;
 using CourseProject.Model.DTO;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace CourseProject.API.Repositories
 {
     public interface ICourseRepository : IBaseRepository<Course>
     {
-        Task<IEnumerable<CourseGeneric>> GetTopCourse(int courseNumber, List<SortedPaging> sortedList);
+        Task<IEnumerable<CourseGeneric>> GetCourseByCondition(int courseNumber, List<SortedPaging> sortedList, Expression<Func<CourseGeneric, bool>> predicateFilter = null);
         IEnumerable<MyCourseVM> GetListCourseByUser(Guid accId);
-        
+        IEnumerable<CourseDetailGeneric> GetDetailCourse(Guid courseId);
     }
     public class CourseRepository : BaseRepository<Course>, ICourseRepository
     {
@@ -48,7 +49,7 @@ namespace CourseProject.API.Repositories
         /// CreatedBy ntthe 24.03.2024
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<CourseGeneric>> GetTopCourse(int courseNumber, List<SortedPaging> sortedList)
+        public async Task<IEnumerable<CourseGeneric>> GetCourseByCondition(int courseNumber, List<SortedPaging> sortedList, Expression<Func<CourseGeneric, bool>> predicateFilter = null)
         {
             var courseGeneric = from c in _context.Courses
                                 join a in _context.Accounts on c.Teacher equals a.Id
@@ -71,6 +72,7 @@ namespace CourseProject.API.Repositories
                                     c.ModifiedDate,
                                     c.Description,
                                     c.BenefitsOfCourse,
+                                    AccountId = a.Id
                                 } into grp
                                 select new CourseGeneric
                                 {
@@ -89,9 +91,15 @@ namespace CourseProject.API.Repositories
                                     TeacherName = grp.Key.FirstName,
                                     ModifiedDate = grp.Key.ModifiedDate,
                                     Description = grp.Key.Description,
-                                    BenefitsOfCourse = grp.Key.BenefitsOfCourse
+                                    BenefitsOfCourse = grp.Key.BenefitsOfCourse,
+                                    CourseOfTeacher = grp.Count()
                                 };
+            if (predicateFilter != null)
+            {
+                courseGeneric = courseGeneric.Where(predicateFilter);
+            }
             var result = await GetDataBySorted(courseGeneric, sortedList);
+            
             if (result != null && result.Count() > 0)
             {
                 result = result.Take(courseNumber);
@@ -99,6 +107,24 @@ namespace CourseProject.API.Repositories
             return result;
         }
 
-        
+        /// <summary>
+        /// Hàm xử lý lấy chi tiết khóa học
+        /// CreatedBy ntthe 24.03.2024
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<CourseDetailGeneric> GetDetailCourse(Guid courseId)
+        {
+            var courseDetailGeneric = from c in _context.Chapters
+                                join l in _context.Lessions on c.Id equals l.ChapterId
+                                where c.CourseId == courseId
+                                select new CourseDetailGeneric
+                                {
+                                    ChapterId = c.Id,
+                                    LessionId = l.Id,
+                                    LessionName = l.LessionName,
+                                    TotalTimeLession = l.TotalTimeLession,
+                                };
+            return courseDetailGeneric;
+        }
     }
 }

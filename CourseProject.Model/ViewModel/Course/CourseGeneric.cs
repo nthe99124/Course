@@ -4,13 +4,13 @@ public class CourseGeneric
 {
     public Guid Id { get; set; }
     public string CourseName { get; set; }
-    public double? Rating { get; set; }
-    public decimal? Price { get; set; }
+    public double? Rating { get; set; } = 0;
+    public decimal? Price { get; set; } = 0;
     public decimal? PriceAfterDiscount { get; set; }
     public string ImgCourse { get; set; }
-    public long? TotalTime { get; set; }
+    public long? TotalTime { get; set; } = 0;
     public long? TotalLectures { get; set; }
-    public long? TotalPerRating { get; set; }
+    public long? TotalPerRating { get; set; } = 0;
     public string CourseCode { get; set; }
     public List<string> TagList
     {
@@ -38,5 +38,5 @@ public class CourseGeneric
     public DateTime ModifiedDate { get; set; }
     public string Description { get; set; }
     public string BenefitsOfCourse { get; set; }
-
+    public long CourseOfTeacher { get; set; }
 }

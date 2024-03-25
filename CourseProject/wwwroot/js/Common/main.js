@@ -1,8 +1,4 @@
-﻿//multistep modal
-sendEvent = function (step) {
-	$("#EditRatingModal").trigger("next.m." + step);
-};
-
+﻿
 // mobile menu
 
 moveElements();
@@ -210,10 +206,6 @@ $(document).ready(function () {
 		$(".moves-out").removeClass("moves-out");
 	}
 
-	$(function () {
-		$('[data-toggle="tooltip"]').tooltip();
-	});
-
 	//tinymce editor
 	if ($(".author-biography-editor")[0]) {
 		tinymce.init({
@@ -318,3 +310,14 @@ function validateForm(formId) {
 
 	return null
 }
+
+
+// Gọi phương thức C# từ JavaScript
+function invokeDotNetMethod() {
+	DotNet.invokeMethodAsync('AssemblyName', 'OnDataLoaded');
+}
+
+// Khi dữ liệu của BlazorSlickCarousel đã tải xong, gọi phương thức C# tương ứng
+yourSlickCarousel.on('afterChange', function (event, slick, currentSlide, nextSlide) {
+	invokeDotNetMethod();
+});
