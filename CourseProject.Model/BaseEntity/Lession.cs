@@ -11,6 +11,9 @@ public partial class Lession
     [Description("Mã chương")]
     public Guid? ChapterId { get; set; }
 
+    [Description("Tên bài học")]
+    public string LessionName { get; set; }
+
     [Description("Video bài học")]
     public string VideoLink { get; set; }
 
@@ -25,6 +28,8 @@ public partial class Lession
 
     [Description("Tài liệu đính kèm")]
     public string AttachmentsLink { get; set; }
+    [Description("Tổng thời gian học của bài học")]
+    public long TotalTimeLession { get; set; }
 
     public virtual Chapter Chapter { get; set; }
 }

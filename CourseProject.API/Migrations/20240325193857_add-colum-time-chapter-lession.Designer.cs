@@ -4,6 +4,7 @@ using CourseProject.API.Common.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CourseProject.API.Migrations
 {
     [DbContext(typeof(CourseContext))]
-    partial class CourseContextModelSnapshot : ModelSnapshot
+    [Migration("20240325193857_add-colum-time-chapter-lession")]
+    partial class addcolumtimechapterlession
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,6 +90,9 @@ namespace CourseProject.API.Migrations
 
                     b.Property<Guid?>("CourseId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<long>("TotalTimeChapter")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -228,9 +234,6 @@ namespace CourseProject.API.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LessionLink")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LessionName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TestLink")

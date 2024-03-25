@@ -27,6 +27,7 @@ services.AddSingleton(configuration);
 services.AddRazorPages();
 services.AddServerSideBlazor();
 services.AddHttpClient();
+services.AddWMBSC();
 
 #endregion
 

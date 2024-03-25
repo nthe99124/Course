@@ -83,6 +83,7 @@
 		<Content Include="Pages\User\UserCredentials.razor" />
 		<Content Include="Pages\User\UserPhoto.razor" />
 		<Content Include="Pages\User\UserProfile.razor" />
+		<Content Include="Component\SlickCarouse.razor" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -92,6 +93,7 @@
 		<PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.3.0" />
 		<PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.2" />
 		<PackageReference Include="Microsoft.Web.Administration" Version="11.1.0" />
+		<PackageReference Include="WMBlazorSlickCarousel" Version="1.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>
