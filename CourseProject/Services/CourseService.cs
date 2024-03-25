@@ -1,5 +1,7 @@
 ﻿using CourseProject.Common.Cache;
 using CourseProject.Model.BaseEntity;
+using CourseProject.Model.ViewModel.Course;
+using CourseProject.Pages.Course;
 using CourseProject.Services.ApiUrldefinition;
 using CourseProject.Services.Base;
 using Microsoft.JSInterop;
@@ -11,6 +13,7 @@ namespace CourseProject.Services
         Task<List<CourseGeneric>> GetTop10GoodCourse();
         Task<List<CourseGeneric>> GetTop10NewCourse();
         Task<List<MyCourseVM>> GetListCourseByUser();
+        Task<CourseDetailVM> GetDetailCourse(Guid courseId);
     }
 
     public class CourseService : BaseService, ICourseService
@@ -51,6 +54,17 @@ namespace CourseProject.Services
         {
             var url = CourseApiUrlDef.GetListCourseByUser();
             return await RequestGetAsync<List<MyCourseVM>>(url);
+        }
+
+        /// <summary>
+        /// Hàm xử lý lấy lấy chi tiết khóa học
+        /// CreatedBy ntthe 24.03.2024
+        /// </summary>
+        /// <returns></returns>
+        public async Task<CourseDetailVM> GetDetailCourse(Guid courseId)
+        {
+            var url = CourseApiUrlDef.GetDetailCourse(courseId);
+            return await RequestGetAsync<CourseDetailVM>(url);
         }
     }
 }

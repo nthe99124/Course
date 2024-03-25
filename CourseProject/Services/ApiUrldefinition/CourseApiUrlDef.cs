@@ -34,6 +34,16 @@
             return @$"{pathController}/GetListCourseByUser";
         }
 
+        /// <summary>
+        /// Tạo url lấy chi tiết khóa học
+        /// CreatedBy ntthe 24.03.2024
+        /// </summary>
+        /// <returns></returns>
+        public static string GetDetailCourse(Guid courseId)
+        {
+            return @$"{pathController}/GetDetailCourse?courseId={courseId}";
+        }
+        
 
     }
 }
