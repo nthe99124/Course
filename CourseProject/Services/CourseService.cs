@@ -66,5 +66,17 @@ namespace CourseProject.Services
             var url = CourseApiUrlDef.GetDetailCourse(courseId);
             return await RequestGetAsync<CourseDetailVM>(url);
         }
+
+        /// <summary>
+        /// Hàm xử lý lấy lấy chi tiết khóa học
+        /// CreatedBy ntthe 24.03.2024
+        /// </summary>
+        /// <returns></returns>
+        public async Task<CourseDetailVM> GetCourseSearchCourseByCondition(SearchCourseParam searchCourseParam)
+        {
+            var url = CourseApiUrlDef.GetCourseSearchCourseByCondition();
+            return await RequestAuthenPostAsync<CourseDetailVM>(url,searchCourseParam);
+        }
+        
     }
 }

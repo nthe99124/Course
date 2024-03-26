@@ -5517,7 +5517,6 @@ border: none;
     display: flex;
     flex-direction: column;
     width: 100%;
-    color: #fff;
     pointer-events: auto;
     background-clip: padding-box;
     border: none;

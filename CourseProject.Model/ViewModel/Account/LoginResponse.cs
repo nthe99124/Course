@@ -1,4 +1,4 @@
-﻿namespace CourseProject.Model.ViewModel.Accountant
+﻿namespace CourseProject.Model.ViewModel.Account
 {
     public class LoginResponse
     {

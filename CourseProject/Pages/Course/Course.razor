@@ -1,6 +1,10 @@
 ﻿@page "/course"
+@using Blazorise
+@using CourseProject.Model.BaseEntity
+@using CourseProject.Model.ViewModel.Course
 @using CourseProject.Shared.ComponentBase
-@inject ICourseService _courseService;
+@using static CourseProject.Model.Enum.DataType
+@inject ITagService _tagService;
 @inherits AuthorBaseComponent
 
 <div class="category-header-area" style="background-image: url('https://4user.net/uploads/system/course_page_banner.png'); background-size: cover; background-position: right;">
@@ -33,113 +37,26 @@
                 <div class="card border-0 radius-10 box-shadow-5">
                     <div id="collapseFilter" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                         <div class="card-body p-0">
-                            <div class="filter_type px-4 pt-4">
-                                <h5 class="fw-700 mb-4">Danh mục</h5>
-                                <ul>
-                                    <li class="">
-                                        <div class="text-15px fw-700 d-flex">
-                                            <input type="radio" id="category_all" name="sub_category" class="categories custom-radio" value="all" onclick="filter(this)" checked="">
-                                            <label for="category_all">Tất cả danh mục</label>
-                                            <div class="ms-auto">(27)</div>
-                                        </div>
-                                    </li>
-                                    <li class="mt-3">
-                                        <div class="text-15px fw-700  d-flex">
-                                            <input type="radio" id="category-42" name="sub_category" class="categories custom-radio" value="cntt" onclick="filter(this)">
-                                            <label for="category-42">CNTT</label>
-                                            <div class="ms-auto">(26)</div>
-                                        </div>
-                                    </li>
-                                    <li class="ms-3">
-                                        <div class=" d-flex">
-                                            <input type="radio" id="sub_category-44" name="sub_category" class="categories custom-radio" value="kỳ-1" onclick="filter(this)">
-                                            <label for="sub_category-44">Kỳ 1</label>
-                                            <div class="ms-auto">(4)</div>
-                                        </div>
-                                    </li>
-                                    <li class="ms-3">
-                                        <div class=" d-flex">
-                                            <input type="radio" id="sub_category-49" name="sub_category" class="categories custom-radio" value="kỳ-2" onclick="filter(this)">
-                                            <label for="sub_category-49">Kỳ 2</label>
-                                            <div class="ms-auto">(3)</div>
-                                        </div>
-                                    </li>
-                                    <li class="ms-3">
-                                        <div class=" d-flex">
-                                            <input type="radio" id="sub_category-53" name="sub_category" class="categories custom-radio" value="kỳ-3" onclick="filter(this)">
-                                            <label for="sub_category-53">Kỳ 3</label>
-                                            <div class="ms-auto">(12)</div>
-                                        </div>
-                                    </li>
-                                    <li class="ms-3">
-                                        <div class=" d-flex">
-                                            <input type="radio" id="sub_category-54" name="sub_category" class="categories custom-radio" value="kỳ-4" onclick="filter(this)">
-                                            <label for="sub_category-54">Kỳ 4</label>
-                                            <div class="ms-auto">(7)</div>
-                                        </div>
-                                    </li>
-                                    <li class="mt-3">
-                                        <div class="text-15px fw-700  d-flex">
-                                            <input type="radio" id="category-45" name="sub_category" class="categories custom-radio" value="kinh-tế" onclick="filter(this)">
-                                            <label for="category-45">Kinh Tế</label>
-                                            <div class="ms-auto">(0)</div>
-                                        </div>
-                                    </li>
-                                    <li class="ms-3">
-                                        <div class=" d-flex">
-                                            <input type="radio" id="sub_category-46" name="sub_category" class="categories custom-radio" value="mae101" onclick="filter(this)">
-                                            <label for="sub_category-46">MAE101</label>
-                                            <div class="ms-auto">(0)</div>
-                                        </div>
-                                    </li>
-                                    <li class="ms-3">
-                                        <div class=" d-flex">
-                                            <input type="radio" id="sub_category-47" name="sub_category" class="categories custom-radio" value="mad" onclick="filter(this)">
-                                            <label for="sub_category-47">MAD</label>
-                                            <div class="ms-auto">(0)</div>
-                                        </div>
-                                    </li>
-                                    <li class="ms-3">
-                                        <div class=" d-flex">
-                                            <input type="radio" id="sub_category-48" name="sub_category" class="categories custom-radio" value="mas291" onclick="filter(this)">
-                                            <label for="sub_category-48">MAS291</label>
-                                            <div class="ms-auto">(0)</div>
-                                        </div>
-                                    </li>
-                                    <li class="mt-3">
-                                        <div class="text-15px fw-700  d-flex">
-                                            <input type="radio" id="category-55" name="sub_category" class="categories custom-radio" value="Đồ-họa" onclick="filter(this)">
-                                            <label for="category-55">Đồ họa</label>
-                                            <div class="ms-auto">(1)</div>
-                                        </div>
-                                    </li>
-                                    <li class="ms-3">
-                                        <div class=" d-flex">
-                                            <input type="radio" id="sub_category-56" name="sub_category" class="categories custom-radio" value="canva" onclick="filter(this)">
-                                            <label for="sub_category-56">Canva</label>
-                                            <div class="ms-auto">(1)</div>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <a href="javascript:;" class="text-13px fw-500" id="city-toggle-btn" onclick="showToggle(this, 'hidden-categories')">Cho xem nhiều hơn</a>
-                            </div>
-                            <hr>
                             <div class="filter_type px-4">
                                 <div class="form-group">
                                     <h5 class="fw-700 mb-3">Giá</h5>
                                     <ul>
                                         <li>
                                             <div class="">
-                                                <input type="radio" id="price_all" name="price" class="prices custom-radio" value="all" onclick="filter(this)" checked="">
+                                                <input type="radio" id="price_all" name="price" class="prices custom-radio" value="4" @onclick="() => { searchCourseParam.TypeOfPurchase = TypeOfPurchase.All; }">
                                                 <label for="price_all">Tất cả</label>
                                             </div>
                                             <div class="">
-                                                <input type="radio" id="price_free" name="price" class="prices custom-radio" value="free" onclick="filter(this)">
+                                                <input type="radio" id="price_free" name="price" class="prices custom-radio" value="0" @onclick="() => { searchCourseParam.TypeOfPurchase = TypeOfPurchase.Free; }">
                                                 <label for="price_free">Miễn phí</label>
                                             </div>
                                             <div class="">
-                                                <input type="radio" id="price_paid" name="price" class="prices custom-radio" value="paid" onclick="filter(this)">
-                                                <label for="price_paid">Đã trả tiền</label>
+                                                <input type="radio" id="paid" name="price" class="prices custom-radio" value="1" @onclick="() => { searchCourseParam.TypeOfPurchase = TypeOfPurchase.Paid; }">
+                                                <label for="price_free">Trả phí</label>
+                                            </div>
+                                            <div class="">
+                                                <input type="radio" id="not-for-retail" name="price" class="prices custom-radio" value="2" @onclick="() => { searchCourseParam.TypeOfPurchase = TypeOfPurchase.NotForRetail; }">
+                                                <label for="price_paid">Không bán lẻ</label>
                                             </div>
                                         </li>
                                     </ul>
@@ -151,61 +68,38 @@
                                 <ul>
                                     <li>
                                         <div class="">
-                                            <input type="radio" id="all" name="level" class="level custom-radio" value="all" onclick="filter(this)" checked="">
-                                            <label for="all">Tất cả</label>
-                                        </div>
-                                        <div class="">
-                                            <input type="radio" id="beginner" name="level" class="level custom-radio" value="beginner" onclick="filter(this)">
-                                            <label for="beginner">Người mới bắt đầu</label>
-                                        </div>
-                                        <div class="">
-                                            <input type="radio" id="advanced" name="level" class="level custom-radio" value="advanced" onclick="filter(this)">
-                                            <label for="advanced">Nâng cao</label>
-                                        </div>
-                                        <div class="">
-                                            <input type="radio" id="intermediate" name="level" class="level custom-radio" value="intermediate" onclick="filter(this)">
-                                            <label for="intermediate">Trung cấp</label>
-                                        </div>
+                                                <input type="radio" id="all" name="level" class="level custom-radio" value="all" onclick="filter(this)" checked="">
+                                                <label for="all">Tất cả</label>
+                                            </div>
+                                        @if (tagList != null && tagList.Count > 0)
+                                        {
+                                            for (int i = 0; i < tagList.Count; i++)
+                                            {
+                                                var currentTag = tagList[i];
+                                            
+                                                <div class="">
+                                                <input type="radio" name="level" class="level custom-radio" value="@searchCourseParam.TagId" @onclick="() => { searchCourseParam.TagId = currentTag.Id; }">
+                                                <label for="beginner">@currentTag.TagName</label>
+                                            </div>
+                                            }
+                                        }
                                     </li>
                                 </ul>
                             </div>
                             <hr>
-                            <div class="filter_type px-4">
-                                <h5 class="fw-700 mb-3">Ngôn ngữ</h5>
-                                <ul>
-                                    <li>
-                                        <div class="">
-                                            <input type="radio" id="all_language" name="language" class="languages custom-radio" value="all" onclick="filter(this)" checked="">
-                                            <label for="all_language">Tất cả</label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="">
-                                            <input type="radio" id="language_english" name="language" class="languages custom-radio" value="english" onclick="filter(this)">
-                                            <label for="language_english">English</label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="">
-                                            <input type="radio" id="language_vietnamese" name="language" class="languages custom-radio" value="vietnamese" onclick="filter(this)">
-                                            <label for="language_vietnamese">Vietnamese</label>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
                             <hr>
                             <div class="filter_type px-4">
                                 <h5 class="fw-700 mb-3">Xếp hạng</h5>
                                 <ul>
                                     <li>
                                         <div class="">
-                                            <input type="radio" id="all_rating" name="rating" class="ratings custom-radio" value="all" onclick="filter(this)" checked="">
+                                            <input type="radio" id="all_rating" name="rating" class="ratings custom-radio" value="all" @onclick="() => { searchCourseParam.Rating = null; }" checked="">
                                             <label for="all_rating">Tất cả</label>
                                         </div>
                                     </li>
                                     <li>
                                         <div class="">
-                                            <input type="radio" id="rating_1" name="rating" class="ratings custom-radio" value="1" onclick="filter(this)">
+                                            <input type="radio" id="rating_1" name="rating" class="ratings custom-radio" value="1" @onclick="() => { searchCourseParam.Rating = 1; }">
                                             <label for="rating_1">
                                                 <i class="fas fa-star" style="color: #f4c150;"></i>
                                                 <i class="far fa-star" style="color: #dedfe0;"></i>
@@ -217,7 +111,7 @@
                                     </li>
                                     <li>
                                         <div class="">
-                                            <input type="radio" id="rating_2" name="rating" class="ratings custom-radio" value="2" onclick="filter(this)">
+                                            <input type="radio" id="rating_2" name="rating" class="ratings custom-radio" value="2" @onclick="() => { searchCourseParam.Rating = 2; }">
                                             <label for="rating_2">
                                                 <i class="fas fa-star" style="color: #f4c150;"></i>
                                                 <i class="fas fa-star" style="color: #f4c150;"></i>
@@ -229,7 +123,7 @@
                                     </li>
                                     <li>
                                         <div class="">
-                                            <input type="radio" id="rating_3" name="rating" class="ratings custom-radio" value="3" onclick="filter(this)">
+                                            <input type="radio" id="rating_3" name="rating" class="ratings custom-radio" value="3" @onclick="() => { searchCourseParam.Rating = 3; }">
                                             <label for="rating_3">
                                                 <i class="fas fa-star" style="color: #f4c150;"></i>
                                                 <i class="fas fa-star" style="color: #f4c150;"></i>
@@ -241,7 +135,7 @@
                                     </li>
                                     <li>
                                         <div class="">
-                                            <input type="radio" id="rating_4" name="rating" class="ratings custom-radio" value="4" onclick="filter(this)">
+                                            <input type="radio" id="rating_4" name="rating" class="ratings custom-radio" value="4" @onclick="() => { searchCourseParam.Rating = 4; }">
                                             <label for="rating_4">
                                                 <i class="fas fa-star" style="color: #f4c150;"></i>
                                                 <i class="fas fa-star" style="color: #f4c150;"></i>
@@ -253,7 +147,7 @@
                                     </li>
                                     <li>
                                         <div class="">
-                                            <input type="radio" id="rating_5" name="rating" class="ratings custom-radio" value="5" onclick="filter(this)">
+                                            <input type="radio" id="rating_5" name="rating" class="ratings custom-radio" value="5" @onclick="() => { searchCourseParam.Rating = 5; }">
                                             <label for="rating_5">
                                                 <i class="fas fa-star" style="color: #f4c150;"></i>
                                                 <i class="fas fa-star" style="color: #f4c150;"></i>
@@ -282,17 +176,15 @@
 
                             <!-- hidden field of sorting value -->
                             <input id="sortByValue" type="hidden" name="sort_by" value="newest">
-
-                            <button class="btn bg-background dropdown-toggle fw-bold text-capitalize" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                Mới nhất
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
-                                <li><a onclick="courseSorting('newest')" class="dropdown-item text-12px fw-600 text-capitalize" href="javascript:;">Mới nhất</a></li>
-                                <li><a onclick="courseSorting('highest-rating')" class="dropdown-item text-12px fw-600 text-capitalize" href="javascript:;">Đánh giá cao nhất</a></li>
-                                <li><a onclick="courseSorting('discounted')" class="dropdown-item text-12px fw-600 text-capitalize" href="javascript:;">Discounted</a></li>
-                                <li><a onclick="courseSorting('lowest-price')" class="dropdown-item text-12px fw-600 text-capitalize" href="javascript:;">Giá thấp nhất</a></li>
-                                <li><a onclick="courseSorting('highest-price')" class="dropdown-item text-12px fw-600 text-capitalize" href="javascript:;">Giá cao nhất</a></li>
-                            </ul>
+                            <Dropdown>
+                                <DropdownToggleButton class="btn bg-background dropdown-toggle fw-bold text-capitalize">Mới nhất</DropdownToggleButton>
+                                <DropdownMenu>
+                                    <DropdownItem To="#" Type="ButtonType.Link">Mới nhất</DropdownItem>
+                                    <DropdownItem To="#" Type="ButtonType.Link">Đánh giá cao nhất</DropdownItem>
+                                    <DropdownItem To="#" Type="ButtonType.Link">Giá thấp nhất</DropdownItem>
+                                    <DropdownItem To="#" Type="ButtonType.Link">Giá cao nhất</DropdownItem>
+                                </DropdownMenu>
+                            </Dropdown>
                         </div>
                     </div>
                 </div>
@@ -358,310 +250,6 @@
                                 </div>
                             </div>
                         </li>
-                        <li>
-                            <div class="course-box-2">
-                                <div class="course-image">
-                                    <a href="https://4user.net/home/course/test-affiliate/71">
-                                        <img src="https://4user.net/assets/frontend/default/img/course_thumbnail_placeholder.jpg" alt="" class="img-fluid">
-                                    </a>
-                                </div>
-                                <div class="course-details">
-                                    <a href="https://4user.net/home/course/test-affiliate/71" class="course-title">test affiliate</a>
-
-                                    <div class="course-subtitle d-none d-md-block">
-                                    </div>
-
-                                    <div class="course-meta">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <span class="">
-                                                    <i class="fas fa-play-circle"></i>
-                                                    2 Bài học
-                                                </span>
-                                                <span class="">
-                                                    <i class="far fa-clock"></i>
-                                                    00:00:00 Giờ
-                                                </span>
-                                                <span class=""><i class="fas fa-closed-captioning"></i>Tiếng anh</span>
-                                                <hr class="bg-white my-1">
-                                                <span class="badge badge-primary"><i class="fa fa-level-up"></i>Người mới bắt đầu</span>
-                                                <button class="btn-compare-sm" onclick="event.stopPropagation(); $(location).attr('href', 'https://4user.net/home/compare?course-1=test-affiliate&amp;&amp;course-id-1=71');"><i class="fas fa-retweet"></i>Compare</button>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="floating-user d-inline-block">
-                                                    <img src="https://4user.net/uploads/user_image/optimized/6981af2b9220e61af0f42817a2574122.jpg" width="30px" data-bs-toggle="tooltip" data-bs-placement="top" title="" onclick="event.stopPropagation(); $(location).attr('href', 'https://4user.net/home/instructor_page/1');" data-bs-original-title="4 User" aria-label="4 User">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="course-price-rating">
-                                    <div class="course-price">
-                                        <span class="current-price">₫100,000</span>
-                                    </div>
-                                    <div class="rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <span class="d-inline-block average-rating">0</span>
-                                    </div>
-                                    <div class="rating-number">
-                                        0 Xếp hạng
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="course-box-2">
-                                <div class="course-image">
-                                    <a href="https://4user.net/home/course/prf192/70">
-                                        <img src="https://4user.net/uploads/thumbnails/course_thumbnails/optimized/course_thumbnail_default_70.jpg" alt="" class="img-fluid">
-                                    </a>
-                                </div>
-                                <div class="course-details">
-                                    <a href="https://4user.net/home/course/prf192/70" class="course-title">PRF192</a>
-
-                                    <div class="course-subtitle d-none d-md-block">
-                                        Khóa Học C/C++ nền tảng cho việc lập trình
-                                    </div>
-
-                                    <div class="course-meta">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <span class="">
-                                                    <i class="fas fa-play-circle"></i>
-                                                    1 Bài học
-                                                </span>
-                                                <span class="">
-                                                    <i class="far fa-clock"></i>
-                                                    00:42:26 Giờ
-                                                </span>
-                                                <span class=""><i class="fas fa-closed-captioning"></i>Tiếng anh</span>
-                                                <hr class="bg-white my-1">
-                                                <span class="badge badge-primary"><i class="fa fa-level-up"></i>Người mới bắt đầu</span>
-                                                <button class="btn-compare-sm" onclick="event.stopPropagation(); $(location).attr('href', 'https://4user.net/home/compare?course-1=prf192&amp;&amp;course-id-1=70');"><i class="fas fa-retweet"></i>Compare</button>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="floating-user d-inline-block">
-                                                    <img src="https://4user.net/uploads/user_image/optimized/66297445711906685152ad4fa7fed4ae.jpg" width="30px" data-bs-toggle="tooltip" data-bs-placement="top" title="" onclick="event.stopPropagation(); $(location).attr('href', 'https://4user.net/home/instructor_page/92');" data-bs-original-title="FLOWteam " aria-label="FLOWteam ">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="course-price-rating">
-                                    <div class="course-price">
-                                        <span class="current-price">₫399,000</span>
-                                    </div>
-                                    <div class="rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <span class="d-inline-block average-rating">0</span>
-                                    </div>
-                                    <div class="rating-number">
-                                        0 Xếp hạng
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="course-box-2">
-                                <div class="course-image">
-                                    <a href="https://4user.net/home/course/master-canva-t%E1%BB%AB-a-z/69">
-                                        <img src="https://4user.net/uploads/thumbnails/course_thumbnails/optimized/course_thumbnail_default_69.jpg" alt="" class="img-fluid">
-                                    </a>
-                                </div>
-                                <div class="course-details">
-                                    <a href="https://4user.net/home/course/master-canva-t%E1%BB%AB-a-z/69" class="course-title">Master Canva từ A - Z</a>
-
-                                    <div class="course-subtitle d-none d-md-block">
-                                        Hướng dẫn sử dụng Canva cơ bản đến nâng cao chi tiết ...
-                                    </div>
-
-                                    <div class="course-meta">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <span class="">
-                                                    <i class="fas fa-play-circle"></i>
-                                                    1 Bài học
-                                                </span>
-                                                <span class="">
-                                                    <i class="far fa-clock"></i>
-                                                    00:10:30 Giờ
-                                                </span>
-                                                <span class=""><i class="fas fa-closed-captioning"></i>Tiếng anh</span>
-                                                <hr class="bg-white my-1">
-                                                <span class="badge badge-primary"><i class="fa fa-level-up"></i>Người mới bắt đầu</span>
-                                                <button class="btn-compare-sm" onclick="event.stopPropagation(); $(location).attr('href', 'https://4user.net/home/compare?course-1=master-canva-t%E1%BB%AB-a-z&amp;&amp;course-id-1=69');"><i class="fas fa-retweet"></i>Compare</button>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="floating-user d-inline-block">
-                                                    <img src="https://4user.net/uploads/user_image/placeholder.png" width="30px" data-bs-toggle="tooltip" data-bs-placement="top" title="" onclick="event.stopPropagation(); $(location).attr('href', 'https://4user.net/home/instructor_page/288');" data-bs-original-title="Facebook Man" aria-label="Facebook Man">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="course-price-rating">
-                                    <div class="course-price">
-                                        <span class="current-price">₫149,000</span>
-                                        <span class="original-price">₫500,000</span>
-                                    </div>
-                                    <div class="rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <span class="d-inline-block average-rating">0</span>
-                                    </div>
-                                    <div class="rating-number">
-                                        0 Xếp hạng
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="course-box-2">
-                                <div class="course-image">
-                                    <a href="https://4user.net/home/course/mas291/68">
-                                        <img src="https://4user.net/uploads/thumbnails/course_thumbnails/optimized/course_thumbnail_default_68.jpg" alt="" class="img-fluid">
-                                    </a>
-                                </div>
-                                <div class="course-details">
-                                    <a href="https://4user.net/home/course/mas291/68" class="course-title">MAS291</a>
-
-                                    <div class="course-subtitle d-none d-md-block">
-                                    </div>
-
-                                    <div class="course-meta">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <span class="">
-                                                    <i class="fas fa-play-circle"></i>
-                                                    0 Bài học
-                                                </span>
-                                                <span class="">
-                                                    <i class="far fa-clock"></i>
-                                                    00:00:00 Giờ
-                                                </span>
-                                                <span class=""><i class="fas fa-closed-captioning"></i>Tiếng anh</span>
-                                                <hr class="bg-white my-1">
-                                                <span class="badge badge-primary"><i class="fa fa-level-up"></i>Người mới bắt đầu</span>
-                                                <button class="btn-compare-sm" onclick="event.stopPropagation(); $(location).attr('href', 'https://4user.net/home/compare?course-1=mas291&amp;&amp;course-id-1=68');"><i class="fas fa-retweet"></i>Compare</button>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="floating-user d-inline-block">
-                                                    <img src="https://4user.net/uploads/user_image/placeholder.png" width="30px" data-bs-toggle="tooltip" data-bs-placement="top" title="" onclick="event.stopPropagation(); $(location).attr('href', 'https://4user.net/home/instructor_page/114');" data-bs-original-title="Science Math" aria-label="Science Math">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="course-price-rating">
-                                    <div class="course-price">
-                                        <span class="current-price">₫350,000</span>
-                                    </div>
-                                    <div class="rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <span class="d-inline-block average-rating">0</span>
-                                    </div>
-                                    <div class="rating-number">
-                                        0 Xếp hạng
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="course-box-2">
-                                <div class="course-image">
-                                    <a href="https://4user.net/home/course/mad101/67">
-                                        <img src="https://4user.net/uploads/thumbnails/course_thumbnails/optimized/course_thumbnail_default_67.jpg" alt="" class="img-fluid">
-                                    </a>
-                                </div>
-                                <div class="course-details">
-                                    <a href="https://4user.net/home/course/mad101/67" class="course-title">MAD101</a>
-
-                                    <div class="course-subtitle d-none d-md-block">
-                                        Toán rời rạc
-                                    </div>
-
-                                    <div class="course-meta">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <span class="">
-                                                    <i class="fas fa-play-circle"></i>
-                                                    0 Bài học
-                                                </span>
-                                                <span class="">
-                                                    <i class="far fa-clock"></i>
-                                                    00:00:00 Giờ
-                                                </span>
-                                                <span class=""><i class="fas fa-closed-captioning"></i>Vietnamese</span>
-                                                <hr class="bg-white my-1">
-                                                <span class="badge badge-primary"><i class="fa fa-level-up"></i>Người mới bắt đầu</span>
-                                                <button class="btn-compare-sm" onclick="event.stopPropagation(); $(location).attr('href', 'https://4user.net/home/compare?course-1=mad101&amp;&amp;course-id-1=67');"><i class="fas fa-retweet"></i>Compare</button>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="floating-user d-inline-block">
-                                                    <img src="https://4user.net/uploads/user_image/placeholder.png" width="30px" data-bs-toggle="tooltip" data-bs-placement="top" title="" onclick="event.stopPropagation(); $(location).attr('href', 'https://4user.net/home/instructor_page/114');" data-bs-original-title="Science Math" aria-label="Science Math">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="course-price-rating">
-                                    <div class="course-price">
-                                        <span class="current-price">₫350,000</span>
-                                    </div>
-                                    <div class="rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <span class="d-inline-block average-rating">0</span>
-                                    </div>
-                                    <div class="rating-number">
-                                        0 Xếp hạng
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
                     </ul>
                 </div>
                 <nav>
@@ -674,5 +262,20 @@
 <script src="js/Page/Course/course.js"></script>
 
 @code {
+    private SearchCourseParam searchCourseParam { get; set; }
+    private List<Tag> tagList { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        // lấy danh sách tag
+        tagList = await _tagService.GetAllTag();
+        StateHasChanged();
+    }
 
+    private string SearchCourseByCondition()
+    {
+        if (searchCourseParam != null)
+        {
+            
+        }
+    }
 }

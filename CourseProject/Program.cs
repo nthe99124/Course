@@ -1,4 +1,5 @@
-﻿using Blazorise;
+﻿using BlazorBootstrap;
+using Blazorise;
 using Blazorise.Bootstrap;
 using CourseProject.Common.Cache;
 using CourseProject.Common.MiddleWare;

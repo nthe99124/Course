@@ -18,7 +18,7 @@
             {
                 @foreach (var item in courseMaster.TagList)
                 {
-                    <span class="course-badge best-seller">item</span>
+                    <span class="course-badge best-seller">@item</span>
                 }     
             }
             
@@ -27,7 +27,7 @@
             <i class="fas fa-star @(courseMaster.Rating > 2 ? "filled":"")"></i>
             <i class="fas fa-star @(courseMaster.Rating > 3 ? "filled":"")"></i>
             <i class="fas fa-star @(courseMaster.Rating > 4 ? "filled":"")"></i>
-            <span class="d-inline-block average-rating">0</span><span>(@courseMaster.TotalPerRating Xếp hạng)</span>
+            <span class="d-inline-block average-rating">@courseMaster.Rating</span><span>(@courseMaster.TotalPerRating Xếp hạng)</span>
             <!--<span class="enrolled-num">-->
             <!--  -->
             <!--</span>-->
@@ -97,44 +97,46 @@
                         @for (int i = 0; i < courseDetailList.Count; i++)
                         {
                             var chapterItem = courseDetailList[i];
+                            var currentIndex = i;
                             <div class="lecture-group-wrapper">
-
-                                <div class="lecture-group-title clearfix" style="border-radius: 10px 10px 0px 0px;"
-                                  data-bs-toggle="collapse" data-bs-target="#collapse97" aria-expanded="true">
-                                  <div class="title float-start">
-                                    @chapterItem.ChapterName </div>
-                                  <div class="float-end">
-                                    <span class="total-lectures">
-                                      @(chapterItem.LessionDetailList != null ? chapterItem.LessionDetailList.Count() : 0) Bài học </span>
-                                  </div>
-                                </div>
-
-                                @if (chapterItem.LessionDetailList != null && chapterItem.LessionDetailList.Count() > 0)
-                                {
-                                    @for (int j = 0; j < chapterItem.LessionDetailList.Count(); j++)
+                                <div class="lecture-group-title clearfix" style="border-radius: 10px 10px 0px 0px;" aria-expanded="false" @onclick="async() => await ShowHideContentLession(currentIndex)">
+                                      <div class="title float-start">
+                                        @chapterItem.ChapterName 
+                                      </div>
+                                      <div class="float-end">
+                                        <span class="total-lectures">
+                                          @(chapterItem.LessionDetailList != null ? chapterItem.LessionDetailList.Count() : 0) Bài học </span>
+                                    </div>
+                                    
+                                </div>   
+                                <div class="list-lession" style="display: none;">
+                                    @if (chapterItem.LessionDetailList != null && chapterItem.LessionDetailList.Count() > 0)
                                     {
-                                        var lessionItem = chapterItem.LessionDetailList[j];
+                                        @for (int j = 0; j < chapterItem.LessionDetailList.Count(); j++)
+                                        {
+                                            var lessionItem = chapterItem.LessionDetailList[j];
 
-                                        <div id="collapse97" class="lecture-list collapse show">
-                                          <ul>
-                                            <li class="lecture has-preview text-14px ">
-                                              <i class="far fa-file-alt"></i>
-                                              <span class="lecture-title " onclick="go_course_playing_page('34', '244')">@lessionItem.LessionName</span>
-                                              <div class="lecture-info float-lg-end">
-                                                @* <span class="lecture-preview"
-                                                  onclick="lesson_preview('https://4user.net/home/preview_free_lesson/314', 'Bài học: Introduction to Client Server')">
-                                                  <i class="fas fa-eye"></i>
-                                                  Xem trước </span> *@
-                                                <span class="lecture-time ps-2">
-                                                  @lessionItem.TotalHourTimeLession
-                                                </span>
-                                              </div>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                    }         
-                                }
-                            </div>   
+                                            <div class="lecture-list show" @onclick="() => OnShowModalVideoClick(lessionItem.LessionName, lessionItem.VideoLink)">
+                                                <ul>
+                                                    <li class="lecture has-preview text-14px ">
+                                                        <i class="far fa-file-alt"></i>
+                                                        <span class="lecture-title " onclick="go_course_playing_page('34', '244')">@lessionItem.LessionName</span>
+                                                        <div class="lecture-info float-lg-end">
+                                                            @* <span class="lecture-preview"
+                                            onclick="lesson_preview('https://4user.net/home/preview_free_lesson/314', 'Bài học: Introduction to Client Server')">
+                                            <i class="fas fa-eye"></i>
+                                            Xem trước </span> *@
+                                                            <span class="lecture-time ps-2">
+                                                                @lessionItem.TotalHourTimeLession
+                                                            </span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
                         }
                     }
                 </div>
@@ -327,6 +329,14 @@
     </div>
   </div>
 </div>
+
+<Modal @ref="modal" Size="ModalSize.Large" Title="@titleLession">
+    <BodyTemplate>
+        <VideoPlayer @key="videoPlayerKey" UrlVideo="@urlVideoLession">
+        </VideoPlayer>
+    </BodyTemplate>
+</Modal>
+
 <script src="js/Page/Course/courseDetail.js"></script>
 @code {
     [Parameter]
@@ -334,26 +344,65 @@
     private List<CourseGeneric> listNewCourse { get; set; }
     private CourseGeneric courseMaster { get; set; } = new CourseGeneric();
     private List<ChapterDetail> courseDetailList { get; set; } = new List<ChapterDetail>();
+    private Modal modal = default!;
 
-    protected override async Task OnInitializedAsync()
+    private string titleLession { get; set; }
+    private string urlVideoLession { get; set; }
+    private int videoPlayerKey = 0;
+
+    protected override async Task HandleAfterRenderAsync(bool firstRender)
     {
-        if (!string.IsNullOrEmpty(Id) && Guid.TryParse(Id, out Guid courseId))
+        if (firstRender)
         {
-            var courseDetail = await _courseService.GetDetailCourse(courseId);
-            if (courseDetail != null)
+            if (!string.IsNullOrEmpty(Id) && Guid.TryParse(Id, out Guid courseId))
             {
-                courseMaster = courseDetail.CourseMaster ?? courseMaster;
-                courseDetailList = courseDetail.CourseDetailList.ToList();
+                var courseDetail = await _courseService.GetDetailCourse(courseId);
+                if (courseDetail != null)
+                {
+                    courseMaster = courseDetail.CourseMaster ?? courseMaster;
+                    if (courseDetail.CourseDetailList != null)
+                    {
+                        courseDetailList = courseDetail.CourseDetailList.ToList();
+                    }
+
+                    StateHasChanged();
+                }
+
+                listNewCourse = await _courseService.GetTop10NewCourse();
                 StateHasChanged();
             }
-
-            listNewCourse = await _courseService.GetTop10NewCourse();    
-            StateHasChanged();
         }
+
     }
-    
+
     private void NavigateToDetails(Guid detailId)
     {
         NavigateToUrl($"/course/details/{detailId}");
     }
+
+    private async Task ShowHideContentLession(int indexChap)
+    {
+        await InvokeVoidAsync("handleShowHideContentLession", indexChap);
+
+    }
+
+    private async Task OnShowModalVideoClick(string titleLessionItem, string urlVideoLessionItem)
+    {
+        if (!string.IsNullOrEmpty(urlVideoLessionItem))
+        {
+            // titleLession = titleLessionItem;
+            urlVideoLession = urlVideoLessionItem;
+            videoPlayerKey++;
+            StateHasChanged();
+            modal.Title = titleLessionItem;
+            await modal.ShowAsync();
+        }
+    }
+
+    // private async Task DisposeModal()
+    // {
+    //     // Dispose modal
+    //     modal.Dispose();
+    //     modal = default!;
+    // }
 }

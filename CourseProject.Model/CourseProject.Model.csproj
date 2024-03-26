@@ -33,6 +33,7 @@
     <Compile Include="ViewModel\Course\CourseDetailVM.cs" />
     <Compile Include="ViewModel\Course\MyCourseVM.cs" />
     <Compile Include="ViewModel\Course\CourseGeneric.cs" />
+    <Compile Include="ViewModel\Course\SearchCourseParam.cs" />
     <Compile Include="ViewModel\ResponseOutput.cs" />
     <Compile Include="ViewModel\RestOutput.cs" />
     <Compile Include="ViewModel\RestPagingOutput.cs" />

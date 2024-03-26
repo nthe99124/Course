@@ -2,9 +2,9 @@
 using CourseProject.API.Common.Cache;
 using CourseProject.API.Common.Repository;
 using CourseProject.API.Services.Base;
-using CourseProject.Model.BaseEntity;
 using CourseProject.Model.DTO;
 using CourseProject.Model.ViewModel.Course;
+using System.Linq.Expressions;
 
 namespace CourseProject.API.Services
 {
@@ -14,6 +14,7 @@ namespace CourseProject.API.Services
         Task<IEnumerable<CourseGeneric>> GetTop10NewCourse();
         IEnumerable<MyCourseVM> GetListCourseByUser();
         Task<CourseDetailVM> GetDetailCourse(Guid courseId);
+        IEnumerable<CourseGeneric> GetCourseSearchCourseByCondition(SearchCourseParam searchCourseParam);
     }
     public class CourseService : BaseService, ICourseService
     {
@@ -90,18 +91,14 @@ namespace CourseProject.API.Services
         /// <returns></returns>
         public async Task<CourseDetailVM> GetDetailCourse(Guid courseId)
         {
-            // 2 luồng này cho riêng cũng được, tách task oke
+            // 2 luồng này nên tách riêng, nhưng EF lại không cho dùng context 1 lúc 2 bên nên phải wait
 
             // lấy thông tin master của khóa học 
-            var taskGetCourseMaster = _unitOfWork.CourseRepository.GetCourseByCondition(1, null, item => item.Id == courseId);
+            var courseMaster = await _unitOfWork.CourseRepository.GetCourseByCondition(1, null, item => item.Id == courseId);
             // lấy thông tin của detail khóa học
-            var taskGetCourseDetail = Task.Run(() => _unitOfWork.CourseRepository.GetDetailCourse(courseId));
-
-            await Task.WhenAll(taskGetCourseMaster, taskGetCourseDetail);
+            var courseDetail = _unitOfWork.CourseRepository.GetDetailCourse(courseId);
 
             var result = new CourseDetailVM();
-            var courseMaster = await taskGetCourseMaster;
-            var courseDetail = await taskGetCourseDetail;
             if (courseMaster != null && courseMaster.Count() > 0)
             {
                 result.CourseMaster = courseMaster.First();
@@ -116,8 +113,13 @@ namespace CourseProject.API.Services
                     // nếu không gồm key thì add vào
                     if (!courseDetailList.ContainsKey(item.ChapterId))
                     {
-                        var lessionDetailList = courseDetail.Where(item => item.ChapterId == item.ChapterId)
-                                                            .Cast<LessionDetail>().ToList();
+                        var lessionDetailList = courseDetail.Where(item => item.ChapterId == item.ChapterId).Select(item => new LessionDetail
+                        {
+                            LessionId = item.LessionId,
+                            LessionName = item.LessionName,
+                            TotalHourTimeLession = item.TotalHourTimeLession,
+                            VideoLink = item.VideoLink,
+                        }).ToList();
                         courseDetailList.Add(item.ChapterId, new ChapterDetail()
                         {
                             ChapterId = item.ChapterId,
@@ -133,7 +135,47 @@ namespace CourseProject.API.Services
             return result;
         }
 
+        /// <summary>
+        /// Hàm xử lý lấy 
+        /// CreatedBy ntthe 24.03.2024
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<CourseGeneric> GetCourseSearchCourseByCondition(SearchCourseParam searchCourseParam)
+        {
+            var sortedList = new List<SortedPaging>();
+            Expression<Func<CourseGeneric, bool>> predicateFilter = null;
+            if (searchCourseParam.TypeOfPurchase != null)
+            {
+                predicateFilter = (item => item.TypeOfPurchase == searchCourseParam.TypeOfPurchase);
+            }
+
+            if (searchCourseParam.TagId != null)
+            {
+                predicateFilter = PedicateAnd(predicateFilter, (item => item.TagIdList.Contains((Guid)searchCourseParam.TagId) ));
+            }
+
+            if (searchCourseParam.Rating != null)
+            {
+                predicateFilter = PedicateAnd(predicateFilter, (item => item.Rating == searchCourseParam.Rating));
+            }
+
+            if (searchCourseParam.SortField != null)
+            {
+                sortedList = new List<SortedPaging>()
+                {
+                    searchCourseParam.SortField
+                };
+            }
+            var result = _unitOfWork.CourseRepository.GetCourseByCondition(null, sortedList, predicateFilter);
+            return result;
+        }
+
         #region Private Method
+        public static Expression<Func<T, bool>> PedicateAnd<T>(this Expression<Func<T, bool>> expr1, Expression<Func<T, bool>> expr2)
+        {
+            var invokedExpr = Expression.Invoke(expr2, expr1.Parameters);
+            return Expression.Lambda<Func<T, bool>>(Expression.AndAlso(expr1.Body, invokedExpr), expr1.Parameters);
+        }
         #endregion
     }
 }

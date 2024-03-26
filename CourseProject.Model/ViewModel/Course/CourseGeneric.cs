@@ -1,4 +1,8 @@
-﻿namespace CourseProject.Model.BaseEntity;
+﻿using CourseProject.Model.BaseEntity;
+using System.Linq;
+using static CourseProject.Model.Enum.DataType;
+
+namespace CourseProject.Model.ViewModel.Course;
 
 public class CourseGeneric
 {
@@ -20,7 +24,17 @@ public class CourseGeneric
         }
         private set { }
     }
+
+    public List<Guid> TagIdList
+    {
+        get
+        {
+            return TagId?.Split(',').ToList<Guid>() ?? new List<Guid>();
+        }
+        private set { }
+    }
     public string TagString { get; set; }
+    public string TagId { get; set; }
     public string ImgTeacher { get; set; }
     public string TeacherName { get; set; }
     public string TotalHourTime
@@ -28,7 +42,7 @@ public class CourseGeneric
         get
         {
             int hours = (int)TotalTime / 3600;
-            int minutes = ((int)TotalTime % 3600) / 60;
+            int minutes = (int)TotalTime % 3600 / 60;
             int seconds = (int)TotalTime % 60;
 
             return string.Format("{0:D2}:{1:D2}:{2:D2}", hours, minutes, seconds);
@@ -39,4 +53,5 @@ public class CourseGeneric
     public string Description { get; set; }
     public string BenefitsOfCourse { get; set; }
     public long CourseOfTeacher { get; set; }
+    public TypeOfPurchase? TypeOfPurchase { get; set; }
 }

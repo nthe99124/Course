@@ -1,6 +1,6 @@
 ﻿using static CourseProject.Model.Enum.DataType;
 
-namespace CourseProject.Model.ViewModel.Accountant
+namespace CourseProject.Model.ViewModel.Account
 {
     public class AccountUpdate
     {

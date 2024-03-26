@@ -1,0 +1,31 @@
+﻿<link rel="stylesheet" href="https://cdn.plyr.io/3.4.6/plyr.css">
+<style>
+    /* This is purely for the demo */
+.container {
+  margin: 0 auto;
+}
+.plyr {
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+</style>
+
+<div class="container">
+    <video controls crossorigin playsinline poster="@Poster" id="player">
+        <!-- Video files -->
+        <source src="@UrlVideo" type="video/mp4">
+
+        <!-- Caption files -->
+        @* <track kind="captions" label="English" srclang="en" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt"
+               default> *@
+    </video>
+</div>
+<script src="https://cdn.plyr.io/3.4.6/plyr.js"></script>
+<script src="js/Component/videoPlayer.js"></script>
+@code {
+    [Parameter]
+    public string UrlVideo { get; set; }
+
+    [Parameter]
+    public string Poster { get; set; }
+}

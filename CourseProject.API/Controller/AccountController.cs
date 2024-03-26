@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using CourseProject.API.Common.Attribute;
 using CourseProject.API.Common.Constant;
 using CourseProject.Model.ViewModel;
-using CourseProject.Model.ViewModel.Accountant;
+using CourseProject.Model.ViewModel.Account;
 
 namespace CourseProject.API.Controller.Base
 {

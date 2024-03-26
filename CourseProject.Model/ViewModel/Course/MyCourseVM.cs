@@ -1,4 +1,4 @@
-﻿namespace CourseProject.Model.BaseEntity;
+﻿namespace CourseProject.Model.ViewModel.Course;
 
 public class MyCourseVM
 {
