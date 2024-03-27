@@ -72,19 +72,6 @@ namespace CourseProject.API.Controller
         /// CreatedBy ntthe 24.03.2024
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetCourseSearchCourseByCondition")]
-        public async Task<IActionResult> GetCourseSearchCourseByCondition(SearchCourseParam searchCourseParam)
-        {
-            var dataResult = _courseService.GetCourseSearchCourseByCondition(searchCourseParam);
-            _res.SuccessEventHandler(dataResult);
-            return Ok(_res);
-        }
-
-        /// <summary>
-        /// Hàm xử lý tìm kiếm khóa học theo param truyền xuống
-        /// CreatedBy ntthe 24.03.2024
-        /// </summary>
-        /// <returns></returns>
         [HttpPost("GetCourseSearchCourseByCondition")]
         public async Task<IActionResult> GetCourseSearchCourseByCondition(SearchCourseParam searchCourseParam)
         {

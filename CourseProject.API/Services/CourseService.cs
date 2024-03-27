@@ -15,7 +15,7 @@ namespace CourseProject.API.Services
         Task<IEnumerable<CourseGeneric>> GetTop10NewCourse();
         IEnumerable<MyCourseVM> GetListCourseByUser();
         Task<CourseDetailVM> GetDetailCourse(Guid courseId);
-        IEnumerable<CourseGeneric> GetCourseSearchCourseByCondition(SearchCourseParam searchCourseParam);
+        Task<IEnumerable<CourseGeneric>> GetCourseSearchCourseByCondition(SearchCourseParam searchCourseParam);
     }
     public class CourseService : BaseService, ICourseService
     {

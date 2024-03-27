@@ -1,8 +1,4 @@
-﻿using CourseProject.Model.BaseEntity;
-using System.Linq;
-using static CourseProject.Model.Enum.DataType;
-
-namespace CourseProject.Model.ViewModel.Course;
+﻿using static CourseProject.Model.Enum.DataType;
 
 namespace CourseProject.Model.ViewModel.Course;
 
