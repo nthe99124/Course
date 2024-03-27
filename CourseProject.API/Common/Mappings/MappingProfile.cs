@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CourseProject.Model.BaseEntity;
-using CourseProject.Model.ViewModel.Accountant;
+using CourseProject.Model.ViewModel.Account;
 
 namespace CourseProject.API.Common.Mappings
 {

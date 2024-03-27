@@ -2,6 +2,7 @@
 using CourseProject.API.Controller.Base;
 using CourseProject.API.Services;
 using CourseProject.Model.ViewModel;
+using CourseProject.Model.ViewModel.Course;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourseProject.API.Controller
@@ -59,11 +60,37 @@ namespace CourseProject.API.Controller
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetDetailCourse")]
-        public IActionResult GetDetailCourse(Guid courseId)
+        public async Task<IActionResult> GetDetailCourse(Guid courseId)
         {
-            var dataResult = _courseService.GetDetailCourse(courseId);
+            var dataResult = await _courseService.GetDetailCourse(courseId);
             _res.SuccessEventHandler(dataResult);
             return Ok(_res);
         }
+
+        /// <summary>
+        /// Hàm xử lý tìm kiếm khóa học theo param truyền xuống
+        /// CreatedBy ntthe 24.03.2024
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetCourseSearchCourseByCondition")]
+        public async Task<IActionResult> GetCourseSearchCourseByCondition(SearchCourseParam searchCourseParam)
+        {
+            var dataResult = await _courseService.GetCourseSearchCourseByCondition(searchCourseParam);
+            _res.SuccessEventHandler(dataResult);
+            return Ok(_res);
+        }
+
+        /// <summary>
+        /// Hàm xử lý thêm mới master khóa học
+        /// CreatedBy ntthe 24.03.2024
+        /// </summary>
+        /// <returns></returns>
+        //[HttpPost("GetCourseSearchCourseByCondition")]
+        //public async Task<IActionResult> CreateCourseMaster(SearchCourseParam searchCourseParam)
+        //{
+        //    var dataResult = await _courseService.CreateCourseMaster(searchCourseParam);
+        //    _res.SuccessEventHandler(dataResult);
+        //    return Ok(_res);
+        //}
     }
 }

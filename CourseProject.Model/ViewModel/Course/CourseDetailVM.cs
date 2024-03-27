@@ -1,6 +1,4 @@
-﻿using CourseProject.Model.BaseEntity;
-
-namespace CourseProject.Model.ViewModel.Course
+﻿namespace CourseProject.Model.ViewModel.Course
 {
     public class CourseDetailVM
     {
@@ -21,5 +19,6 @@ namespace CourseProject.Model.ViewModel.Course
         public Guid LessionId { get; set; }
         public string LessionName { get; set; }
         public string TotalHourTimeLession { get; set; }
+        public string VideoLink { get; set; }
     }
 }

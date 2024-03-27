@@ -1,0 +1,338 @@
+﻿@inherits AuthorBaseComponent
+<link rel="icon" href="https://edubit.vn/data/share/logo/favicon.png" type="image/x-icon">
+    <!-- StyleSheets -->
+    <style data-fullcalendar=""></style><link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/css/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/fonts/font-awesome/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/plugins/confirm/jquery-confirm.min.css?v=1.0">
+    <!-- <link href="https://hocvienthueonline.edubit.vn/statics/css/slick.css" rel="stylesheet"> -->
+    <link href="https://hocvienthueonline.edubit.vn/statics/css/slick-theme.css?time=1697609396" rel="stylesheet">
+    <link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/plugins/datatimepicker/bootstrap-timepicker.min.css">
+    <link rel="stylesheet" type="text/css" media="all" href="https://hocvienthueonline.edubit.vn/statics/plugins/select/css/select2.min.css">
+    <link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/css/j-ui.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/kidstar/css/animation.css?time=1711360996">
+    <link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/css/style.css?time=1711360996">
+    <link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/css/section.css?time=1697609396">
+    <link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/plugins/ckeditor/contents.css?v=1.0.0">
+    <link href="https://hocvienthueonline.edubit.vn/statics/css/common_css.css?v=1.2.7" rel="stylesheet">
+    <!-- JavaScripts -->
+    
+<div class="">
+    <nav class="navbar navbar-content-header navbar-expand-lg navbar-light" id="">
+        <hgroup>
+            <h1>
+                <a class="navbar-brand logo-default-site logo-mobile"
+                   href="/"
+                   target="_blank"
+                   title="">
+                    <img src="https://edubit.vn/data/share/logo/favicon.png"
+                         class="rounded-circle default-img-site"
+                         alt="" />
+                    <span class="d-none"></span>
+                </a>
+            </h1>
+            <h2 class="d-none"></h2>
+        </hgroup>
+
+        <link rel="stylesheet"
+              href="https://hocvienthueonline.edubit.vn/statics/css/css_header_cms.css?v=1.0.1" />
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0 drop-sites">
+            <li class="nav-item active">
+                <p class="m-0 text-white name-convert" title="Học viện Thuế Online">
+                    Học viện Thuế Online
+                </p>
+                <p class="text-white package-owner-text">
+                    <a href="https://hocvienthueonline.edubit.vn/manage#site_setting-service"
+                       target="_blank"
+                       class="package-link">
+                        <span class="package_name"
+                              title="Bạn đang dùng gói Basic, Click để Nâng cấp">Basic</span>
+                    </a><span class="position_name" title="Quyền truy cập"></span>
+                </p>
+            </li>
+            <li class="nav-item">
+                <div class="dropdown">
+                    <button type="button"
+                            class="btn btn-link dropdown-toggle"
+                            data-toggle="dropdown"></button>
+                    <div class="dropdown-menu dropdown-menu-domain">
+                        <a class="dropdown-item"
+                           href="https://hocvienthueonline.edubit.vn/manage?t=DIsHymLmZUqv9aD74uevpWuB2tAQi9rE5Y0AJO7L1N4%3D"
+                           target="_blank">Học viện Thuế Online</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+        <button class="navbar-toggler navbar-toggle-menu button_menu_header_user_admin"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarTogglerDemo01"
+                aria-controls="navbarTogglerDemo01"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <ul class="nav nav-tabs main-tab search-header"
+                id="tab-dashboard-menu"
+                role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link"
+                       onclick="LHM.mnDashboard.init('overview');"
+                       data-toggle="tab"
+                       data-label-menu="Dashboard"
+                       href="#overview"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                </li>
+
+                <li class="nav-item dropdown menu-dashboard-dropdown">
+                    <a class="nav-link nav-link-course dropdown-toggle active"
+                       data-toggle="dropdown"
+                       id="navbarDropdown"
+                       href="#"
+                       role="tab"
+                       aria-controls="option"
+                       aria-selected="false"
+                       data-label-menu="Khóa học"
+                       aria-haspopup="true"
+                       aria-expanded="false"><i class="fa fa-list-alt" aria-hidden="true"></i> Khóa học</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownCourse">
+                        <a class="dropdown-item nav-link-drop"
+                           href="#courses"
+                           onclick="LHM.mnDashboard.init('courses');"
+                           data-toggle="tab"
+                           data-label-menu="Khóa học"
+                           role="tab">Khóa học</a>
+
+                        <a class="dropdown-item nav-link-drop"
+                           href="#combos"
+                           onclick="LHM.mnDashboard.init('course_package');"
+                           data-toggle="tab"
+                           role="tab"
+                           data-label-menu="Combo khóa học">Combo khóa học</a>
+
+                        <a class="dropdown-item nav-link-drop"
+                           href="#quiz_combo"
+                           onclick="LHM.mnDashboard.init('combos_quiz');"
+                           data-toggle="tab"
+                           role="tab"
+                           data-label-menu="Combo đề thi">Combo đề thi</a>
+
+                        <a class="dropdown-item nav-link-drop"
+                           href="#document_combo"
+                           onclick="LHM.mnDashboard.init('course_document_package');"
+                           data-toggle="tab"
+                           role="tab"
+                           data-label-menu="Combo tài liệu">Combo tài liệu</a>
+
+                        <a class="dropdown-item nav-link-drop manage-category"
+                           id="js-manage-category"
+                           href="#category_course"
+                           data-toggle="tab"
+                           role="tab"
+                           data-label-menu="Danh mục">Danh mục</a>
+                        <a class="dropdown-item nav-link-drop"
+                           href="#coupons"
+                           onclick="LHM.mnDashboard.init('coupons');"
+                           data-toggle="tab"
+                           role="tab"
+                           data-label-menu="Coupon">Coupon</a>
+
+                        <a class="dropdown-item nav-link-drop"
+                           href="#cards"
+                           data-toggle="tab"
+                           role="tab"
+                           data-label-menu="Mã kích hoạt">Mã kích hoạt</a>
+
+                        <a class="dropdown-item nav-link-drop"
+                           href="#reviews"
+                           onclick="LHM.mnDashboard.init('review_cms');"
+                           data-toggle="tab"
+                           role="tab"
+                           data-label-menu="Đánh giá &amp; Thảo luận">Đánh giá &amp; Thảo luận</a>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link"
+                       data-toggle="tab"
+                       href="#quiz_questions"
+                       role="tab"
+                       aria-controls="option"
+                       aria-selected="false"
+                       data-label-menu="Quiz"><i class="fa fa-question-circle" aria-hidden="true"></i> Quiz</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link"
+                       data-toggle="tab"
+                       href="#students"
+                       data-label-menu="Học viên">
+                        <i class="fa fa-graduation-cap" aria-hidden="true"></i> Học viên
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link"
+                       onclick="LHM.orders.listOrders()"
+                       data-toggle="tab"
+                       href="#orders"
+                       role="tab"
+                       aria-controls="option"
+                       aria-selected="false"
+                       data-label-menu="Đơn hàng"><i class="fa fa-shopping-cart"></i> Đơn hàng</a>
+                </li>
+
+                <li class="nav-item dropdown menu-dashboard-dropdown">
+                    <a class="nav-link nav-link-website dropdown-toggle"
+                       data-toggle="dropdown"
+                       id="navbarDropdownCourse"
+                       href="#"
+                       role="tab"
+                       aria-controls="option"
+                       aria-selected="false"
+                       data-label-menu="Marketing"
+                       aria-haspopup="true"
+                       aria-expanded="false"><i class="fa fa-desktop" aria-hidden="true"></i> Marketing</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownCourse">
+                        <a class="dropdown-item nav-link-drop"
+                           onclick="LHM.mnDashboard.getStudents.getListEmailCampaign()"
+                           data-toggle="tab"
+                           href="#email_campaign"
+                           role="tab"
+                           aria-controls="option"
+                           aria-selected="false"
+                           data-label-menu="Gửi email">Gửi email</a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown menu-dashboard-dropdown">
+                    <a class="nav-link nav-link-website dropdown-toggle"
+                       data-toggle="dropdown"
+                       id="navbarDropdownCourse"
+                       href="#"
+                       role="tab"
+                       aria-controls="option"
+                       aria-selected="false"
+                       data-label-menu="Website"
+                       aria-haspopup="true"
+                       aria-expanded="false"><i class="fa fa-desktop" aria-hidden="true"></i> Website</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownCourse">
+                        <a class="dropdown-item nav-link-drop"
+                           data-label-menu="Danh mục bài viết"
+                           href="#category_blog"
+                           data-toggle="tab"
+                           role="tab"
+                           onclick="LHM.category.getCategories('blog', 'danh mục bài viết')">Danh mục</a>
+                        <a class="dropdown-item nav-link-drop"
+                           data-label-menu="Bài viết"
+                           href="#blog"
+                           onclick="LHM.blog.getNews();"
+                           data-toggle="tab"
+                           role="tab">Bài viết</a>
+                        <a class="dropdown-item"
+                           data-label-menu="Ngôn ngữ"
+                           href="/library/getFilesInLibraryNew">Files</a>
+                        <a class="dropdown-item nav-link-drop"
+                           data-label-menu="Bố cục"
+                           onclick="LHM.mnDashboard.init('landingpage_layout')"
+                           href="#layout_site"
+                           data-toggle="tab"
+                           role="tab">Bố cục</a>
+                        <a class="dropdown-item nav-link-drop"
+                           data-label-menu="Landingpage"
+                           onclick="LHM.mnDashboard.init('landingpage_page')"
+                           href="#landingpage"
+                           data-toggle="tab"
+                           role="tab">Trang</a>
+
+                        <a class="dropdown-item nav-link-drop"
+                           data-label-menu="Giao diện"
+                           onclick="LHM.mnDashboard.init('landingpage_themes')"
+                           href="#themes_site"
+                           data-toggle="tab"
+                           role="tab">Themes</a>
+                        <a class="dropdown-item nav-link-drop"
+                           data-label-menu="Cài đặt"
+                           href="#setting"
+                           data-toggle="tab"
+                           role="tab">Cài đặt</a>
+                        <!-- <a class="dropdown-item" data-label-menu="Web Hook" href="/manage/web-hook/list">Web Hook</a>  -->
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link"
+                       data-toggle="tab"
+                       href="#report"
+                       role="tab"
+                       aria-controls="option"
+                       onclick="LHM.mnDashboard.init('report');"
+                       aria-selected="false"
+                       data-label-menu="Báo cáo"><i class="fas fa-chart-line"></i> Báo cáo</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link"
+                       data-toggle="tab"
+                       href="#site_setting"
+                       role="tab"
+                       aria-controls="option"
+                       aria-selected="false"
+                       data-label-menu="Cài đặt Trường"><i class="fas fa-cog"></i> Cài đặt</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav my-2 my-lg-0 menu-content-header">
+                <div class="form-inline dropdown user-info">
+                    <div class="" data-toggle="dropdown" id="dropdownMenuButton">
+                        <!-- <span><strong style="color: #0077a5;" class="user-name"> Lê Minh Thuý </strong></span> -->
+                        <img width="40"
+                             height="40"
+                             class="rounded-circle user-info-avatar"
+                             title="Lê Minh Thuý"
+                             src="https://edubit.vn/data/avatars/nophoto.png" />
+                    </div>
+                    <div class="dropdown-menu dropdown-info-user">
+                        <a class="dropdown-item" href="/update-profile">Hồ sơ</a>
+
+                        <a class="dropdown-item"
+                           href="https://hocvienthueonline.edubit.vn/affiliate/dashboard">Affiliate</a>
+
+                        <a class="dropdown-item" href="/id/logout">Đăng xuất</a>
+                    </div>
+                </div>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+@code {
+    private string Email { get; set; }
+    private string FullName { get; set; }
+    private string LinkAvatar { get; set; }
+
+    protected override async Task HandleAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // var userInfor = await GetUserInfor();
+            // if (userInfor != null)
+            // {
+            //     Email = userInfor.Email;
+            //     FullName = userInfor.FullName;
+            //     LinkAvatar = userInfor.ImgAvatar;
+            //     StateHasChanged();
+            // }
+        }
+    }
+
+    protected async Task LogoutAction()
+    {
+        NavigateToUrl("/login");
+
+        // xóa infor cache
+    }
+}

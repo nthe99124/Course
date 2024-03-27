@@ -110,11 +110,11 @@ services.AddCors(options =>
 
 #region Xử lý DDOS
 services.AddMemoryCache();
-services.Configure<IpRateLimitOptions>(options => configuration.GetSection("IPRateLimiting").Bind(options));
-services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
-services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
-services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
-services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
+//services.Configure<IpRateLimitOptions>(options => configuration.GetSection("IPRateLimiting").Bind(options));
+//services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+//services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+//services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+//services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
 #endregion
 
 #region Config cache
@@ -135,14 +135,16 @@ services.AddDbContext<CourseContext>(options =>
 //Common
 services.AddScoped<IRestOutput, RestOutput>();
 
-services.AddScoped<CourseContext>();
-services.AddScoped<IUnitOfWork, UnitOfWork>();
+// với context, cần addTransient vì trong 1 request có thể được gọi nhiều lần, mà dispose thì không được gọi lại nó nữa
+services.AddTransient<CourseContext>();
+services.AddTransient<IUnitOfWork, UnitOfWork>();
 
 // mỗi lần gọi 1 phát tạo insert nên dùng luôn Transient
 
 //Service
 services.AddScoped<IAccountService, AccountService>();
 services.AddScoped<ICourseService, CourseService>();
+services.AddScoped<ITagService, TagService>();
 
 //Ulti
 services.AddTransient<IFileUlti, FileUlti>();
@@ -173,7 +175,7 @@ app.UseCors("AllowAnyOrigin");
 #endregion
 
 #region DDOS
-app.UseIpRateLimiting();
+//app.UseIpRateLimiting();
 #endregion
 
 #region Authen, Author

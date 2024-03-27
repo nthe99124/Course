@@ -2,15 +2,17 @@
 using CourseProject.API.Repositories.Base;
 using CourseProject.Model.BaseEntity;
 using CourseProject.Model.DTO;
+using CourseProject.Model.ViewModel.Course;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using static CourseProject.Model.Enum.DataType;
 
 namespace CourseProject.API.Repositories
 {
     public interface ICourseRepository : IBaseRepository<Course>
     {
-        Task<IEnumerable<CourseGeneric>> GetCourseByCondition(int courseNumber, List<SortedPaging> sortedList, Expression<Func<CourseGeneric, bool>> predicateFilter = null);
+        Task<IEnumerable<CourseGeneric>> GetCourseByCondition(int? courseNumber, List<SortedPaging> sortedList, Expression<Func<CourseGeneric, bool>> predicateFilter = null);
         IEnumerable<MyCourseVM> GetListCourseByUser(Guid accId);
         IEnumerable<CourseDetailGeneric> GetDetailCourse(Guid courseId);
     }
@@ -49,7 +51,7 @@ namespace CourseProject.API.Repositories
         /// CreatedBy ntthe 24.03.2024
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<CourseGeneric>> GetCourseByCondition(int courseNumber, List<SortedPaging> sortedList, Expression<Func<CourseGeneric, bool>> predicateFilter = null)
+        public async Task<IEnumerable<CourseGeneric>> GetCourseByCondition(int? courseNumber, List<SortedPaging> sortedList, Expression<Func<CourseGeneric, bool>> predicateFilter = null)
         {
             var courseGeneric = from c in _context.Courses
                                 join a in _context.Accounts on c.Teacher equals a.Id
@@ -72,7 +74,8 @@ namespace CourseProject.API.Repositories
                                     c.ModifiedDate,
                                     c.Description,
                                     c.BenefitsOfCourse,
-                                    AccountId = a.Id
+                                    AccountId = a.Id,
+                                    c.TypeOfPurchase
                                 } into grp
                                 select new CourseGeneric
                                 {
@@ -87,12 +90,14 @@ namespace CourseProject.API.Repositories
                                     TotalPerRating = grp.Key.TotalPerRating,
                                     CourseCode = grp.Key.CourseCode,
                                     TagString = string.Join(", ", grp.Select(x => x.t.TagName)),
+                                    TagId = string.Join(", ", grp.Select(x => x.t.Id)),
                                     ImgTeacher = grp.Key.ImgAvatar,
                                     TeacherName = grp.Key.FirstName,
                                     ModifiedDate = grp.Key.ModifiedDate,
                                     Description = grp.Key.Description,
                                     BenefitsOfCourse = grp.Key.BenefitsOfCourse,
-                                    CourseOfTeacher = grp.Count()
+                                    CourseOfTeacher = grp.Count(),
+                                    TypeOfPurchase = grp.Key.TypeOfPurchase,
                                 };
             if (predicateFilter != null)
             {
@@ -100,11 +105,11 @@ namespace CourseProject.API.Repositories
             }
             var result = await GetDataBySorted(courseGeneric, sortedList);
             
-            if (result != null && result.Count() > 0)
+            if (result != null && result.Count() > 0 && courseNumber != null && courseNumber > 0)
             {
-                result = result.Take(courseNumber);
+                result = result.Take((int)courseNumber);
             }
-            return result;
+            return result.ToList();
         }
 
         /// <summary>
@@ -123,8 +128,11 @@ namespace CourseProject.API.Repositories
                                     LessionId = l.Id,
                                     LessionName = l.LessionName,
                                     TotalTimeLession = l.TotalTimeLession,
+                                    ChapterName = c.ChapterName,
+                                    VideoLink = l.VideoLink,
                                 };
-            return courseDetailGeneric;
+            return courseDetailGeneric.ToList();
+
         }
     }
 }

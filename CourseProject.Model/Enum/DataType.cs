@@ -9,7 +9,7 @@ namespace CourseProject.Model.Enum
         /// </summary>
         public enum TypeOfPurchase : short
         {
-            [Description("Nạp tiền")]
+            [Description("Miễn phí")]
             Free,
             [Description("Trả phí")]
             Paid,

@@ -1,4 +1,4 @@
-﻿namespace CourseProject.Model.DTO.Accountant
+﻿namespace CourseProject.Model.DTO.Account
 {
     public class AccountGenericDTO
     {

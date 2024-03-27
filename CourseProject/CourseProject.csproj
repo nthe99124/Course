@@ -13,9 +13,8 @@
 		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
 		<TypeScriptModuleKind>none</TypeScriptModuleKind>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-	  <Optimize>True</Optimize>
-	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'" />
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'" />
 
 	<ItemGroup>
 		<Compile Include="Common\Cache\DistributedCacheCustom.cs" />
@@ -23,6 +22,8 @@
 		<Compile Include="Common\Constant\RoleConstant.cs" />
 		<Compile Include="Common\MiddleWare\LanguageMiddleware.cs" />
 		<Compile Include="Program.cs" />
+		<Compile Include="Services\ApiUrldefinition\TagApiUrlDef.cs" />
+		<Compile Include="Services\TagService.cs" />
 		<Compile Include="Services\CourseService.cs" />
 		<Compile Include="Services\AccountService.cs" />
 		<Compile Include="Services\ApiUrldefinition\CourseApiUrlDef.cs" />
@@ -36,7 +37,9 @@
 		<None Remove="Pages\Course\Course.razor" />
 		<None Remove="Pages\Course\CourseDetail.razor" />
 		<None Remove="Shared\ComponentBase\BaseComponentCustom.razor" />
+		<None Remove="Shared\Footer\FooterTeacher.razor" />
 		<None Remove="Shared\Footer\FooterUser.razor" />
+		<None Remove="Shared\Header\HeaderAdmin.razor" />
 		<None Remove="Shared\MainLayout.razor.css" />
 		<None Remove="Shared\NavMenu.razor.css" />
 	</ItemGroup>
@@ -52,9 +55,11 @@
 		<Content Include="Pages\_Host.cshtml" />
 		<Content Include="Properties\launchSettings.json" />
 		<Content Include="Shared\ComponentBase\BaseComponentCustom.razor" />
+		<Content Include="Shared\Footer\FooterTeacher.razor" />
+		<Content Include="Shared\Header\HeaderAdmin.razor" />
 		<Content Include="Shared\MainLayout.razor" />
 		<Content Include="Shared\Footer\FooterUser.razor" />
-		<Content Include="Shared\Footer\FooterTeacher.razor" />
+		<Content Include="Shared\Footer\FooterAdmin.razor" />
 		<Content Include="Shared\FooterLayout.razor" />
 		<Content Include="Shared\Header\HeaderUser.razor" />
 		<Content Include="Shared\Header\HeaderTeacher.razor" />
@@ -66,6 +71,7 @@
 		<Content Include="Shared\MainLayout.razor.css" />
 		<Content Include="Shared\NavMenu.razor.css" />
 		<Content Include="Pages\Home.razor" />
+		<Content Include="Pages\Admin\CourseManager.razor" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -84,11 +90,12 @@
 		<Content Include="Pages\User\UserPhoto.razor" />
 		<Content Include="Pages\User\UserProfile.razor" />
 		<Content Include="Component\SlickCarouse.razor" />
+		<Content Include="Component\VideoPlayer.razor" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="AutoMapper" Version="13.0.1" />
-		<PackageReference Include="Blazor.Bootstrap" Version="2.1.0" />
+		<PackageReference Include="Blazor.Bootstrap" Version="1.7.0" />
 		<PackageReference Include="Blazorise.Bootstrap" Version="1.4.2" />
 		<PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.3.0" />
 		<PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.2" />
@@ -98,6 +105,7 @@
 
 	<ItemGroup>
 		<Folder Include="wwwroot\js\Common\" />
+		<Folder Include="wwwroot\js\Component\" />
 		<Folder Include="wwwroot\js\Page\Teacher\" />
 	</ItemGroup>
 

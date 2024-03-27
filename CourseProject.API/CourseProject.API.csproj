@@ -38,9 +38,11 @@
     <Compile Include="Common\MiddleWare\LanguageMiddleware.cs" />
     <Compile Include="Common\Repository\CourseContext.cs" />
     <Compile Include="Common\Repository\UnitOfWork.cs" />
+    <Compile Include="Common\Ulti\ExtensionUlti.cs" />
     <Compile Include="Common\Ulti\HashCodeUlti.cs" />
     <Compile Include="Controller\AccountController.cs" />
     <Compile Include="Controller\Base\BaseController.cs" />
+    <Compile Include="Controller\TagController.cs" />
     <Compile Include="Controller\CourseController.cs" />
     <Compile Include="Controller\FileController.cs" />
     <Compile Include="Migrations\20240324112246_add-table-course-account.cs" />
@@ -63,6 +65,7 @@
     <Compile Include="Services\Base\BaseService.cs" />
     <Compile Include="Common\Ulti\FileUlti.cs" />
     <Compile Include="Services\CourseService.cs" />
+    <Compile Include="Services\TagService.cs" />
     <Compile Include="Services\LogEntryService.cs" />
   </ItemGroup>
 

@@ -48,7 +48,6 @@ a {
 .btn-close {
     line-height: 1em;
     color: #212529;
-    background: #eee;
     opacity: 1;
 }
 
@@ -129,6 +128,7 @@ a {
 .floating-user {
     width: auto;
     height: 30px;
+    position: relative;
 }
 
     .floating-user img {

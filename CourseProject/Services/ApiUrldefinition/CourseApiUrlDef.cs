@@ -43,7 +43,15 @@
         {
             return @$"{pathController}/GetDetailCourse?courseId={courseId}";
         }
-        
 
+        /// <summary>
+        /// Tạo url lấy
+        /// CreatedBy ntthe 24.03.2024
+        /// </summary>
+        /// <returns></returns>
+        public static string GetCourseSearchCourseByCondition( )
+        {
+            return @$"{pathController}/GetCourseSearchCourseByCondition";
+        }
     }
 }

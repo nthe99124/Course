@@ -1,7 +1,6 @@
 ﻿@using CourseProject.Model.ViewModel.Account
 @using Microsoft.JSInterop;
 @using System.Net;
-@using CourseProject.Model.ViewModel.Accountant
 @using System.Text.Json
 @inject NavigationManager _navigationManager;
 @inject IJSRuntime _js;
@@ -34,16 +33,16 @@
         return null;
     }
 
-    protected async Task ShowToast(string? message, params object?[]? args)
+    protected async Task ShowToast(string message, params object[] args)
     {
         await _js.InvokeVoidAsync("showToast", message, args);
     }
 
-    protected async Task<T> InvokeAsync<T>(string? method, params object?[]? args)
+    protected async Task<T> InvokeAsync<T>(string method, params object[] args)
     {
         return await _js.InvokeAsync<T>(method, args);
     }
-    protected async Task InvokeVoidAsync(string? method, params object?[]? args)
+    protected async Task InvokeVoidAsync(string method, params object[] args)
     {
         await _js.InvokeVoidAsync(method, args);
     }

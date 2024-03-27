@@ -1,7 +1,6 @@
 ﻿using CourseProject.Common.Cache;
 using CourseProject.Model.ViewModel;
 using CourseProject.Model.ViewModel.Account;
-using CourseProject.Model.ViewModel.Accountant;
 using CourseProject.Services.ApiUrldefinition;
 using CourseProject.Services.Base;
 using Microsoft.JSInterop;

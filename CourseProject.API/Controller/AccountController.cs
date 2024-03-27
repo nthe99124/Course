@@ -3,9 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using CourseProject.API.Common.Attribute;
 using CourseProject.API.Common.Constant;
 using CourseProject.Model.ViewModel;
-using CourseProject.Model.ViewModel.Accountant;
+using CourseProject.Model.ViewModel.Account;
+using CourseProject.API.Controller.Base;
 
-namespace CourseProject.API.Controller.Base
+namespace CourseProject.API.Controller
 {
     public class AccountController : BaseController
     {
@@ -74,7 +75,7 @@ namespace CourseProject.API.Controller.Base
                 {
                     _res.ErrorEventHandler();
                 }
-                
+
             }
             return Ok(_res);
         }

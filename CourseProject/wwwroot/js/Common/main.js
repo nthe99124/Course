@@ -310,14 +310,3 @@ function validateForm(formId) {
 
 	return null
 }
-
-
-// Gọi phương thức C# từ JavaScript
-function invokeDotNetMethod() {
-	DotNet.invokeMethodAsync('AssemblyName', 'OnDataLoaded');
-}
-
-// Khi dữ liệu của BlazorSlickCarousel đã tải xong, gọi phương thức C# tương ứng
-yourSlickCarousel.on('afterChange', function (event, slick, currentSlide, nextSlide) {
-	invokeDotNetMethod();
-});

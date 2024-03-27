@@ -2,10 +2,7 @@
 using CourseProject.API.Common.Cache;
 using CourseProject.API.Common.Constant;
 using CourseProject.API.Common.Repository;
-using CourseProject.Model.DTO.Accountant;
-using System.Net.WebSockets;
-using System.Security.Claims;
-using System.Text.Json;
+using CourseProject.Model.DTO.Account;
 
 namespace CourseProject.API.Services.Base
 {

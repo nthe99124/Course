@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 
-namespace CourseProject.Model.DTO.Accountant
+namespace CourseProject.Model.DTO.Account
 {
     public class AccountAuthenDTO
     {

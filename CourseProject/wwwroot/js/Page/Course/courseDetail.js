@@ -1,21 +1,4 @@
-﻿$(document).ready(function () {
-    $(".course-carousel").slick({
-        dots: false,
-        speed: 300,
-        centerPadding: '40px',
-        slidesToShow: 4,
-        slidesToScroll: 4,
-        swipe: false,
-        touchMove: false,
-        responsive: [
-            { breakpoint: 1200, settings: { slidesToShow: 4, slidesToScroll: 4, }, },
-            { breakpoint: 840, settings: { slidesToShow: 3, slidesToScroll: 3, }, },
-            { breakpoint: 620, settings: { slidesToShow: 2, slidesToScroll: 2, }, },
-            { breakpoint: 480, settings: { slidesToShow: 1, slidesToScroll: 1, }, },
-        ],
-    });
-});
-function handleCartItems(elem) {
+﻿function handleCartItems(elem) {
     url1 = 'https://4user.net/home/handleCartItems';
     url2 = 'https://4user.net/home/refreshWishList';
     $.ajax({
@@ -139,4 +122,25 @@ function go_course_playing_page(course_id, lesson_id) {
             }
         }
     });
+}
+
+function handleShowHideContentLession(indexChap) {
+    if (indexChap != null && indexChap != undefined) {
+        if ($('.lecture-group-wrapper') && $('.lecture-group-wrapper').length && $('.lecture-group-wrapper')[indexChap]) {
+            // kiểm tra trạng thái ẩn hay hiện
+            let lectureGroupWrapper = $('.lecture-group-wrapper')[indexChap]
+                lisLession = $(lectureGroupWrapper).find('.list-lession');
+            if (lisLession && lisLession.is(":visible")) {
+                // đang hiển thị thì ẩn
+                lisLession.hide();
+                $(lectureGroupWrapper).find('.lecture-group-title').attr("aria-expanded", "false");
+
+            }
+            else {
+                lisLession.show();
+                $(lectureGroupWrapper).find('.lecture-group-title').attr("aria-expanded", "true");
+            }
+        }
+    }
+    
 }
