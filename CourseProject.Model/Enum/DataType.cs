@@ -18,6 +18,19 @@ namespace CourseProject.Model.Enum
         }
 
         /// <summary>
+        /// Loại thời hạn học
+        /// </summary>
+        public enum TypeOfTerm : short
+        {
+            [Description("Trọn đời")]
+            Lifetime,
+            [Description("Có thời hạn ... ngày")]
+            DateLimit,
+            [Description("Có thời hạn ... tháng")]
+            MonthLimit,
+        }
+
+        /// <summary>
         /// Giới tính
         /// </summary>
         public enum GenderType : short

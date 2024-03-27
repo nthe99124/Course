@@ -29,12 +29,17 @@
     <Compile Include="ViewModel\Account\LoginResponse.cs" />
     <Compile Include="ViewModel\Account\LoginViewModel.cs" />
     <Compile Include="ViewModel\Account\UserInforGeneric.cs" />
+    <Compile Include="ViewModel\Chapter\ChapterEditParam.cs" />
+    <Compile Include="ViewModel\Chapter\ChapterCreateParam.cs" />
     <Compile Include="ViewModel\Course\CourseDetailGeneric.cs" />
     <Compile Include="ViewModel\Course\CourseDetailVM.cs" />
     <Compile Include="ViewModel\Course\CreateCourseVM.cs" />
     <Compile Include="ViewModel\Course\MyCourseVM.cs" />
     <Compile Include="ViewModel\Course\CourseGeneric.cs" />
     <Compile Include="ViewModel\Course\SearchCourseParam.cs" />
+    <Compile Include="ViewModel\Lession\LessionDeleteParam.cs" />
+    <Compile Include="ViewModel\Lession\LessionEditParam.cs" />
+    <Compile Include="ViewModel\Lession\LessionCreateParam.cs" />
     <Compile Include="ViewModel\ResponseOutput.cs" />
     <Compile Include="ViewModel\RestOutput.cs" />
     <Compile Include="ViewModel\RestPagingOutput.cs" />

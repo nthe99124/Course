@@ -2922,7 +2922,7 @@ section.category-header-area {
     color: #fff;
 }
 
-section.category-course-list-area {
+div.category-course-list-area {
     padding-top: 50px;
     padding-bottom: 50px;
 }

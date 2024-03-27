@@ -73,7 +73,6 @@ namespace CourseProject.API.Repositories
                                     a.FirstName,
                                     c.ModifiedDate,
                                     c.Description,
-                                    c.BenefitsOfCourse,
                                     AccountId = a.Id,
                                     c.TypeOfPurchase
                                 } into grp
@@ -95,7 +94,6 @@ namespace CourseProject.API.Repositories
                                     TeacherName = grp.Key.FirstName,
                                     ModifiedDate = grp.Key.ModifiedDate,
                                     Description = grp.Key.Description,
-                                    BenefitsOfCourse = grp.Key.BenefitsOfCourse,
                                     CourseOfTeacher = grp.Count(),
                                     TypeOfPurchase = grp.Key.TypeOfPurchase,
                                 };

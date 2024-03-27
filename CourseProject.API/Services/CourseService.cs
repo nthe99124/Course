@@ -3,8 +3,11 @@ using CourseProject.API.Common.Cache;
 using CourseProject.API.Common.Repository;
 using CourseProject.API.Common.Ulti;
 using CourseProject.API.Services.Base;
+using CourseProject.Model.BaseEntity;
 using CourseProject.Model.DTO;
+using CourseProject.Model.ViewModel;
 using CourseProject.Model.ViewModel.Course;
+using System.Diagnostics;
 using System.Linq.Expressions;
 
 namespace CourseProject.API.Services
@@ -16,6 +19,7 @@ namespace CourseProject.API.Services
         IEnumerable<MyCourseVM> GetListCourseByUser();
         Task<CourseDetailVM> GetDetailCourse(Guid courseId);
         Task<IEnumerable<CourseGeneric>> GetCourseSearchCourseByCondition(SearchCourseParam searchCourseParam);
+        Task<RestOutput> CreateCourseMaster(CreateCourseVM createCourseParam);
     }
     public class CourseService : BaseService, ICourseService
     {
@@ -176,19 +180,53 @@ namespace CourseProject.API.Services
         /// CreatedBy ntthe 24.03.2024
         /// </summary>
         /// <returns></returns>
-        //public IEnumerable<MyCourseVM> CreateCourseMaster()
-        //{
-        //    var accId = GetUserAuthen()?.AccoutantId;
+        public async Task<RestOutput> CreateCourseMaster(CreateCourseVM createCourseParam)
+        {
+            var res = new RestOutput();
+            
+            if (createCourseParam != null)
+            {
+                if (string.IsNullOrEmpty(createCourseParam.Introduce))
+                {
+                    res.ErrorEventHandler("Giới thiệu khóa học không được để trống");
+                    return res;
+                }
+                else if (string.IsNullOrEmpty(createCourseParam.CourseName))
+                {
+                    res.ErrorEventHandler("Tên khóa học không được để trống");
+                    return res;
+                }
 
-        //    if (accId != null)
-        //    {
-        //        //return _unitOfWork.CourseRepository.Create((Guid)accId);
-        //    }
-        //    else
-        //    {
-        //        return null;
-        //    }
-        //}
+                // insert khóa học
+                var courseInsert = _mapper.Map<Course>(createCourseParam);
+                _unitOfWork.CourseRepository.Create(courseInsert);
+
+                // insert tag và course
+                if (createCourseParam.TagList != null && createCourseParam.TagList.Count > 0)
+                {
+                    var courseTagList = new List<CourseTag>();
+                    foreach (var item in createCourseParam.TagList)
+                    {
+                        var courseTagInsert = new CourseTag()
+                        {
+                            CourseId = courseInsert.Id,
+                            TagId = item
+                        };
+                        courseTagList.Add(courseTagInsert);
+                    }
+
+                    if (courseTagList.Count > 0)
+                    {
+                        _unitOfWork.CourseTagRepository.CreateRange(courseTagList);
+                    }
+                }
+
+                await _unitOfWork.CommitAsync();
+            }
+            res.SuccessEventHandler();
+            return res;
+
+        }
 
         #region Private Method
 

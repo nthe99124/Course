@@ -31,22 +31,22 @@ public partial class Course
     public DateTime ModifiedDate { get; set; } = DateTime.UtcNow;
 
     [Description("Giá")]
-    public decimal? Price { get; set; }
+    public decimal Price { get; set; } = 0;
 
     [Description("Giá sau khuyến mãi")]
-    public decimal? PriceAfterDiscount { get; set; }
+    public decimal? PriceAfterDiscount { get; set; } = 0;
 
     [Description("Ảnh khóa học")]
     public string ImgCourse { get; set; }
 
     [Description("Tổng thời gian học")]
-    public long? TotalTime { get; set; }
+    public long TotalTime { get; set; } = 0;
 
     [Description("Tổng bài học")]
-    public long? TotalLectures { get; set; }
+    public long TotalLectures { get; set; } = 0;
 
     [Description("Tổng số người đánh giá")]
-    public long? TotalPerRating { get; set; }
+    public long TotalPerRating { get; set; } = 0;
 
     [Description("Mã khóa học")]
     public string CourseCode { get; set; }
@@ -63,11 +63,14 @@ public partial class Course
     [Description("Giới thiệu")]
     public string Introduce { get; set; }
 
-    [Description("Lợi ích của khóa học")]
-    public string BenefitsOfCourse { get; set; }
-
     [Description("Loại thanh toán")]
-    public TypeOfPurchase? TypeOfPurchase { get; set; }
+    public TypeOfPurchase TypeOfPurchase { get; set; }
+
+    [Description("Thời hạn học")]
+    public TypeOfTerm TypeOfTerm { get; set; }
+
+    [Description("Số ngày/ tháng học")]
+    public int DateMonthLearn { get; set; } = 0;
 
     public virtual ICollection<Chapter> Chapters { get; set; } = new List<Chapter>();
 

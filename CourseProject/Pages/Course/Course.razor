@@ -248,7 +248,7 @@
                                         </div>
                                         <div class="course-price-rating">
                                             <div class="course-price">
-                                                <span class="current-price">₫@currentItem.Price</span>
+                                                <span class="current-price">₫@String.Format("{0:0,0}", currentItem.Price)</span>
                                             </div>
                                             <div class="rating">
                                                 <i class="fas fa-star @(currentItem.Rating > 0 ? "filled":"")"></i>

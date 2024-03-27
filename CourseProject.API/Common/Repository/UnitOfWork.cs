@@ -14,6 +14,8 @@ namespace CourseProject.API.Common.Repository
         public ITagRepository TagRepository { get; }
         public IRoleAccountRepository RoleAccountRepository { get; }
         public IRoleRepository RoleRepository { get; }
+        public IChapterRepository ChapterRepository { get; }
+        public ILessionRepository LessionRepository { get; }
 
         DbSet<T> Set<T>() where T : class;
         int Commit();
@@ -126,6 +128,34 @@ namespace CourseProject.API.Common.Repository
                 return _roleRepository;
             }
         }
+
+        private IChapterRepository _chapterRepository;
+        public IChapterRepository ChapterRepository
+        {
+            get
+            {
+                if (_chapterRepository == null)
+                {
+                    _chapterRepository = new ChapterRepository(_context);
+                }
+                return _chapterRepository;
+            }
+        }
+
+        private ILessionRepository _lessionRepository;
+        public ILessionRepository LessionRepository
+        {
+            get
+            {
+                if (_lessionRepository == null)
+                {
+                    _lessionRepository = new LessionRepository(_context);
+                }
+                return _lessionRepository;
+            }
+        }
+        
+
         #endregion
 
         public DbSet<T> Set<T>() where T : class

@@ -49,7 +49,6 @@ public class CourseGeneric
     }
     public DateTime ModifiedDate { get; set; }
     public string Description { get; set; }
-    public string BenefitsOfCourse { get; set; }
     public long CourseOfTeacher { get; set; }
     public TypeOfPurchase? TypeOfPurchase { get; set; }
 }

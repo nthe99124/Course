@@ -82,15 +82,14 @@ namespace CourseProject.API.Controller
 
         /// <summary>
         /// Hàm xử lý thêm mới master khóa học
-        /// CreatedBy ntthe 24.03.2024
+        /// CreatedBy ntthe 27.03.2024
         /// </summary>
         /// <returns></returns>
-        //[HttpPost("GetCourseSearchCourseByCondition")]
-        //public async Task<IActionResult> CreateCourseMaster(SearchCourseParam searchCourseParam)
-        //{
-        //    var dataResult = await _courseService.CreateCourseMaster(searchCourseParam);
-        //    _res.SuccessEventHandler(dataResult);
-        //    return Ok(_res);
-        //}
+        [HttpPost("CreateCourseMaster")]
+        public async Task<IActionResult> CreateCourseMaster(CreateCourseVM createCourseParam)
+        {
+            _res = await _courseService.CreateCourseMaster(createCourseParam);
+            return Ok(_res);
+        }
     }
 }

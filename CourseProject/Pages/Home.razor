@@ -65,7 +65,7 @@
                                         <div class="course-box">
                                             <div class="course-image">
                                                 <!-- course price -->
-                                                <p class="price text-right d-inline-block float-end">@currentItem.Price</p>
+                                                <p class="price text-right d-inline-block float-end">@String.Format("{0:0,0}", currentItem.Price)</p>
                                                 <img src="@GetLinkImage(currentItem.ImgCourse)" alt="" class="img-fluid">
                                             </div>
                                             <div class="course-details">
@@ -140,9 +140,6 @@
                                                 <span class=""><i class="fas fa-closed-captioning"></i>Vietnamese</span>
                                             </div>
                                             <div class="course-subtitle">@currentItem.Description</div>
-                                            <div class="what-will-learn">
-                                                @currentItem.BenefitsOfCourse
-                                            </div>
                                             <div class="popover-btns">
                                                 <button type="button" class="btn red add-to-cart-btn  big-cart-button-41" id="" onclick="handleCartItems(this)" tabindex="-1">
                                                     Thêm vào giỏ hàng
@@ -468,7 +465,7 @@
                                         <div class="course-box">
                                             <div class="course-image">
                                                 <!-- course price -->
-                                                <p class="price text-right d-inline-block float-end">@currentItem.Price</p>
+                                                <p class="price text-right d-inline-block float-end">@String.Format("{0:0,0}", currentItem.Price)</p>
                                                 <img src="@GetLinkImage(currentItem.ImgCourse)" alt="" class="img-fluid">
                                             </div>
                                             <div class="course-details">
@@ -543,9 +540,6 @@
                                                 <span class=""><i class="fas fa-closed-captioning"></i>Vietnamese</span>
                                             </div>
                                             <div class="course-subtitle">@currentItem.Description</div>
-                                            <div class="what-will-learn">
-                                                @currentItem.BenefitsOfCourse
-                                            </div>
                                             <div class="popover-btns">
                                                 <button type="button" class="btn red add-to-cart-btn  big-cart-button-41" id="" onclick="handleCartItems(this)" tabindex="-1">
                                                     Thêm vào giỏ hàng

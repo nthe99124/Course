@@ -45,13 +45,23 @@
         }
 
         /// <summary>
-        /// Tạo url lấy
+        /// Tạo url tìm kiếm khóa học theo param truyền xuống
         /// CreatedBy ntthe 24.03.2024
         /// </summary>
         /// <returns></returns>
         public static string GetCourseSearchCourseByCondition( )
         {
             return @$"{pathController}/GetCourseSearchCourseByCondition";
+        }
+
+        /// <summary>
+        /// Tạo url thêm mới master khóa học
+        /// CreatedBy ntthe 27.03.2024
+        /// </summary>
+        /// <returns></returns>
+        public static string CreateCourseMaster()
+        {
+            return @$"{pathController}/CreateCourseMaster";
         }
     }
 }

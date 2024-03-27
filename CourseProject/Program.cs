@@ -9,6 +9,7 @@ using CourseProject.Services.Base;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Localization;
 using StoriesProject.Services;
+using Syncfusion.Blazor;
 using System.Globalization;
 
 #region Config service
@@ -29,7 +30,7 @@ services.AddRazorPages();
 services.AddServerSideBlazor();
 services.AddHttpClient();
 services.AddWMBSC();
-services.AddBlazorise().AddBootstrapProviders().AddBlazorBootstrap();
+services.AddBlazorise().AddBlazorBootstrap().AddBootstrapProviders();
 
 #endregion
 

@@ -42,6 +42,8 @@
     <Compile Include="Common\Ulti\HashCodeUlti.cs" />
     <Compile Include="Controller\AccountController.cs" />
     <Compile Include="Controller\Base\BaseController.cs" />
+    <Compile Include="Controller\LessionController.cs" />
+    <Compile Include="Controller\ChapterController.cs" />
     <Compile Include="Controller\TagController.cs" />
     <Compile Include="Controller\CourseController.cs" />
     <Compile Include="Controller\FileController.cs" />
@@ -55,7 +57,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Repositories\AccountRepository.cs" />
     <Compile Include="Repositories\Base\BaseRepository.cs" />
+    <Compile Include="Repositories\LessionRepository.cs" />
     <Compile Include="Repositories\CourseRepository.cs" />
+    <Compile Include="Repositories\ChapterRepository.cs" />
     <Compile Include="Repositories\RoleRepository.cs" />
     <Compile Include="Repositories\RoleAccountRepository.cs" />
     <Compile Include="Repositories\TagRepository.cs" />
@@ -64,6 +68,8 @@
     <Compile Include="Services\AccountService.cs" />
     <Compile Include="Services\Base\BaseService.cs" />
     <Compile Include="Common\Ulti\FileUlti.cs" />
+    <Compile Include="Services\LessionService.cs" />
+    <Compile Include="Services\ChapterService.cs" />
     <Compile Include="Services\CourseService.cs" />
     <Compile Include="Services\TagService.cs" />
     <Compile Include="Services\LogEntryService.cs" />
