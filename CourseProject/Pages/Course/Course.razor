@@ -2,9 +2,11 @@
 @using Blazorise
 @using CourseProject.Model.BaseEntity
 @using CourseProject.Model.ViewModel.Course
+@using CourseProject.Services
 @using CourseProject.Shared.ComponentBase
 @using static CourseProject.Model.Enum.DataType
 @inject ITagService _tagService;
+@inject ICourseService _courseService;
 @inherits AuthorBaseComponent
 
 <div class="category-header-area" style="background-image: url('https://4user.net/uploads/system/course_page_banner.png'); background-size: cover; background-position: right;">
@@ -43,19 +45,19 @@
                                     <ul>
                                         <li>
                                             <div class="">
-                                                <input type="radio" id="price_all" name="price" class="prices custom-radio" value="4" @onclick="() => { searchCourseParam.TypeOfPurchase = TypeOfPurchase.All; }">
+                                                <input type="radio" id="price_all" name="price" class="prices custom-radio" value="4" @onclick="() => { searchCourseParam.TypeOfPurchase = null; SearchCourseByCondition(); }" checked>
                                                 <label for="price_all">Tất cả</label>
                                             </div>
                                             <div class="">
-                                                <input type="radio" id="price_free" name="price" class="prices custom-radio" value="0" @onclick="() => { searchCourseParam.TypeOfPurchase = TypeOfPurchase.Free; }">
+                                                <input type="radio" id="price_free" name="price" class="prices custom-radio" value="0" @onclick="() => { searchCourseParam.TypeOfPurchase = TypeOfPurchase.Free; SearchCourseByCondition(); }">
                                                 <label for="price_free">Miễn phí</label>
                                             </div>
                                             <div class="">
-                                                <input type="radio" id="paid" name="price" class="prices custom-radio" value="1" @onclick="() => { searchCourseParam.TypeOfPurchase = TypeOfPurchase.Paid; }">
+                                                <input type="radio" id="paid" name="price" class="prices custom-radio" value="1" @onclick="() => { searchCourseParam.TypeOfPurchase = TypeOfPurchase.Paid; SearchCourseByCondition(); }">
                                                 <label for="price_free">Trả phí</label>
                                             </div>
                                             <div class="">
-                                                <input type="radio" id="not-for-retail" name="price" class="prices custom-radio" value="2" @onclick="() => { searchCourseParam.TypeOfPurchase = TypeOfPurchase.NotForRetail; }">
+                                                <input type="radio" id="not-for-retail" name="price" class="prices custom-radio" value="2" @onclick="() => { searchCourseParam.TypeOfPurchase = TypeOfPurchase.NotForRetail; SearchCourseByCondition(); }">
                                                 <label for="price_paid">Không bán lẻ</label>
                                             </div>
                                         </li>
@@ -63,29 +65,29 @@
                                 </div>
                             </div>
                             <hr>
-                            <div class="filter_type px-4">
+                            @* <div class="filter_type px-4">
                                 <h5 class="fw-700 mb-3">Cấp độ</h5>
                                 <ul>
                                     <li>
                                         <div class="">
-                                                <input type="radio" id="all" name="level" class="level custom-radio" value="all" onclick="filter(this)" checked="">
+                                            <input type="radio" id="all" class="level custom-radio" value="all" @onchange="() => OnTagSelected(null)">
                                                 <label for="all">Tất cả</label>
                                             </div>
-                                        @if (tagList != null && tagList.Count > 0)
-                                        {
-                                            for (int i = 0; i < tagList.Count; i++)
+                                            @if (tagList != null && tagList.Count > 0)
                                             {
-                                                var currentTag = tagList[i];
+                                                for (int i = 0; i < tagList.Count; i++)
+                                                {
+                                                    var currentTag = tagList[i];
                                             
-                                                <div class="">
-                                                <input type="radio" name="level" class="level custom-radio" value="@searchCourseParam.TagId" @onclick="() => { searchCourseParam.TagId = currentTag.Id; }">
-                                                <label for="beginner">@currentTag.TagName</label>
-                                            </div>
+                                                    <div class="">
+                                                        <input id="@currentTag.Id" type="radio" class="level custom-radio" value="@currentTag.Id" @onchange="(() => OnTagSelected(currentTag.Id.ToString()))" >
+                                                        <label for="beginner">@currentTag.TagName</label>
+                                                    </div>
+                                                }
                                             }
-                                        }
                                     </li>
                                 </ul>
-                            </div>
+                            </div> *@
                             <hr>
                             <hr>
                             <div class="filter_type px-4">
@@ -93,13 +95,13 @@
                                 <ul>
                                     <li>
                                         <div class="">
-                                            <input type="radio" id="all_rating" name="rating" class="ratings custom-radio" value="all" @onclick="() => { searchCourseParam.Rating = null; }" checked="">
+                                            <input type="radio" id="all_rating" name="rating" class="ratings custom-radio" value="all" @onclick="() => { searchCourseParam.Rating = null; SearchCourseByCondition();}" checked="">
                                             <label for="all_rating">Tất cả</label>
                                         </div>
                                     </li>
                                     <li>
                                         <div class="">
-                                            <input type="radio" id="rating_1" name="rating" class="ratings custom-radio" value="1" @onclick="() => { searchCourseParam.Rating = 1; }">
+                                            <input type="radio" id="rating_1" name="rating" class="ratings custom-radio" value="1" @onclick="() => { searchCourseParam.Rating = 1; SearchCourseByCondition();}">
                                             <label for="rating_1">
                                                 <i class="fas fa-star" style="color: #f4c150;"></i>
                                                 <i class="far fa-star" style="color: #dedfe0;"></i>
@@ -111,7 +113,7 @@
                                     </li>
                                     <li>
                                         <div class="">
-                                            <input type="radio" id="rating_2" name="rating" class="ratings custom-radio" value="2" @onclick="() => { searchCourseParam.Rating = 2; }">
+                                            <input type="radio" id="rating_2" name="rating" class="ratings custom-radio" value="2" @onclick="() => { searchCourseParam.Rating = 2; SearchCourseByCondition();}">
                                             <label for="rating_2">
                                                 <i class="fas fa-star" style="color: #f4c150;"></i>
                                                 <i class="fas fa-star" style="color: #f4c150;"></i>
@@ -123,7 +125,7 @@
                                     </li>
                                     <li>
                                         <div class="">
-                                            <input type="radio" id="rating_3" name="rating" class="ratings custom-radio" value="3" @onclick="() => { searchCourseParam.Rating = 3; }">
+                                            <input type="radio" id="rating_3" name="rating" class="ratings custom-radio" value="3" @onclick="() => { searchCourseParam.Rating = 3; SearchCourseByCondition();}">
                                             <label for="rating_3">
                                                 <i class="fas fa-star" style="color: #f4c150;"></i>
                                                 <i class="fas fa-star" style="color: #f4c150;"></i>
@@ -135,7 +137,7 @@
                                     </li>
                                     <li>
                                         <div class="">
-                                            <input type="radio" id="rating_4" name="rating" class="ratings custom-radio" value="4" @onclick="() => { searchCourseParam.Rating = 4; }">
+                                            <input type="radio" id="rating_4" name="rating" class="ratings custom-radio" value="4" @onclick="() => { searchCourseParam.Rating = 4; SearchCourseByCondition();}">
                                             <label for="rating_4">
                                                 <i class="fas fa-star" style="color: #f4c150;"></i>
                                                 <i class="fas fa-star" style="color: #f4c150;"></i>
@@ -147,7 +149,7 @@
                                     </li>
                                     <li>
                                         <div class="">
-                                            <input type="radio" id="rating_5" name="rating" class="ratings custom-radio" value="5" @onclick="() => { searchCourseParam.Rating = 5; }">
+                                            <input type="radio" id="rating_5" name="rating" class="ratings custom-radio" value="5" @onclick="() => { searchCourseParam.Rating = 5; SearchCourseByCondition();}">
                                             <label for="rating_5">
                                                 <i class="fas fa-star" style="color: #f4c150;"></i>
                                                 <i class="fas fa-star" style="color: #f4c150;"></i>
@@ -168,10 +170,11 @@
                     <div class="col-md-6">
                         <!--<button class="btn py-1 px-2 mx-2 btn-light" onclick="toggleLayout('grid')"><i class="fas fa-th-large"></i></button>-->
                         <!--<button class="btn py-1 px-2 mx-2 btn-light" onclick="toggleLayout('list')"><i class="fas fa-list"></i></button>-->
-                        <span class="text-12px fw-700 text-muted">Đang hiển thị 6 Of 14 Kết quả</span>
+                        @* <span class="text-12px fw-700 text-muted">Đang hiển thị 6 Of 14 Kết quả</span> *@
+                        <span class="text-12px fw-700 text-muted">Đang hiển thị @(courseList != null ? courseList.Count : 0) Kết quả</span>
                     </div>
                     <div class="col-md-6 text-end filter-sort-by">
-                        <span>Sắp xếp theo : </span>
+                        @* <span>Sắp xếp theo : </span>
                         <div class="dropdown d-inline-block">
 
                             <!-- hidden field of sorting value -->
@@ -185,76 +188,89 @@
                                     <DropdownItem To="#" Type="ButtonType.Link">Giá cao nhất</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
-                        </div>
+                        </div> *@
                     </div>
                 </div>
                 <div class="category-course-list">
                     <ul>
                         <li>
-                            <div class="course-box-2">
-                                <div class="course-image">
-                                    <a href="https://4user.net/home/course/practical-exam-prj/83">
-                                        <img src="https://4user.net/uploads/thumbnails/course_thumbnails/optimized/course_thumbnail_default_831709917460.jpg" alt="" class="img-fluid">
-                                    </a>
-                                </div>
-                                <div class="course-details">
-                                    <a href="https://4user.net/home/course/practical-exam-prj/83" class="course-title">Practical Exam PRJ</a>
-
-                                    <div class="course-subtitle d-none d-md-block">
-                                    </div>
-
-                                    <div class="course-meta">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <span class="">
-                                                    <i class="fas fa-play-circle"></i>
-                                                    21 Bài học
-                                                </span>
-                                                <span class="">
-                                                    <i class="far fa-clock"></i>
-                                                    09:53:49 Giờ
-                                                </span>
-                                                <span class=""><i class="fas fa-closed-captioning"></i>Tiếng anh</span>
-                                                <hr class="bg-white my-1">
-                                                <span class="badge badge-primary"><i class="fa fa-level-up"></i>Người mới bắt đầu</span>
-                                                <button class="btn-compare-sm" onclick="event.stopPropagation(); $(location).attr('href', 'https://4user.net/home/compare?course-1=practical-exam-prj&amp;&amp;course-id-1=83');"><i class="fas fa-retweet"></i>Compare</button>
-                                            </div>
+                            @if (courseList != null && courseList.Count >0)
+                            {
+                                for (int i = 0; i < courseList.Count; i++)
+                                {
+                                    var currentItem = courseList[i];
+                                    <div class="course-box-2">
+                                        <div class="course-image">
+                                            <a @onclick="(() => NavigateToDetails(currentItem.Id))">
+                                                <img src="@GetLinkImage(currentItem.ImgCourse)" alt="" class="img-fluid">
+                                            </a>
                                         </div>
+                                        <div class="course-details">
+                                            <a class="course-title" @onclick="(() => NavigateToDetails(currentItem.Id))">@currentItem.CourseName</a>
 
+                                            <div class="course-subtitle d-none d-md-block">
+                                            </div>
 
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="floating-user d-inline-block">
-                                                    <img src="https://4user.net/uploads/user_image/optimized/6981af2b9220e61af0f42817a2574122.jpg" width="30px" data-bs-toggle="tooltip" data-bs-placement="top" title="" onclick="event.stopPropagation(); $(location).attr('href', 'https://4user.net/home/instructor_page/1');" data-bs-original-title="4 User" aria-label="4 User">
+                                            <div class="course-meta">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <span class="">
+                                                            <i class="fas fa-play-circle"></i>
+                                                            @currentItem.TotalLectures Bài học
+                                                        </span>
+                                                        <span class="">
+                                                            <i class="far fa-clock"></i>
+                                                            @currentItem.TotalHourTime Giờ
+                                                        </span>
+                                                        @* <span class=""><i class="fas fa-closed-captioning"></i>Tiếng anh</span> *@
+                                                        <hr class="bg-white my-1">
+                                                        @if(currentItem.TagList != null && currentItem.TagList.Count > 0)
+                                                        {
+                                                            for (int j = 0; j < currentItem.TagList.Count; j++)
+                                                            {
+                                                                var currentTag = currentItem.TagList[j];
+                                                                <span class="badge badge-primary"><i class="fa fa-level-up"></i>@currentTag</span>
+                                                            }
+                                                        }
+                                                        
+                                                        @* <button class="btn-compare-sm" onclick="event.stopPropagation(); $(location).attr('href', 'https://4user.net/home/compare?course-1=practical-exam-prj&amp;&amp;course-id-1=83');"><i class="fas fa-retweet"></i>Compare</button> *@
+                                                    </div>
                                                 </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="floating-user d-inline-block">
+                                                            <img src="@GetLinkImage(currentItem.ImgTeacher)" width="30px" data-bs-toggle="tooltip" data-bs-placement="top" title="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </div>
-
+                                        <div class="course-price-rating">
+                                            <div class="course-price">
+                                                <span class="current-price">₫@currentItem.Price</span>
+                                            </div>
+                                            <div class="rating">
+                                                <i class="fas fa-star @(currentItem.Rating > 0 ? "filled":"")"></i>
+                                                <i class="fas fa-star @(currentItem.Rating > 1 ? "filled":"")"></i>
+                                                <i class="fas fa-star @(currentItem.Rating > 2 ? "filled":"")"></i>
+                                                <i class="fas fa-star @(currentItem.Rating > 3 ? "filled":"")"></i>
+                                                <i class="fas fa-star @(currentItem.Rating > 4 ? "filled":"")"></i>
+                                                <span class="d-inline-block average-rating">@currentItem.Rating</span>
+                                            </div>
+                                            <div class="rating-number">
+                                                @currentItem.TotalPerRating Xếp hạng
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="course-price-rating">
-                                    <div class="course-price">
-                                        <span class="current-price">₫300,000</span>
-                                    </div>
-                                    <div class="rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <span class="d-inline-block average-rating">0</span>
-                                    </div>
-                                    <div class="rating-number">
-                                        0 Xếp hạng
-                                    </div>
-                                </div>
-                            </div>
+                                }
+                            }
                         </li>
                     </ul>
                 </div>
-                <nav>
+               @*  <nav>
                     <ul class="pagination justify-content-center"><li class="page-item active disabled"> <span class="page-link">1</span></li><li class="page-item"><a @onclick='() => NavigateToUrl("/course")' data-ci-pagination-page="2">2</a></li><li class="page-item"><a href="https://4user.net/home/courses/12" data-ci-pagination-page="3">3</a></li><li class="page-item"><a href="https://4user.net/home/courses/6" data-ci-pagination-page="2" rel="next"><i class="fas fa-chevron-right"></i></a></li></ul>
-                </nav>
+                </nav> *@
             </div>
         </div>
     </div>
@@ -262,20 +278,38 @@
 <script src="js/Page/Course/course.js"></script>
 
 @code {
-    private SearchCourseParam searchCourseParam { get; set; }
+    private SearchCourseParam searchCourseParam { get; set; } = new SearchCourseParam();
+    private List<CourseGeneric> courseList { get; set; }
     private List<Tag> tagList { get; set; }
     protected override async Task OnInitializedAsync()
     {
         // lấy danh sách tag
         tagList = await _tagService.GetAllTag();
+        await SearchCourseByCondition();
         StateHasChanged();
     }
 
-    private string SearchCourseByCondition()
+    private async Task SearchCourseByCondition()
     {
         if (searchCourseParam != null)
         {
-            
+            courseList = await _courseService.GetCourseSearchCourseByCondition(searchCourseParam);
+            StateHasChanged();
         }
+    }
+
+    private bool IsCheckedTag(Guid? tagId)
+    {
+        return (searchCourseParam.TagId == null && tagId == null) || searchCourseParam.TagId == tagId;
+    }
+
+    private void OnTagSelected(string tagId)
+    {
+        // searchCourseParam.TagId = Guid.Parse(tagId);
+    }
+
+    private void NavigateToDetails(Guid detailId)
+    {
+        NavigateToUrl($"/course/details/{detailId}");
     }
 }

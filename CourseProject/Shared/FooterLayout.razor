@@ -1,8 +1,16 @@
-﻿@using CourseProject.Shared.Footer
+﻿@using CourseProject.Common.Constant
+@using CourseProject.Shared.Footer
 @inject NavigationManager _navigationManager;
 @inherits AuthorBaseComponent
-
-@if (isUser)
+@if (role == RoleConstant.Admin)
+{
+    <FooterAdmin></FooterAdmin>
+}
+else if (role == RoleConstant.Teacher)
+{
+    <FooterTeacher></FooterTeacher>
+}
+else
 {
     <FooterUser></FooterUser>
 }
@@ -10,7 +18,7 @@
 <RatingComponent></RatingComponent>
 
 @code {
-    private bool isUser { get; set; } = true;
+    private string role { get; set; } = RoleConstant.Customer;
     protected override async Task OnInitializedAsync()
     {
         var currentUri = _navigationManager.Uri;
@@ -18,7 +26,18 @@
         if (segments.Contains("teacher"))
         {
             // gồm dẫn teacher thì là sang phần teacher
-            isUser = false;
+            role = RoleConstant.Teacher;
+            StateHasChanged();
+        }
+        else if (segments.Contains("admin"))
+        {
+            role = RoleConstant.Admin;
+            StateHasChanged();
+        }
+        else
+        {
+            role = RoleConstant.Customer;
+            StateHasChanged();
         }
     }
 }

@@ -38,6 +38,7 @@
     <Compile Include="Common\MiddleWare\LanguageMiddleware.cs" />
     <Compile Include="Common\Repository\CourseContext.cs" />
     <Compile Include="Common\Repository\UnitOfWork.cs" />
+    <Compile Include="Common\Ulti\ExtensionUlti.cs" />
     <Compile Include="Common\Ulti\HashCodeUlti.cs" />
     <Compile Include="Controller\AccountController.cs" />
     <Compile Include="Controller\Base\BaseController.cs" />

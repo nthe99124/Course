@@ -105,9 +105,9 @@ namespace CourseProject.API.Repositories
             }
             var result = await GetDataBySorted(courseGeneric, sortedList);
             
-            if (result != null && result.Count() > 0)
+            if (result != null && result.Count() > 0 && courseNumber != null && courseNumber > 0)
             {
-                result = result.Take(courseNumber);
+                result = result.Take((int)courseNumber);
             }
             return result.ToList();
         }

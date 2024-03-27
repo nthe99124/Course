@@ -4,6 +4,8 @@ using static CourseProject.Model.Enum.DataType;
 
 namespace CourseProject.Model.ViewModel.Course;
 
+namespace CourseProject.Model.ViewModel.Course;
+
 public class CourseGeneric
 {
     public Guid Id { get; set; }
@@ -24,17 +26,17 @@ public class CourseGeneric
         }
         private set { }
     }
-
     public List<Guid> TagIdList
     {
         get
         {
-            return TagId?.Split(',').ToList<Guid>() ?? new List<Guid>();
+            return TagId?.Split(',').Select(Guid.Parse)
+                     .ToList() ?? new List<Guid>();
         }
         private set { }
     }
-    public string TagString { get; set; }
     public string TagId { get; set; }
+    public string TagString { get; set; }
     public string ImgTeacher { get; set; }
     public string TeacherName { get; set; }
     public string TotalHourTime

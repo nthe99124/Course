@@ -34,32 +34,6 @@ namespace CourseProject.API.Services
         }
 
         #region Private Method
-        public void InsertLogLevel(string message, string requestApi, string logLevel)
-        {
-            var listLogLevel = _cache.GetValueCache<List<string>>(CacheKeyConstant.LogLevel);
-            if (listLogLevel == null)
-            {
-                var cacheConfig = _config.GetSection(CacheKeyConstant.LogLevel).ToString();
-                if (cacheConfig != null)
-                {
-                    listLogLevel = JsonSerializer.Deserialize<List<string>>(cacheConfig);
-                    _cache.SetString(CacheKeyConstant.LogLevel, JsonSerializer.Serialize(cacheConfig));
-                }
-            }
-
-            if (listLogLevel != null && listLogLevel.Count > 0 && listLogLevel.Contains(logLevel))
-            {
-                var logEntry = new LogEntry
-                {
-                    LogLevel = logLevel,
-                    Message = message,
-                    RequestApi = requestApi
-
-                };
-                _unitOfWork.LogEntryRepository.Create(logEntry);
-                _unitOfWork.Commit();
-            }
-        }
         #endregion
     }
 }

@@ -14,6 +14,7 @@ namespace CourseProject.Services
         Task<List<CourseGeneric>> GetTop10NewCourse();
         Task<List<MyCourseVM>> GetListCourseByUser();
         Task<CourseDetailVM> GetDetailCourse(Guid courseId);
+        Task<List<CourseGeneric>> GetCourseSearchCourseByCondition(SearchCourseParam searchCourseParam);
     }
 
     public class CourseService : BaseService, ICourseService
@@ -68,14 +69,14 @@ namespace CourseProject.Services
         }
 
         /// <summary>
-        /// Hàm xử lý lấy lấy chi tiết khóa học
+        /// Hàm xử lý lấy danh sách khóa học
         /// CreatedBy ntthe 24.03.2024
         /// </summary>
         /// <returns></returns>
-        public async Task<CourseDetailVM> GetCourseSearchCourseByCondition(SearchCourseParam searchCourseParam)
+        public async Task<List<CourseGeneric>> GetCourseSearchCourseByCondition(SearchCourseParam searchCourseParam)
         {
             var url = CourseApiUrlDef.GetCourseSearchCourseByCondition();
-            return await RequestAuthenPostAsync<CourseDetailVM>(url,searchCourseParam);
+            return await RequestPostAsync<List<CourseGeneric>>(url,searchCourseParam);
         }
         
     }

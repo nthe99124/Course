@@ -144,6 +144,7 @@ services.AddTransient<IUnitOfWork, UnitOfWork>();
 //Service
 services.AddScoped<IAccountService, AccountService>();
 services.AddScoped<ICourseService, CourseService>();
+services.AddScoped<ITagService, TagService>();
 
 //Ulti
 services.AddTransient<IFileUlti, FileUlti>();

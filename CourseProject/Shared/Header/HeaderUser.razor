@@ -1,5 +1,7 @@
 ﻿@inherits AuthorBaseComponent
-
+<link rel="stylesheet" href="css/Common/main.css">
+<link rel="stylesheet" href="css/Common/responsive.css">
+<link rel="stylesheet" href="css/Common/custom.css">
 <div class="sub-header py-0">
     <div class="container-xl">
         <div class="row">
@@ -167,7 +169,7 @@
                     <li class="user-dropdown-menu-item" @onclick='() => NavigateToUrl("/user/my_wishlist")'><a><i class="far fa-heart"></i>Khóa học yêu thích</a></li>
                     <li class="user-dropdown-menu-item" @onclick='() => NavigateToUrl("/user/purchase_history")'><a><i class="fas fa-shopping-cart"></i>Lịch sử mua hàng</a></li>
                     <li class="user-dropdown-menu-item" @onclick='() => NavigateToUrl("/user/user_profile")'><a ><i class="fas fa-user"></i>Hồ sơ người dùng</a></li>
-                    <li class="dropdown-user-logout user-dropdown-menu-item radius-bottom-10" @onclick='() => NavigateToUrl("/user/logout")'><a class="radius-bottom-10 py-3"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+                    <li class="dropdown-user-logout user-dropdown-menu-item radius-bottom-10" @onclick='LogoutAction'><a class="radius-bottom-10 py-3"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
                     <div class="mobile-menu-helper-bottom"></div>
                 </ul>
             </div>
@@ -309,5 +311,12 @@
             //     StateHasChanged();
             // }
         }
+    }
+
+    protected async Task LogoutAction()
+    {
+        NavigateToUrl("/login");
+
+        // xóa infor cache
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CourseProject.API.Common.Cache;
 using CourseProject.API.Common.Repository;
+using CourseProject.API.Common.Ulti;
 using CourseProject.API.Services.Base;
 using CourseProject.Model.DTO;
 using CourseProject.Model.ViewModel.Course;
@@ -140,7 +141,7 @@ namespace CourseProject.API.Services
         /// CreatedBy ntthe 24.03.2024
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<CourseGeneric> GetCourseSearchCourseByCondition(SearchCourseParam searchCourseParam)
+        public async Task<IEnumerable<CourseGeneric>> GetCourseSearchCourseByCondition(SearchCourseParam searchCourseParam)
         {
             var sortedList = new List<SortedPaging>();
             Expression<Func<CourseGeneric, bool>> predicateFilter = null;
@@ -151,12 +152,12 @@ namespace CourseProject.API.Services
 
             if (searchCourseParam.TagId != null)
             {
-                predicateFilter = PedicateAnd(predicateFilter, (item => item.TagIdList.Contains((Guid)searchCourseParam.TagId) ));
+                predicateFilter = predicateFilter != null? ExtensionUlti.PedicateAnd(predicateFilter, (item => item.TagIdList.Contains((Guid)searchCourseParam.TagId) )): (item => item.TagIdList.Contains((Guid)searchCourseParam.TagId));
             }
 
             if (searchCourseParam.Rating != null)
             {
-                predicateFilter = PedicateAnd(predicateFilter, (item => item.Rating == searchCourseParam.Rating));
+                predicateFilter = predicateFilter != null ? ExtensionUlti.PedicateAnd(predicateFilter, (item => item.Rating == searchCourseParam.Rating)) : (item => item.Rating == searchCourseParam.Rating);
             }
 
             if (searchCourseParam.SortField != null)
@@ -166,16 +167,31 @@ namespace CourseProject.API.Services
                     searchCourseParam.SortField
                 };
             }
-            var result = _unitOfWork.CourseRepository.GetCourseByCondition(null, sortedList, predicateFilter);
+            var result = await _unitOfWork.CourseRepository.GetCourseByCondition(null, sortedList, predicateFilter);
             return result;
         }
 
+        /// <summary>
+        /// Hàm xử lý thêm mới master khóa học
+        /// CreatedBy ntthe 24.03.2024
+        /// </summary>
+        /// <returns></returns>
+        //public IEnumerable<MyCourseVM> CreateCourseMaster()
+        //{
+        //    var accId = GetUserAuthen()?.AccoutantId;
+
+        //    if (accId != null)
+        //    {
+        //        //return _unitOfWork.CourseRepository.Create((Guid)accId);
+        //    }
+        //    else
+        //    {
+        //        return null;
+        //    }
+        //}
+
         #region Private Method
-        public static Expression<Func<T, bool>> PedicateAnd<T>(this Expression<Func<T, bool>> expr1, Expression<Func<T, bool>> expr2)
-        {
-            var invokedExpr = Expression.Invoke(expr2, expr1.Parameters);
-            return Expression.Lambda<Func<T, bool>>(Expression.AndAlso(expr1.Body, invokedExpr), expr1.Parameters);
-        }
+
         #endregion
     }
 }

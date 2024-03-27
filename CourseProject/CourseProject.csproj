@@ -37,7 +37,9 @@
 		<None Remove="Pages\Course\Course.razor" />
 		<None Remove="Pages\Course\CourseDetail.razor" />
 		<None Remove="Shared\ComponentBase\BaseComponentCustom.razor" />
+		<None Remove="Shared\Footer\FooterTeacher.razor" />
 		<None Remove="Shared\Footer\FooterUser.razor" />
+		<None Remove="Shared\Header\HeaderAdmin.razor" />
 		<None Remove="Shared\MainLayout.razor.css" />
 		<None Remove="Shared\NavMenu.razor.css" />
 	</ItemGroup>
@@ -53,9 +55,11 @@
 		<Content Include="Pages\_Host.cshtml" />
 		<Content Include="Properties\launchSettings.json" />
 		<Content Include="Shared\ComponentBase\BaseComponentCustom.razor" />
+		<Content Include="Shared\Footer\FooterTeacher.razor" />
+		<Content Include="Shared\Header\HeaderAdmin.razor" />
 		<Content Include="Shared\MainLayout.razor" />
 		<Content Include="Shared\Footer\FooterUser.razor" />
-		<Content Include="Shared\Footer\FooterTeacher.razor" />
+		<Content Include="Shared\Footer\FooterAdmin.razor" />
 		<Content Include="Shared\FooterLayout.razor" />
 		<Content Include="Shared\Header\HeaderUser.razor" />
 		<Content Include="Shared\Header\HeaderTeacher.razor" />
@@ -67,6 +71,7 @@
 		<Content Include="Shared\MainLayout.razor.css" />
 		<Content Include="Shared\NavMenu.razor.css" />
 		<Content Include="Pages\Home.razor" />
+		<Content Include="Pages\Admin\CourseManager.razor" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -79,5 +79,31 @@ namespace CourseProject.API.Controller
             _res.SuccessEventHandler(dataResult);
             return Ok(_res);
         }
+
+        /// <summary>
+        /// Hàm xử lý tìm kiếm khóa học theo param truyền xuống
+        /// CreatedBy ntthe 24.03.2024
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetCourseSearchCourseByCondition")]
+        public async Task<IActionResult> GetCourseSearchCourseByCondition(SearchCourseParam searchCourseParam)
+        {
+            var dataResult = await _courseService.GetCourseSearchCourseByCondition(searchCourseParam);
+            _res.SuccessEventHandler(dataResult);
+            return Ok(_res);
+        }
+
+        /// <summary>
+        /// Hàm xử lý thêm mới master khóa học
+        /// CreatedBy ntthe 24.03.2024
+        /// </summary>
+        /// <returns></returns>
+        //[HttpPost("GetCourseSearchCourseByCondition")]
+        //public async Task<IActionResult> CreateCourseMaster(SearchCourseParam searchCourseParam)
+        //{
+        //    var dataResult = await _courseService.CreateCourseMaster(searchCourseParam);
+        //    _res.SuccessEventHandler(dataResult);
+        //    return Ok(_res);
+        //}
     }
 }
