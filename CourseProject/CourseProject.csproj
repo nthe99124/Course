@@ -74,6 +74,8 @@
 		<Content Include="Shared\NavMenu.razor.css" />
 		<Content Include="Pages\Home.razor" />
 		<Content Include="Pages\Admin\CourseManager.razor" />
+		<Content Include="Pages\Admin\CourseDetail.razor" />
+		<Content Include="Pages\Admin\Lession.razor" />
 	</ItemGroup>
 
 	<ItemGroup>

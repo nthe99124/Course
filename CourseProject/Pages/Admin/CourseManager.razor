@@ -1,5 +1,6 @@
 ﻿@page "/admin/course"
 @using CourseProject.Model.ViewModel.Course
+
 <link href="https://hocvienthueonline.edubit.vn/statics/plugins/player/7.20.2/video-js.css" rel="stylesheet">
 <link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/plugins/player/videojs-watermark/videojs-watermark.css">
 <link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/plugins/player/videojs-resolution-switcher/videojs-resolution-switcher.css">
@@ -633,7 +634,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button class="btn btn-success button-step" onclick="LHM.courses.saveSettingCourse();" type="button"><i class="fa fa-save"></i> Cập nhật </button>
+                                <a href="/admin/course-detail" class="btn btn-success button-step" onclick="LHM.courses.saveSettingCourse();" type="button">
+                                    <i class="fa fa-save"></i> Cập nhật 
+                                </a>
                            </form>
                         </div>
                     </div>
