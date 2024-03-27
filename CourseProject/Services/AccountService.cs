@@ -5,7 +5,7 @@ using CourseProject.Services.ApiUrldefinition;
 using CourseProject.Services.Base;
 using Microsoft.JSInterop;
 
-namespace StoriesProject.Services
+namespace CourseProject.Services
 {
     public interface IAccountService : IBaseService
     {
@@ -15,6 +15,7 @@ namespace StoriesProject.Services
         Task<ResponseOutput<UserInforGeneric>> UpdateUserInfor(AccountUpdate account);
         Task<ResponseOutput<string>> ChangePassword(ChangPasswordVM password);
         Task<ResponseOutput<string>> Logout();
+        Task<Dictionary<Guid, string>> GetTeacherList();
     }
 
     public class AccountService : BaseService, IAccountService
@@ -88,6 +89,17 @@ namespace StoriesProject.Services
         {
             var url = AccountApiUrlDef.Logout();
             return await RequestFullPostAsync<string>(url);
+        }
+
+        /// <summary>
+        /// Hàm xử lý lấy danh sách giảng viên
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
+        public async Task<Dictionary<Guid, string>> GetTeacherList()
+        {
+            var url = AccountApiUrlDef.GetTeacherList();
+            return await RequestAuthenGetAsync<Dictionary<Guid, string>>(url);
         }
     }
 }

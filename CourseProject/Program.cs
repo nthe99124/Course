@@ -8,8 +8,6 @@ using CourseProject.Services;
 using CourseProject.Services.Base;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Localization;
-using StoriesProject.Services;
-using Syncfusion.Blazor;
 using System.Globalization;
 
 #region Config service

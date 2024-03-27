@@ -13,7 +13,7 @@ public partial class Course
     public string CourseName { get; set; }
 
     [Description("Số sao đánh giá")]
-    public double? Rating { get; set; }
+    public double Rating { get; set; } = 0;
 
     [Description("Người tạo")]
     public Guid? CreatedBy { get; set; }
@@ -34,7 +34,7 @@ public partial class Course
     public decimal Price { get; set; } = 0;
 
     [Description("Giá sau khuyến mãi")]
-    public decimal? PriceAfterDiscount { get; set; } = 0;
+    public decimal PriceAfterDiscount { get; set; } = 0;
 
     [Description("Ảnh khóa học")]
     public string ImgCourse { get; set; }

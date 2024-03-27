@@ -1,4 +1,6 @@
-﻿using CourseProject.API.Controller.Base;
+﻿using CourseProject.API.Common.Attribute;
+using CourseProject.API.Common.Constant;
+using CourseProject.API.Controller.Base;
 using CourseProject.API.Services;
 using CourseProject.Model.ViewModel;
 using CourseProject.Model.ViewModel.Course;
@@ -20,6 +22,7 @@ namespace CourseProject.API.Controller
         /// </summary>
         /// <returns></returns>
         [HttpPost("CreateLession")]
+        [Roles(RoleConstant.Admin, RoleConstant.Teacher)]
         public async Task<IActionResult> CreateLession(LessionCreateParam lession)
         {
             _res = await _lessionService.CreateLession(lession);
@@ -32,6 +35,7 @@ namespace CourseProject.API.Controller
         /// </summary>
         /// <returns></returns>
         [HttpPost("EditLession")]
+        [Roles(RoleConstant.Admin, RoleConstant.Teacher)]
         public async Task<IActionResult> EditLession(LessionEditParam lession)
         {
             _res = await _lessionService.EditLession(lession);
@@ -43,6 +47,7 @@ namespace CourseProject.API.Controller
         /// </summary>
         /// <returns></returns>
         [HttpPost("DeleteLession")]
+        [Roles(RoleConstant.Admin, RoleConstant.Teacher)]
         public async Task<IActionResult> DeleteLession(LessionDeleteParam lession)
         {
             _res = await _lessionService.DeleteLession(lession);

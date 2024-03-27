@@ -1,4 +1,6 @@
-﻿using CourseProject.API.Controller.Base;
+﻿using CourseProject.API.Common.Attribute;
+using CourseProject.API.Common.Constant;
+using CourseProject.API.Controller.Base;
 using CourseProject.API.Services;
 using CourseProject.Model.ViewModel;
 using CourseProject.Model.ViewModel.Course;
@@ -20,6 +22,7 @@ namespace CourseProject.API.Controller
         /// </summary>
         /// <returns></returns>
         [HttpPost("CreateChapter")]
+        [Roles(RoleConstant.Admin, RoleConstant.Teacher)]
         public async Task<IActionResult> CreateChapter(ChapterCreateParam chapter)
         {
             _res = await _chapterService.CreateChapter(chapter);
@@ -32,6 +35,7 @@ namespace CourseProject.API.Controller
         /// </summary>
         /// <returns></returns>
         [HttpPost("EditChapter")]
+        [Roles(RoleConstant.Admin, RoleConstant.Teacher)]
         public async Task<IActionResult> EditChapter(ChapterEditParam chapter)
         {
             _res = await _chapterService.EditChapter(chapter);

@@ -14,4 +14,7 @@ public class CreateCourseVM
     public decimal? PriceAfterDiscount { get; set; }
     public TypeOfTerm TypeOfTerm { get; set; }
     public int DateMonthLearn { get; set; } = 0;
+    public string VideoDescription { get; set; }
+    public string ImgCourse { get; set; }
+    public FileBase64Infor ImgCourseFile { get; set; }
 }

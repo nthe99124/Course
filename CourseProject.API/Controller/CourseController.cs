@@ -1,4 +1,6 @@
-﻿using CourseProject.API.Common.Ulti;
+﻿using CourseProject.API.Common.Attribute;
+using CourseProject.API.Common.Constant;
+using CourseProject.API.Common.Ulti;
 using CourseProject.API.Controller.Base;
 using CourseProject.API.Services;
 using CourseProject.Model.ViewModel;
@@ -47,6 +49,7 @@ namespace CourseProject.API.Controller
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetListCourseByUser")]
+        [Roles(RoleConstant.Customer)]
         public IActionResult GetListCourseByUser()
         {
             var dataResult = _courseService.GetListCourseByUser();
@@ -60,6 +63,7 @@ namespace CourseProject.API.Controller
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetDetailCourse")]
+        [Roles(RoleConstant.Customer)]
         public async Task<IActionResult> GetDetailCourse(Guid courseId)
         {
             var dataResult = await _courseService.GetDetailCourse(courseId);
@@ -86,6 +90,7 @@ namespace CourseProject.API.Controller
         /// </summary>
         /// <returns></returns>
         [HttpPost("CreateCourseMaster")]
+        [Roles(RoleConstant.Admin, RoleConstant.Teacher)]
         public async Task<IActionResult> CreateCourseMaster(CreateCourseVM createCourseParam)
         {
             _res = await _courseService.CreateCourseMaster(createCourseParam);

@@ -1,4 +1,5 @@
-﻿@inherits AuthorBaseComponent
+﻿@inject IAccountService _accountService;
+@inherits AuthorBaseComponent
 <link rel="stylesheet" href="css/Common/main.css">
 <link rel="stylesheet" href="css/Common/responsive.css">
 <link rel="stylesheet" href="css/Common/custom.css">
@@ -315,6 +316,7 @@
 
     protected async Task LogoutAction()
     {
+        await _accountService.Logout();
         NavigateToUrl("/login");
 
         // xóa infor cache

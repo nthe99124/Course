@@ -1,5 +1,13 @@
 ﻿@page "/admin/course"
 @using CourseProject.Model.ViewModel.Course
+@using CourseProject.Services
+@using CourseProject.Shared.ComponentBase
+@using static CourseProject.Model.Enum.DataType
+
+@inject IAccountService _accountService;
+@inject ICourseService _courseService;
+@inherits AuthorBaseComponent
+
 <link href="https://hocvienthueonline.edubit.vn/statics/plugins/player/7.20.2/video-js.css" rel="stylesheet">
 <link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/plugins/player/videojs-watermark/videojs-watermark.css">
 <link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/plugins/player/videojs-resolution-switcher/videojs-resolution-switcher.css">
@@ -16,6 +24,8 @@
 <script type="text/javascript" src="https://hocvienthueonline.edubit.vn/statics/plugins/select/js/select2.min.js"></script>
 <link href="https://hocvienthueonline.edubit.vn/statics/css/common_css.css?v=1.2.7" rel="stylesheet">
 <link href="/css/Page/Admin/courseManager.css" rel="stylesheet">
+
+<Toasts class="p-3" Messages="messages" Placement="toastsPlacement" />
 <div id="detail_course" class="tabs container-page container-page-edit-course">
     <div class="container-fluid bg">
         <div class="container">
@@ -63,11 +73,14 @@
                                                 <div class="row setup-content" id="step-1">
                                                     <div class="form-group col-md-6 has-feedback">
                                                         <label class="control-label"></label>
-                                                        <select class="form-control">
+                                                        <select class="form-control" @bind="@createCourse.Teacher">
                                                             <option>Chọn giảng viên</option>
-                                                            @foreach (var item in listTeacher)
+                                                            @if(listTeacher != null && listTeacher.Count >0)
                                                             {
-                                                                <option value="@item.Key">@item.Value</option>
+                                                                @foreach (var item in listTeacher)
+                                                                {
+                                                                    <option value="@item.Key">@item.Value</option>
+                                                                }
                                                             }
                                                         </select>
                                                     </div>
@@ -78,14 +91,14 @@
                                                             <label class="control-label">Video giới thiệu
                                                                 <a href="#" title="Nhập đường link Youtube giới thiệu về khóa học"></a>
                                                             </label>
-                                                            <input type="text" id="video_ad" value="" name="video_ad" class="form-control input-step" placeholder="https://www.youtube.com/watch?v=m303WqGQPAM">
+                                                            <input type="text" id="video_ad" @bind="createCourse.VideoDescription" name="video_ad" class="form-control input-step" placeholder="https://www.youtube.com/watch?v=m303WqGQPAM">
                                                         </div>
                                                 </div>
                                                 <div class="row setup-content" id="step-1">
                                                         <div class="form-group col-md-12  has-feedback">
                                                             <label class="control-label">Mô tả khóa học 
                                                             </label>
-                                                            <textarea cols="5" class="form-control" id="description_courses" name="description_courses" placeholder="Nhập mô tả khóa học" maxlength="250"></textarea>
+                                                            <textarea cols="5" @bind="createCourse.Description" class="form-control" id="description_courses" name="description_courses" placeholder="Nhập mô tả khóa học" maxlength="250"></textarea>
                                                         </div>
                                                 </div>
                                             </div>
@@ -94,9 +107,10 @@
                                                     <div class="col-md-12 mb-3">
                                                         <p class="control-label">Hình đại diện (500x300)</p>
                                                         <div class="upload-cover">
-                                                            <a href="javascript:;" class="btnupload-thumbnail btnupload" onclick="LHM.courses.fileManagerUnica($(this));">
-                                                            <img src="https://hocvienthueonline.edubit.vn/data/share/no-thumb.png" class="preview-thumbnail">
-                                                            <span class="text-btnupload"><i class="fas fa-image"></i> Chọn ảnh</span></a>
+                                                            <a class="btnupload-thumbnail btnupload">
+                                                            <img id="previewImage" src="" class="preview-thumbnail">
+                                                            <InputFile OnChange="HandleFileSelected" id="fileInput" style="display:none" @ref="fileInput" />
+                                                            <span class="text-btnupload" @onclick="addFile"><i class="fas fa-image"></i> Chọn ảnh</span></a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -109,27 +123,7 @@
                                                     <div class="col-sm-12">
                                                          <label class="control-label">Giới thiệu khóa học <span class="text-danger">*</span>
                                                         </label>
-                                                        <textarea id="course_info" cols="100" name="course_info" rows="10">
-
-                                                        </textarea>
-                                                        
-                                                    </div>
-                                                </div>
-                                                <div class="row section">
-                                                    <!-- <div class="col-sm-12 section">
-                                                        <label class="control-label">Welcome khóa học <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="right" title="Nội dung chào mừng + hướng dẫn khi học viên vào học"></i>
-                                                        </label>
-                                                        <textarea id="welcome_course" cols="100" name="welcome_course" rows="10">
-                                                          
-                                                        </textarea>
-                                                        <script>
-                                                            LHM.common.ckeditor('welcome_course','text')
-                                                        </script>
-                                                    </div> -->
-                                                    <div class="col-sm-12">
-                                                        <label class="control-label">Lợi ích của khóa học <span class="text-danger">*</span>
-                                                        </label>
-                                                        <textarea id="instructors_info" cols="100" rows="10" name="instructors_info">
+                                                        <textarea id="course_info" cols="100" name="course_info" rows="10" @bind="createCourse.Introduce">
 
                                                         </textarea>
                                                         
@@ -147,25 +141,25 @@
                                                         </legend>
                                                         <div class="col-md-12 item-filedset mt-0">
                                                             <label class="label_radio d-flex" style="column-gap: 5px">
-                                                                <input type="radio" value="unlimit" name="type_expired" checked="">
+                                                                <input type="radio" value="unlimit" name="type_expired" checked="" @onchange="() => OnChangeTimePeriod(TypeOfTerm.Lifetime)">
                                                                 <span class="my-auto">Trọn đời</span>
                                                             </label>
                                                             <label class="label_radio d-flex" style="column-gap: 5px">
-                                                                <input type="radio" value="limit" name="type_expired">
+                                                                <input type="radio" value="limit" name="type_expired" @onchange="() => OnChangeTimePeriod(TypeOfTerm.MonthLimit)">
                                                                 <span class="my-auto">Có thời hạn</span>
-                                                                <input type="number" class="form-control input-number" value="0" style="width: 80px" disabled="" name="month_expired" min="1">
+                                                                <input type="number" class="form-control input-number" value="0" style="width: 80px" disabled="@(createCourse.TypeOfTerm == TypeOfTerm.DateLimit)" name="month_expired" min="1">
                                                                 <span class="my-auto">tháng</span>
                                                             </label>
                                                             <label class="label_radio d-flex" style="column-gap: 5px">
-                                                                <input type="radio" value="limit-day" name="type_expired">
+                                                                <input type="radio" value="limit-day" name="type_expired" @onchange="() => OnChangeTimePeriod(TypeOfTerm.DateLimit)">
                                                                 <span class="my-auto">Có thời hạn</span>
-                                                                <input type="number" class="form-control input-number" value="0" style="width: 80px" disabled="" name="day_expired" min="1">
+                                                                <input type="number" class="form-control input-number" value="0" style="width: 80px" disabled="@(createCourse.TypeOfTerm == TypeOfTerm.MonthLimit)" name="day_expired" min="1">
                                                                 <span class="my-auto">ngày</span>
                                                             </label>
                                                         </div>
                                                     </fieldset>
                                                 </div>
-                                                                                                <div class="col-md-12">
+                                                <div class="col-md-12">
                                                     <fieldset class="filedset-site col-md-12">
                                                         <legend class="legend-site">
                                                             <span class="title-legend">Học phí</span>
@@ -178,13 +172,13 @@
                                                                             <div class="form-group mb-0">
                                                                                 <div class="inline-group">
                                                                                     <label class="label_radio">
-                                                                                        <input type="radio" value="free" name="price_check" checked=""> <span class="label-text">Miễn phí</span>
+                                                                                        <input type="radio" value="free" name="price_check" checked="" @onclick="() => { createCourse.TypeOfPurchase = TypeOfPurchase.Free; }"> <span class="label-text">Miễn phí</span>
                                                                                     </label>
                                                                                     <label class="label_radio">
-                                                                                        <input type="radio" value="paid" name="price_check"> <span class="label-text">Trả phí</span>
+                                                                                        <input type="radio" value="paid" name="price_check" @onclick="() => { createCourse.TypeOfPurchase = TypeOfPurchase.Paid; }"> <span class="label-text">Trả phí</span>
                                                                                     </label>
                                                                                     <label class="label_radio">
-                                                                                        <input type="radio" value="no_retail" name="price_check"> <span class="label-text">Không bán lẻ (Bán combo hoặc membership)</span>
+                                                                                        <input type="radio" value="no_retail" name="price_check" @onclick="() => { createCourse.TypeOfPurchase = TypeOfPurchase.NotForRetail; }"> <span class="label-text">Không bán lẻ (Bán combo hoặc membership)</span>
                                                                                     </label>
                                                                                 </div>
                                                                             </div>
@@ -201,17 +195,15 @@
                                                                         <div class="row">
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
-                                                                                    <label class="control-label">Giá
-                                                                                        gốc</label>
-                                                                                    <input type="text" data-a-sign=" " data-p-sign="s" data-unit="đ" data-a-sep="." data-a-dec="," data-m-dec="0" data-v-min="0" value="500000" name="" class="form-control">
-                                                                                <input type="hidden" name="price" id="form-number-1000" value="500000"></div>
+                                                                                    <label class="control-label">Giá gốc</label>
+                                                                                    <input type="text" @bind="createCourse.Price" class="form-control">
+                                                                                </div>
                                                                             </div>
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
-                                                                                    <label class="control-label">Giá
-                                                                                        bán</label>
-                                                                                    <input type="text" data-a-sign=" " data-p-sign="s" data-unit="đ" data-a-sep="." data-a-dec="," data-m-dec="0" value="500000" name="" class="form-control">
-                                                                                <input type="hidden" name="price_sell" id="form-number-1001" value="500000"></div>
+                                                                                    <label class="control-label">Giá bán sau khuyến mại</label>
+                                                                                    <input type="text" @bind="createCourse.PriceAfterDiscount" class="form-control">
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -220,21 +212,17 @@
                                                         </div>
                                                     </fieldset>
                                                 </div>
-                                                
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row setup-content section">
                                         <div class="col-md-10 col-md-offset-1 mt-10">
                                             <div id="save_button">
-                                                <button class="btn btn-success button-step btn-add-edit-course-popup" onclick="LHM.courses.edit_course('64b16ab2e275cb37128b4572');" type="button"><i class="fa fa-save"></i> Cập nhật
-                                                </button>
+                                                <div class="btn btn-successp" type="button" @onclick="async() => await CreateOrUpdateCourse()"><i class="fa fa-save"></i> Cập nhật
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </form>
-                                <form class="manage-attachment" method="POST" enctype="multipart/form-data">
-                                    <input type="file" value="" id="file_course" name="file_course">
                                 </form>
                             </div>
                         </div>
@@ -301,345 +289,6 @@
                         }
                     </style>
                 </div>
-                <div class="tab-pane" id="course-lessons-setting">
-                    <div class="row">
-                        <div class="col-md-12 condition">
-                            <div class="document-course-alert alert alert-danger" role="alert" style="display:none;">
-                             <strong>Khóa học dạng tài liệu nhưng tính năng đã hết hạn!!</strong>
-                            </div>
-                           <form id="form-update-setting-course">
-
-                                <div class="block-condition-course">
-                                     <h4>Điều kiện học khóa học</h4>
-                                     <div class="form-group">
-                                        <div class="inline-group">
-                                            <label class="label_radio">
-                                                <input type="radio" value="1" name="type_open_course" checked=""> <span class="label-text">Luôn mở</span>
-                                            </label>
-                                            <label class="label_radio">
-                                                <input type="radio" value="2" name="type_open_course"> <span class="label-text">Hoàn thành khóa học trước</span>
-                                            </label>
-                                            <div class="row">
-                                                <div class="col-md-4" id="list-course-cond">
-
-                                                </div>
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="block-condition-lesson">
-                                    <h4>Điều kiện mở bài học</h4>
-                                    <label class="label_radio">
-                                        <input type="radio" value="1" name="type_open_lesson" checked=""> <span class="label-text">Mở tất cả bài học</span>
-                                    </label>
-                                    <label class="label_radio">
-                                        <input type="radio" value="2" name="type_open_lesson"> <span class="label-text">Mở từng bài học sau <input type="number" name="open_time_lesson" id="open_time_lesson" value="" min="1" onkeypress="return event.charCode >= 48" class="form-control text-center" disabled=""> ngày</span>
-                                    </label>
-                                    <label class="label_radio">
-                                        <input type="radio" value="3" name="type_open_lesson"> <span class="label-text">Mở bài học tiếp theo sau khi hoàn thành bài trước đó sau <input type="number" name="open_time_next_lesson" id="open_time_next_lesson" value="" min="1" onkeypress="return event.charCode >= 48" class="form-control text-center" disabled=""> ngày</span>
-                                    </label>
-                                </div>
-                               <div class="mt-10">
-                                   <h4>Phần trăm hoàn thành và cấp chứng chỉ(nếu có) khóa học*</h4>
-                                   <div class="row">
-                                       <div class="form-group col-md-6 col-xs-12 col-sm-8">
-                                           <input type="number" id="percent_complete" min="0" max="100" value="100" name="percent_complete" class="form-control input-step">
-                                       </div>
-                                   </div>
-                                   <script>
-                                       $('#percent_complete').keypress(function (e) {
-                                           var key = e.key;
-                                           if(!/\d/.test(key)){
-                                               return false;
-                                           }
-                                           return true;
-                                       });
-                                   </script>
-                               </div>
-                               <div class="">
-                                   <h4>Bài kiểm tra cuối khóa <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="right" title="" data-original-title="Là bài kiểm tra để xét hoàn thành cả khóa học cho học viên"></i></h4>
-                                   <div class="row">
-                                       <div class="form-group col-md-6 col-xs-12 col-sm-8">
-                                           <select name="end_course_quiz" id="end_course_quiz" class="form-control">
-                                               <option value="">-- Chọn đề thi --</option>
-                                                                                              <option value="651ef1cee275cbf47d8b4569">ĐỀ TỔNG ÔN KTC SỐ 8</option>
-                                               
-                                               <option value="650e5be9e275cbce578b4681">ĐỀ TỔNG ÔN KTC SỐ 7</option>
-                                               
-                                               <option value="650258fee275cbde0c8b4567">ĐỀ TỔNG ÔN CHUYÊN NGÀNH SỐ 4</option>
-                                               
-                                               <option value="64fa07c6e275cbc55b8b4567">ĐỀ TỔNG ÔN KTC SỐ 6</option>
-                                               
-                                               <option value="64f8247ce275cbc0788b45a6">ĐỀ TỔNG ÔN KTC SỐ 5</option>
-                                               
-                                               <option value="64f80e44e275cbdc278b4568">Đề tổng ôn chuyên ngành thuế số 3</option>
-                                               
-                                               <option value="64f4b6d6e275cb058f8b4572">Đề tổng ôn KTC số 4</option>
-                                               
-                                               <option value="64f21873e275cb71808b457a">Bài tập thuế TNDN buổi 5 (6/9/2023)</option>
-                                               
-                                               <option value="64f1e214e275cbac208b4567">Bài tập thuế TNDN buổi 4 (1/9/2023)</option>
-                                               
-                                               <option value="64f14428e275cb8f0b8b4569">Đề tổng ôn số 2</option>
-                                               
-                                               <option value="64ed9bfee275cba17c8b456a">Bài tập thuế TNDN buổi 3 (30/8/2023)</option>
-                                               
-                                               <option value="64ecb802e275cb413d8b4569">ĐỀ TỔNG ÔN SỐ 1</option>
-                                               
-                                               <option value="64e97621e275cb45568b4568">Bài tập ngày 26.08.2023</option>
-                                               
-                                               <option value="64e77453e275cb16238b4585">Bài tập thuế TNDN buổi 2 (26/8/2023)</option>
-                                               
-                                               <option value="64e5ffe4e275cb35418b4574">Bài tập thuế TNDN buổi 1 (25/8/2023)</option>
-                                               
-                                               <option value="64e03cede275cbf3bb8b4582">Bài tập ngày 19.08.2023</option>
-                                               
-                                               <option value="64ddb4bae275cb50838b4568">Bài tập ngày 17.08.2023</option>
-                                               
-                                               <option value="64dbb3fce275cbe2918b4569">Bài tập ngày 16.08.2023</option>
-                                               
-                                               <option value="64d5cef7e275cb8d808b4568">Bài tập thuế GTGT (12/08/2023)</option>
-                                               
-                                               <option value="64d50c7be275cbfd368b4575">Bài tập ngày 11.08.2023</option>
-                                               
-                                               <option value="64d27b9fe275cb5a418b4572">Bài tập ngày 10.08.2023</option>
-                                               
-                                               <option value="64cfd6ace275cb614e8b4568">Bài tập thuế GTGT ngày 7/8/2023</option>
-                                               
-                                               <option value="64cd2f25e275cb9b0f8b4567">Bài tập thuế GTGT 4-5 ( 05.08.2023)</option>
-                                               
-                                               <option value="64cb3db2e275cb26538b4593">Bai tap thue gtgt (04.08.2023)</option>
-                                               
-                                               <option value="64c90d09e275cb44ba8b456c">Bài Kiểm tra</option>
-                                               
-                                               <option value="64c296a4e275cbac498b4578">Bài tập về nhà ngày 26.07.2023</option>
-                                               
-                                               <option value="64bb5755e275cb73948b4585">câu hỏi thảo luận 23.07.2023</option>
-                                               
-                                               <option value="64b92e58e275cbdb258b4571">Đề tổng ôn thuế TNDN 20/7/2023</option>
-                                               
-                                               <option value="64b697efe275cbe52a8b4579">Bài tập thuế TNDN buổi 6</option>
-                                               
-                                               <option value="64b0b395e275cbb89a8b4569">Bài tập thuế TNDN buổi 5</option>
-                                               
-                                               <option value="64aee059e275cb2c788b4571">Bài tập thuế TNDN buổi 4</option>
-                                               
-                                               <option value="64a7a9ede275cb1fa18b4570">Đề tổng ôn KTC số 2</option>
-                                               
-                                               <option value="64a57eb8e275cb682f8b456d">Bài tập thuế TNDN (06.07.2023)</option>
-                                               
-                                               <option value="64a1a021e275cb1a2e8b4575">Bài tập thuế TNDN buổi 3</option>
-                                               
-                                               <option value="64a19bdce275cbc72f8b456c">Bài tập Thuế TNCN ngày 27/05/2023</option>
-                                               
-                                               <option value="64a0dbd1e275cbd32e8b456c">lý thuyết ngày 02/07/2023</option>
-                                               
-                                               <option value="648c9068e275cba7248b4588">Bài lý thuyết ngày 18/06/2023</option>
-                                               
-                                               <option value="648b10bee275cb28238b456c">Đề tổng ôn thuế TNCN - 15/06/2023</option>
-                                               
-                                               <option value="6487435de275cb841d8b457e">Bài tập Thuế TNCN ngày 14/06/2023</option>
-                                               
-                                               <option value="648724d2e275cb21818b4571">Đề KTC số 1</option>
-                                               
-                                               <option value="6485c8f0e275cbfd358b457e">Lý thuyết 11/06/2023-copy</option>
-                                               
-                                               <option value="6481fc32e275cbea8f8b4576">Lý thuyết 11/06/2023</option>
-                                               
-                                               <option value="6481f667e275cbea8f8b4570">Bài tập Thuế TNCN ngày 10/06/2023</option>
-                                               
-                                               <option value="647cbb0fe275cb28118b4568">Bài tập Thuế TNCN ngày 07/06/2023</option>
-                                               
-                                               <option value="647ab1a4e275cbf40a8b457d">Câu hỏi lý thuyết thuế TNCN buổi 1 - ngày 04/06/2023</option>
-                                               
-                                               <option value="6478cbdbe275cbd0108b4571">Bài tập thuế TNCN ngày 01/06/2023</option>
-                                               
-                                               <option value="6473483be275cbc10a8b4567">Bài tập Thuế TNCN ngày 27/05/2023</option>
-                                               
-                                               <option value="637cc039e275cb8f0b8b4579">Thuế GTGT- Bài 8</option>
-                                               
-                                               <option value="637cc00ae275cbc10f8b4579">Thuế GTGT- Bài 7</option>
-                                               
-                                               <option value="637cbfa8e275cb46178b4570">Thuế GTGT- Bài 6</option>
-                                               
-                                               <option value="63724fd6e275cb16b98b4586">Thuế TNCN- Bài 11</option>
-                                               
-                                               <option value="63724fabe275cb18b98b457c">Thuế TNCN- Bài 10</option>
-                                               
-                                               <option value="63724f76e275cb1bb98b4579">Thuế TNCN- Bài 9</option>
-                                               
-                                               <option value="63724f3ee275cbbc6d8b4581">Thuế TNCN- Bài 8</option>
-                                               
-                                               <option value="63724efbe275cb8d6e8b458b">Thuế TNCN- Bài 7</option>
-                                               
-                                               <option value="636a31b1e275cb8b8a8b4572">Thuế GTGT Bài 5</option>
-                                               
-                                               <option value="636a317ae275cb4c8a8b4578">Thuế GTGT Bài 4</option>
-                                               
-                                               <option value="6364ff72e275cba5848b4578">Thuế GTGT- Bài 3</option>
-                                               
-                                               <option value="635c7ea2e275cbfea28b456c">Thuế GTGT- Bài 2</option>
-                                               
-                                               <option value="635c7e61e275cbe1a88b456b">Thuế GTGT Bài 1</option>
-                                               
-                                               <option value="632db93ee275cbf7278b456d">Thuế TNDN- Bài 8</option>
-                                               
-                                               <option value="632db910e275cb5f668b4567">Thuế TNDN- Bài 7</option>
-                                               
-                                               <option value="6326e23ee275cb4ea58b4580">Thuế TNDN- Bài 6</option>
-                                               
-                                               <option value="6326e206e275cbf1338b4570">Thuế TNDN- Bài 5</option>
-                                               
-                                               <option value="6321c9aae275cbf5788b4587">Thuế TNDN- Bài 4</option>
-                                               
-                                               <option value="63217a82e275cb88428b456e">Thuế TNDN- Bài 3</option>
-                                               
-                                               <option value="631b5c29e275cb89638b4571">Thuế TNDN- bài 2</option>
-                                               
-                                               <option value="631b397be275cb14418b4574">Thuế TNDN- Bài 1</option>
-                                               
-                                               <option value="6301f89ae275cb8a588b4778">Thuế TNCN nhóm ĐLT- Bài 7</option>
-                                               
-                                               <option value="6301f858e275cb16698b45cf">Thuế TNCN nhóm CPA- bài 7</option>
-                                               
-                                               <option value="6301f811e275cb92588b45f0">Thuế TNCN nhóm 3- Bài 7</option>
-                                               
-                                               <option value="6301f7e7e275cb13698b4606">Thuế TNCN nhóm 2- Bài 7</option>
-                                               
-                                               <option value="6301f7aae275cb8c588b45bd">Thuế TNCN nhóm 1- Bài 7</option>
-                                               
-                                               <option value="62efc71d4108d3aa788b4577">Thuế TNCN nhóm đại lý thuế- Bài 6</option>
-                                               
-                                               <option value="62efc6f64108d3b42a8b45d1">Thuế TNCN nhóm đại lý thuế- Bài 5</option>
-                                               
-                                               <option value="62efc6c54108d3a1788b4578">Thuế TNCN nhóm đại lý thuế- Bài 4</option>
-                                               
-                                               <option value="62efc6924108d3db788b4571">Thuế TNCN nhóm đại lý thuế- Bài 3</option>
-                                               
-                                               <option value="62e9cb894108d301898b45e4">Thuế TNCN đại lý thuế- bài 2</option>
-                                               
-                                               <option value="62e9cb474108d3b4368b459a">Thuế TNCN đại lý thuế- Bài 1</option>
-                                               
-                                               <option value="62e9ca0a4108d352848b456f">Thuế TNCN nhóm CPA- Bài 6</option>
-                                               
-                                               <option value="62e29cb54108d3c7838b459f">Thuế TNCN nhóm CPA- Bài 5</option>
-                                               
-                                               <option value="62e29c5a4108d38f438b45b7">Thuế TNCN nhóm CPA- Bài 4</option>
-                                               
-                                               <option value="62e29c284108d38b438b45bc">Thuế TNCN nhóm CPA- Bài 3</option>
-                                               
-                                               <option value="62de8e954108d3b0668b4574">Thuế TNCN nhóm 3- Bài tập 6</option>
-                                               
-                                               <option value="62de8e674108d3f5a38b4567">Thuế TNCN nhóm 3- Bài tập 5</option>
-                                               
-                                               <option value="62dd33214108d33b188b45ab">Thuế TNCN nhóm 2- Bài tập 6</option>
-                                               
-                                               <option value="62dd32e94108d33c958b4747">Thuế TNCN nhóm 2- Bài tập 5</option>
-                                               
-                                               <option value="62dd32b54108d338958b4944">Thuế TNCN nhóm 1- Bài tập 6</option>
-                                               
-                                               <option value="62dd327b4108d33b958b4713">Thuế TNCN nhóm 1- Bài tập 5</option>
-                                               
-                                               <option value="62d657594108d35f2e8b45c5">Thuế TNCN nhóm 3- Bài tập 4</option>
-                                               
-                                               <option value="62d657274108d3e2468b45bc">Thuế TNCN nhóm 2- Bài tập 4</option>
-                                               
-                                               <option value="62d656d64108d3652e8b45b6">Thuế TNCN nhóm 1- Bài tập 4</option>
-                                               
-                                               <option value="62d2c9434108d3d1358b4d0b">Thuế TNCN nhóm CPA- Bài 2</option>
-                                               
-                                               <option value="62d2c9044108d3dc358b471e">Thuế TNCN nhóm CPA- Bài 1</option>
-                                               
-                                               <option value="62d0d83e4108d3cf568b4694">Thuế TNCN- trắc nghiệm bài 1</option>
-                                               
-                                               <option value="62c3afe54108d378b08b47d7">Thuế TNCN nhóm 3- Bài tập 2</option>
-                                               
-                                               <option value="62c0f8624108d39b088b45dc">Lý thuyết nhóm 3- Tổng kết lý thuyết tuần 03072022</option>
-                                               
-                                               <option value="62c0f6a94108d3a6408b4723">Lý thuyết nhóm 2- Tổng kết lý thuyết tuần 03072022</option>
-                                               
-                                               <option value="62c0f6664108d3a6408b4722">Lý thuyết nhóm 1- Tổng kết lý thuyết tuần 030720022</option>
-                                               
-                                               <option value="62c0f37b4108d371778b456b">Thuế TNCN nhóm 3- Bài tập 3</option>
-                                               
-                                               <option value="62c0f2f24108d3a3088b45bc">Thuế TNCN nhóm 3- Bài tập 1</option>
-                                               
-                                               <option value="62c0f19e4108d36d778b4570">Thuế TNCN nhóm 2- Bài tập 3</option>
-                                               
-                                               <option value="62c0f1504108d3a8408b4603">Thuế TNCN nhóm 1- Bài tập 3</option>
-                                               
-                                               <option value="62bc791c4108d3b0018b458a">Thuế TNCN nhóm 2- Bài tập 2</option>
-                                               
-                                               <option value="62bc78b74108d334648b486f">Thuế TNCN nhóm 1- Bài tập 2</option>
-                                               
-                                               <option value="62b900f24108d33c998b45a1">Thuế TNCN nhóm 2- Bài tập 1</option>
-                                               
-                                               <option value="62b9006d4108d3fb7a8b4831">Thuế TNCN nhóm 1- Bài tập 1</option>
-                                               
-                                               <option value="62ae71ad4108d36a558b46b1">Tổng kết lý thuyết tuần 2 nhóm 1</option>
-                                               
-                                               <option value="62ae716f4108d3566d8b45e0">Tổng kết lý thuyết tuần 2 nhóm 2</option>
-                                               
-                                               <option value="62a7d7a44108d324128b4a5a">Tổng kết lý thuyết tuần 1- Nhóm 3</option>
-                                               
-                                               <option value="62a5d3444108d3242c8b45ea">Lý thuyết Tuần 1</option>
-                                               
-                                               <option value="61a25cb14108d306ba8b4569">Trắc nghiệm KTC</option>
-                                               
-                                               <option value="6168cd154108d36a528b45a9">KTC đề trắc nghiệm số 1</option>
-                                               
-                                               <option value="61231bf84108d36b628b456b">Thuế TNCN- Đề 1</option>
-                                               
-                                           </select>
-                                       </div>
-                                   </div>
-                               </div>
-                               <div class="">
-                                   <h4>URL Landing Page <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="right" title="" data-original-title="Khi xem chi tiết khóa học sẽ được chuyển hướng 301 đến Landing Page"></i></h4>
-                                   <div class="row">
-                                       <div class="form-group col-md-6 col-xs-12 col-sm-8">
-                                           <input type="text" value="" required="" class="form-control input-step" id="url_redirect_detail_course" name="url_redirect_detail_course" placeholder="https://" maxlength="100">
-                                       </div>
-                                   </div>
-                               </div>
-                                <div class="block-redirect-button">
-                                    <div class="row">
-                                       <div class="form-group col-md-6 col-xs-12 col-sm-8">
-                                            <h4>URL chuyển hướng nút đăng ký học</h4>
-                                            <input type="text" value="" required="" class="form-control input-step" id="url_redirect_course" name="url_redirect_course" placeholder="https://" maxlength="100">
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                               
-                               <div>
-                                   <h4>Cài đặt khác</h4>
-                                   <label class="label_radio">
-                                       <input type="checkbox" name="active_list_questions" checked=""> <span class="label-text">Bật/Tắt câu hỏi thảo luận</span>
-                                   </label>
-                                   <label class="label_radio">
-                                       <input type="checkbox" name="use_officeapps" checked=""> <span class="label-text">Sử dụng view OfficeApps cho Powerpoint</span>
-                                   </label>
-                                   
-                               </div>
-                                <div class="block_welcome_course">
-                                    <div class="row">
-                                        <div class="form-group col-md-12 col-xs-12 col-sm-12">
-                                            <h4>Welcome khóa học <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="right" title="" data-original-title="Nội dung chào mừng + hướng dẫn khi học viên vào học"></i></h4>
-                                            <textarea id="welcome_course" cols="100" name="welcome_course" rows="10" style="visibility: hidden; display: none;">                                              
-                                            </textarea><div id="cke_welcome_course" class="cke_3 cke cke_reset cke_chrome cke_editor_welcome_course cke_ltr cke_browser_webkit" dir="ltr" lang="en" role="application" aria-labelledby="cke_welcome_course_arialbl"><span id="cke_welcome_course_arialbl" class="cke_voice_label">Rich Text Editor, welcome_course</span><div class="cke_inner cke_reset" role="presentation"><span id="cke_3_top" class="cke_top cke_reset_all" role="presentation" style="height: auto; user-select: none;"><span id="cke_143" class="cke_voice_label">Editor toolbars</span><span id="cke_3_toolbox" class="cke_toolbox" role="group" aria-labelledby="cke_143" onmousedown="return false;"><span id="cke_144" class="cke_toolbar" aria-labelledby="cke_144_label" role="toolbar"><span id="cke_144_label" class="cke_voice_label">Basic Styles</span><span class="cke_toolbar_start"></span><span class="cke_toolgroup" role="presentation"><a id="cke_145" class="cke_button cke_button__bold cke_button_off" href="javascript:void('Bold')" title="Bold (Ctrl+B)" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_145_label" aria-describedby="cke_145_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(234,event);" onfocus="return CKEDITOR.tools.callFunction(235,event);" onclick="CKEDITOR.tools.callFunction(236,this);return false;"><span class="cke_button_icon cke_button__bold_icon" style="background-image:url('https://hocvienthueonline.edubit.vn/statics/plugins/ckeditor/plugins/icons.png?t=IA8F');background-position:0 -24px;background-size:auto;">&nbsp;</span><span id="cke_145_label" class="cke_button_label cke_button__bold_label" aria-hidden="false">Bold</span><span id="cke_145_description" class="cke_button_label" aria-hidden="false">Keyboard shortcut Ctrl+B</span></a><a id="cke_146" class="cke_button cke_button__italic cke_button_off" href="javascript:void('Italic')" title="Italic (Ctrl+I)" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_146_label" aria-describedby="cke_146_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(237,event);" onfocus="return CKEDITOR.tools.callFunction(238,event);" onclick="CKEDITOR.tools.callFunction(239,this);return false;"><span class="cke_button_icon cke_button__italic_icon" style="background-image:url('https://hocvienthueonline.edubit.vn/statics/plugins/ckeditor/plugins/icons.png?t=IA8F');background-position:0 -48px;background-size:auto;">&nbsp;</span><span id="cke_146_label" class="cke_button_label cke_button__italic_label" aria-hidden="false">Italic</span><span id="cke_146_description" class="cke_button_label" aria-hidden="false">Keyboard shortcut Ctrl+I</span></a><a id="cke_147" class="cke_button cke_button__underline cke_button_off" href="javascript:void('Underline')" title="Underline (Ctrl+U)" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_147_label" aria-describedby="cke_147_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(240,event);" onfocus="return CKEDITOR.tools.callFunction(241,event);" onclick="CKEDITOR.tools.callFunction(242,this);return false;"><span class="cke_button_icon cke_button__underline_icon" style="background-image:url('https://hocvienthueonline.edubit.vn/statics/plugins/ckeditor/plugins/icons.png?t=IA8F');background-position:0 -144px;background-size:auto;">&nbsp;</span><span id="cke_147_label" class="cke_button_label cke_button__underline_label" aria-hidden="false">Underline</span><span id="cke_147_description" class="cke_button_label" aria-hidden="false">Keyboard shortcut Ctrl+U</span></a><a id="cke_148" class="cke_button cke_button__strike cke_button_off" href="javascript:void('Strikethrough')" title="Strikethrough" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_148_label" aria-describedby="cke_148_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(243,event);" onfocus="return CKEDITOR.tools.callFunction(244,event);" onclick="CKEDITOR.tools.callFunction(245,this);return false;"><span class="cke_button_icon cke_button__strike_icon" style="background-image:url('https://hocvienthueonline.edubit.vn/statics/plugins/ckeditor/plugins/icons.png?t=IA8F');background-position:0 -72px;background-size:auto;">&nbsp;</span><span id="cke_148_label" class="cke_button_label cke_button__strike_label" aria-hidden="false">Strikethrough</span><span id="cke_148_description" class="cke_button_label" aria-hidden="false"></span></a><a id="cke_149" class="cke_button cke_button__subscript cke_button_off" href="javascript:void('Subscript')" title="Subscript" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_149_label" aria-describedby="cke_149_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(246,event);" onfocus="return CKEDITOR.tools.callFunction(247,event);" onclick="CKEDITOR.tools.callFunction(248,this);return false;"><span class="cke_button_icon cke_button__subscript_icon" style="background-image:url('https://hocvienthueonline.edubit.vn/statics/plugins/ckeditor/plugins/icons.png?t=IA8F');background-position:0 -96px;background-size:auto;">&nbsp;</span><span id="cke_149_label" class="cke_button_label cke_button__subscript_label" aria-hidden="false">Subscript</span><span id="cke_149_description" class="cke_button_label" aria-hidden="false"></span></a><a id="cke_150" class="cke_button cke_button__superscript cke_button_off" href="javascript:void('Superscript')" title="Superscript" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_150_label" aria-describedby="cke_150_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(249,event);" onfocus="return CKEDITOR.tools.callFunction(250,event);" onclick="CKEDITOR.tools.callFunction(251,this);return false;"><span class="cke_button_icon cke_button__superscript_icon" style="background-image:url('https://hocvienthueonline.edubit.vn/statics/plugins/ckeditor/plugins/icons.png?t=IA8F');background-position:0 -120px;background-size:auto;">&nbsp;</span><span id="cke_150_label" class="cke_button_label cke_button__superscript_label" aria-hidden="false">Superscript</span><span id="cke_150_description" class="cke_button_label" aria-hidden="false"></span></a><span class="cke_toolbar_separator" role="separator"></span><a id="cke_151" class="cke_button cke_button__copyformatting cke_button_off" href="javascript:void('Copy Formatting')" title="Copy Formatting (Ctrl+Shift+C)" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_151_label" aria-describedby="cke_151_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(252,event);" onfocus="return CKEDITOR.tools.callFunction(253,event);" onclick="CKEDITOR.tools.callFunction(254,this);return false;"><span class="cke_button_icon cke_button__copyformatting_icon" style="background-image:url('https://hocvienthueonline.edubit.vn/statics/plugins/ckeditor/plugins/icons.png?t=IA8F');background-position:0 -480px;background-size:auto;">&nbsp;</span><span id="cke_151_label" class="cke_button_label cke_button__copyformatting_label" aria-hidden="false">Copy Formatting</span><span id="cke_151_description" class="cke_button_label" aria-hidden="false">Keyboard shortcut Ctrl+Shift+C</span></a><a id="cke_152" class="cke_button cke_button__removeformat cke_button_off" href="javascript:void('Remove Format')" title="Remove Format" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_152_label" aria-describedby="cke_152_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(255,event);" onfocus="return CKEDITOR.tools.callFunction(256,event);" onclick="CKEDITOR.tools.callFunction(257,this);return false;"><span class="cke_button_icon cke_button__removeformat_icon" style="background-image:url('https://hocvienthueonline.edubit.vn/statics/plugins/ckeditor/plugins/icons.png?t=IA8F');background-position:0 -1704px;background-size:auto;">&nbsp;</span><span id="cke_152_label" class="cke_button_label cke_button__removeformat_label" aria-hidden="false">Remove Format</span><span id="cke_152_description" class="cke_button_label" aria-hidden="false"></span></a></span><span class="cke_toolbar_end"></span></span><span id="cke_153" class="cke_toolbar" aria-labelledby="cke_153_label" role="toolbar"><span id="cke_153_label" class="cke_voice_label">Links</span><span class="cke_toolbar_start"></span><span class="cke_toolgroup" role="presentation"><a id="cke_154" class="cke_button cke_button__link cke_button_off" href="javascript:void('Link')" title="Link (Ctrl+K)" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_154_label" aria-describedby="cke_154_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(258,event);" onfocus="return CKEDITOR.tools.callFunction(259,event);" onclick="CKEDITOR.tools.callFunction(260,this);return false;"><span class="cke_button_icon cke_button__link_icon" style="background-image:url('https://hocvienthueonline.edubit.vn/statics/plugins/ckeditor/plugins/icons.png?t=IA8F');background-position:0 -1272px;background-size:auto;">&nbsp;</span><span id="cke_154_label" class="cke_button_label cke_button__link_label" aria-hidden="false">Link</span><span id="cke_154_description" class="cke_button_label" aria-hidden="false">Keyboard shortcut Ctrl+K</span></a><a id="cke_155" class="cke_button cke_button__unlink cke_button_disabled " href="javascript:void('Unlink')" title="Unlink" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_155_label" aria-describedby="cke_155_description" aria-haspopup="false" aria-disabled="true" onkeydown="return CKEDITOR.tools.callFunction(261,event);" onfocus="return CKEDITOR.tools.callFunction(262,event);" onclick="CKEDITOR.tools.callFunction(263,this);return false;"><span class="cke_button_icon cke_button__unlink_icon" style="background-image:url('https://hocvienthueonline.edubit.vn/statics/plugins/ckeditor/plugins/icons.png?t=IA8F');background-position:0 -1296px;background-size:auto;">&nbsp;</span><span id="cke_155_label" class="cke_button_label cke_button__unlink_label" aria-hidden="false">Unlink</span><span id="cke_155_description" class="cke_button_label" aria-hidden="false"></span></a><a id="cke_156" class="cke_button cke_button__anchor cke_button_off" href="javascript:void('Anchor')" title="Anchor" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_156_label" aria-describedby="cke_156_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(264,event);" onfocus="return CKEDITOR.tools.callFunction(265,event);" onclick="CKEDITOR.tools.callFunction(266,this);return false;"><span class="cke_button_icon cke_button__anchor_icon" style="background-image:url('https://hocvienthueonline.edubit.vn/statics/plugins/ckeditor/plugins/icons.png?t=IA8F');background-position:0 -1248px;background-size:auto;">&nbsp;</span><span id="cke_156_label" class="cke_button_label cke_button__anchor_label" aria-hidden="false">Anchor</span><span id="cke_156_description" class="cke_button_label" aria-hidden="false"></span></a></span><span class="cke_toolbar_end"></span></span><span id="cke_157" class="cke_toolbar" aria-labelledby="cke_157_label" role="toolbar"><span id="cke_157_label" class="cke_voice_label">Paragraph</span><span class="cke_toolbar_start"></span><span class="cke_toolgroup" role="presentation"><a id="cke_158" class="cke_button cke_button__numberedlist cke_button_off" href="javascript:void('Insert/Remove Numbered List')" title="Insert/Remove Numbered List" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_158_label" aria-describedby="cke_158_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(267,event);" onfocus="return CKEDITOR.tools.callFunction(268,event);" onclick="CKEDITOR.tools.callFunction(269,this);return false;"><span class="cke_button_icon cke_button__numberedlist_icon" style="background-image:url('https://hocvienthueonline.edubit.vn/statics/plugins/ckeditor/plugins/icons.png?t=IA8F');background-position:0 -1392px;background-size:auto;">&nbsp;</span><span id="cke_158_label" class="cke_button_label cke_button__numberedlist_label" aria-hidden="false">Insert/Remove Numbered List</span><span id="cke_158_description" class="cke_button_label" aria-hidden="false"></span></a><a id="cke_159" class="cke_button cke_button__bulletedlist cke_button_off" href="javascript:void('Insert/Remove Bulleted List')" title="Insert/Remove Bulleted List" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_159_label" aria-describedby="cke_159_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(270,event);" onfocus="return CKEDITOR.tools.callFunction(271,event);" onclick="CKEDITOR.tools.callFunction(272,this);return false;"><span class="cke_button_icon cke_button__bulletedlist_icon" style="background-image:url('https://hocvienthueonline.edubit.vn/statics/plugins/ckeditor/plugins/icons.png?t=IA8F');background-position:0 -1344px;background-size:auto;">&nbsp;</span><span id="cke_159_label" class="cke_button_label cke_button__bulletedlist_label" aria-hidden="false">Insert/Remove Bulleted List</span><span id="cke_159_description" class="cke_button_label" aria-hidden="false"></span></a></span><span class="cke_toolbar_end"></span></span><span id="cke_160" class="cke_toolbar" aria-labelledby="cke_160_label" role="toolbar"><span id="cke_160_label" class="cke_voice_label">Colors</span><span class="cke_toolbar_start"></span><span class="cke_toolgroup" role="presentation"><a id="cke_161" class="cke_button cke_button__textcolor cke_button_off cke_button_expandable" href="javascript:void('Text Color')" title="Text Color" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_161_label" aria-describedby="cke_161_description" aria-haspopup="listbox" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(273,event);" onfocus="return CKEDITOR.tools.callFunction(274,event);" onclick="CKEDITOR.tools.callFunction(275,this);return false;" aria-expanded="false"><span class="cke_button_icon cke_button__textcolor_icon" style="background-image:url('https://hocvienthueonline.edubit.vn/statics/plugins/ckeditor/plugins/icons.png?t=IA8F');background-position:0 -408px;background-size:auto;">&nbsp;</span><span id="cke_161_label" class="cke_button_label cke_button__textcolor_label" aria-hidden="false">Text Color</span><span id="cke_161_description" class="cke_button_label" aria-hidden="false"></span><span class="cke_button_arrow"></span></a><a id="cke_162" class="cke_button cke_button__bgcolor cke_button_off cke_button_expandable" href="javascript:void('Background Color')" title="Background Color" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_162_label" aria-describedby="cke_162_description" aria-haspopup="listbox" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(276,event);" onfocus="return CKEDITOR.tools.callFunction(277,event);" onclick="CKEDITOR.tools.callFunction(278,this);return false;" aria-expanded="false"><span class="cke_button_icon cke_button__bgcolor_icon" style="background-image:url('https://hocvienthueonline.edubit.vn/statics/plugins/ckeditor/plugins/icons.png?t=IA8F');background-position:0 -384px;background-size:auto;">&nbsp;</span><span id="cke_162_label" class="cke_button_label cke_button__bgcolor_label" aria-hidden="false">Background Color</span><span id="cke_162_description" class="cke_button_label" aria-hidden="false"></span><span class="cke_button_arrow"></span></a></span><span class="cke_toolbar_end"></span></span><span id="cke_163" class="cke_toolbar" aria-labelledby="cke_163_label" role="toolbar"><span id="cke_163_label" class="cke_voice_label">Paragraph</span><span class="cke_toolbar_start"></span><span class="cke_toolgroup" role="presentation"><a id="cke_164" class="cke_button cke_button__justifyleft cke_button_off" href="javascript:void('Align Left')" title="Align Left" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_164_label" aria-describedby="cke_164_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(279,event);" onfocus="return CKEDITOR.tools.callFunction(280,event);" onclick="CKEDITOR.tools.callFunction(281,this);return false;"><span class="cke_button_icon cke_button__justifyleft_icon" style="background-image:url('https://hocvienthueonline.edubit.vn/statics/plugins/ckeditor/plugins/icons.png?t=IA8F');background-position:0 -1152px;background-size:auto;">&nbsp;</span><span id="cke_164_label" class="cke_button_label cke_button__justifyleft_label" aria-hidden="false">Align Left</span><span id="cke_164_description" class="cke_button_label" aria-hidden="false"></span></a><a id="cke_165" class="cke_button cke_button__justifycenter cke_button_off" href="javascript:void('Center')" title="Center" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_165_label" aria-describedby="cke_165_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(282,event);" onfocus="return CKEDITOR.tools.callFunction(283,event);" onclick="CKEDITOR.tools.callFunction(284,this);return false;"><span class="cke_button_icon cke_button__justifycenter_icon" style="background-image:url('https://hocvienthueonline.edubit.vn/statics/plugins/ckeditor/plugins/icons.png?t=IA8F');background-position:0 -1128px;background-size:auto;">&nbsp;</span><span id="cke_165_label" class="cke_button_label cke_button__justifycenter_label" aria-hidden="false">Center</span><span id="cke_165_description" class="cke_button_label" aria-hidden="false"></span></a><a id="cke_166" class="cke_button cke_button__justifyright cke_button_off" href="javascript:void('Align Right')" title="Align Right" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_166_label" aria-describedby="cke_166_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(285,event);" onfocus="return CKEDITOR.tools.callFunction(286,event);" onclick="CKEDITOR.tools.callFunction(287,this);return false;"><span class="cke_button_icon cke_button__justifyright_icon" style="background-image:url('https://hocvienthueonline.edubit.vn/statics/plugins/ckeditor/plugins/icons.png?t=IA8F');background-position:0 -1176px;background-size:auto;">&nbsp;</span><span id="cke_166_label" class="cke_button_label cke_button__justifyright_label" aria-hidden="false">Align Right</span><span id="cke_166_description" class="cke_button_label" aria-hidden="false"></span></a><a id="cke_167" class="cke_button cke_button__justifyblock cke_button_off" href="javascript:void('Justify')" title="Justify" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_167_label" aria-describedby="cke_167_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(288,event);" onfocus="return CKEDITOR.tools.callFunction(289,event);" onclick="CKEDITOR.tools.callFunction(290,this);return false;"><span class="cke_button_icon cke_button__justifyblock_icon" style="background-image:url('https://hocvienthueonline.edubit.vn/statics/plugins/ckeditor/plugins/icons.png?t=IA8F');background-position:0 -1104px;background-size:auto;">&nbsp;</span><span id="cke_167_label" class="cke_button_label cke_button__justifyblock_label" aria-hidden="false">Justify</span><span id="cke_167_description" class="cke_button_label" aria-hidden="false"></span></a></span><span class="cke_toolbar_end"></span></span><span id="cke_168" class="cke_toolbar cke_toolbar_last" aria-labelledby="cke_168_label" role="toolbar"><span id="cke_168_label" class="cke_voice_label">mathtype</span><span class="cke_toolbar_start"></span><span class="cke_toolgroup" role="presentation"><a id="cke_169" class="cke_button cke_button__ckeditor_wiris_formulaeditor cke_button_off" href="javascript:void('Insert a math equation - MathType')" title="Insert a math equation - MathType" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_169_label" aria-describedby="cke_169_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(291,event);" onfocus="return CKEDITOR.tools.callFunction(292,event);" onclick="CKEDITOR.tools.callFunction(293,this);return false;"><span class="cke_button_icon cke_button__ckeditor_wiris_formulaeditor_icon" style="background-image:url('https://hocvienthueonline.edubit.vn/statics/plugins/ckeditor/plugins/ckeditor_wiris/./icons/formula.png?t=1.2.3');background-position:0 0px;background-size:16px;">&nbsp;</span><span id="cke_169_label" class="cke_button_label cke_button__ckeditor_wiris_formulaeditor_label" aria-hidden="false">Insert a math equation - MathType</span><span id="cke_169_description" class="cke_button_label" aria-hidden="false"></span></a><a id="cke_170" class="cke_button cke_button__ckeditor_wiris_formulaeditorchemistry cke_button_off" href="javascript:void('Insert a chemistry formula - ChemType')" title="Insert a chemistry formula - ChemType" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_170_label" aria-describedby="cke_170_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(294,event);" onfocus="return CKEDITOR.tools.callFunction(295,event);" onclick="CKEDITOR.tools.callFunction(296,this);return false;"><span class="cke_button_icon cke_button__ckeditor_wiris_formulaeditorchemistry_icon" style="background-image:url('https://hocvienthueonline.edubit.vn/statics/plugins/ckeditor/plugins/ckeditor_wiris/./icons/chem.png?t=1.2.3');background-position:0 0px;background-size:16px;">&nbsp;</span><span id="cke_170_label" class="cke_button_label cke_button__ckeditor_wiris_formulaeditorchemistry_label" aria-hidden="false">Insert a chemistry formula - ChemType</span><span id="cke_170_description" class="cke_button_label" aria-hidden="false"></span></a></span><span class="cke_toolbar_end"></span></span></span></span><div id="cke_3_contents" class="cke_contents cke_reset" role="presentation" style="height: 200px;"><span id="cke_175" class="cke_voice_label">Press ALT 0 for help</span><iframe src="" frameborder="0" class="cke_wysiwyg_frame cke_reset" title="Rich Text Editor, welcome_course" aria-describedby="cke_175" tabindex="0" allowtransparency="true" style="width: 100%; height: 100%;"></iframe></div><span id="cke_3_bottom" class="cke_bottom cke_reset_all" role="presentation" style="user-select: none;"><span id="cke_3_resizer" class="cke_resizer cke_resizer_vertical cke_resizer_ltr" title="Resize" onmousedown="CKEDITOR.tools.callFunction(232, event)">◢</span><span id="cke_3_path_label" class="cke_voice_label">Elements path</span><span id="cke_3_path" class="cke_path" role="group" aria-labelledby="cke_3_path_label"><span class="cke_path_empty">&nbsp;</span></span></span></div></div>
-                                            
-                                        </div>
-                                    </div>
-                                </div>
-                                <button class="btn btn-success button-step" onclick="LHM.courses.saveSettingCourse();" type="button"><i class="fa fa-save"></i> Cập nhật </button>
-                           </form>
-                        </div>
-                    </div>
-                </div>
-                
-
             </div>
         </div>
     </div>
@@ -647,5 +296,55 @@
 @code {
     private CreateCourseVM createCourse { get; set; } = new CreateCourseVM();
     private Dictionary<Guid, string> listTeacher { get; set; } = new Dictionary<Guid, string>();
+    private IBrowserFile selectedFile;
+    private InputFile fileInput;
+    protected override async Task HandleAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            listTeacher = await _accountService.GetTeacherList();
+            StateHasChanged();
+        }
 
+    }
+
+    private void OnChangeTimePeriod(TypeOfTerm typeOfTerm)
+    {
+        createCourse.TypeOfTerm = typeOfTerm;
+    }
+
+    private async Task CreateOrUpdateCourse()
+    {
+        if (createCourse != null)
+        {
+
+            if (selectedFile != null)
+            {
+                createCourse.ImgCourseFile = await ConvertFileToBase64(selectedFile);    
+            }
+            
+            var res = await _courseService.CreateCourseMaster(createCourse);
+            if (res != null && res.IsSuccess)
+            {
+                ShowMessage(ToastType.Success, "Đăng ký khóa học thành công, tiếp tục thực hiện đăng ký các bài học.");
+            }
+            else
+            {
+                ShowMessage(ToastType.Danger, "Lỗi", ToastsPlacement.MiddleCenter);
+            }
+        }
+    }
+
+    private async Task HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        var files = e.GetMultipleFiles();
+
+        selectedFile = files.FirstOrDefault();
+    }
+
+    public async Task addFile()
+    {
+        await InvokeVoidAsync("openFilePicker", fileInput.Element);
+        StateHasChanged();
+    }
 }

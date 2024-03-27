@@ -37,6 +37,7 @@
     <Compile Include="ViewModel\Course\MyCourseVM.cs" />
     <Compile Include="ViewModel\Course\CourseGeneric.cs" />
     <Compile Include="ViewModel\Course\SearchCourseParam.cs" />
+    <Compile Include="ViewModel\FileModel.cs" />
     <Compile Include="ViewModel\Lession\LessionDeleteParam.cs" />
     <Compile Include="ViewModel\Lession\LessionEditParam.cs" />
     <Compile Include="ViewModel\Lession\LessionCreateParam.cs" />

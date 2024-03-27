@@ -23,11 +23,12 @@ namespace CourseProject.API.Services
     }
     public class CourseService : BaseService, ICourseService
     {
+        private IFileUlti _fileUlti;
         public CourseService(IHttpContextAccessor httpContextAccessor,
                                 IDistributedCacheCustom cache,
-                                IUnitOfWork unitOfWork, IMapper mapper) : base(httpContextAccessor, cache, unitOfWork, mapper)
+                                IUnitOfWork unitOfWork, IMapper mapper, IFileUlti fileUlti) : base(httpContextAccessor, cache, unitOfWork, mapper)
         {
-            
+            _fileUlti = fileUlti;
         }
 
         /// <summary>
@@ -183,7 +184,7 @@ namespace CourseProject.API.Services
         public async Task<RestOutput> CreateCourseMaster(CreateCourseVM createCourseParam)
         {
             var res = new RestOutput();
-            
+            var authorCurrent = GetUserAuthen().UserName;
             if (createCourseParam != null)
             {
                 if (string.IsNullOrEmpty(createCourseParam.Introduce))
@@ -197,8 +198,19 @@ namespace CourseProject.API.Services
                     return res;
                 }
 
+                if (createCourseParam.ImgCourse != null)
+                {
+                    createCourseParam.ImgCourse = await _fileUlti.SaveFileBase64(createCourseParam.ImgCourseFile);
+                }
+
                 // insert khóa học
                 var courseInsert = _mapper.Map<Course>(createCourseParam);
+                if (Guid.TryParse(authorCurrent, out Guid authorId))
+                {
+                    courseInsert.CreatedBy = authorId;
+                    courseInsert.ModifiedBy = authorId;
+                }
+                
                 _unitOfWork.CourseRepository.Create(courseInsert);
 
                 // insert tag và course

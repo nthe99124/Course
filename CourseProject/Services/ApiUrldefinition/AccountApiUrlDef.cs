@@ -56,5 +56,15 @@
         {
             return @$"{pathController}/Logout";
         }
+
+        /// <summary>
+        /// Lấy url danh sách giảng viên
+        /// </summary>
+        /// <returns></returns>
+        public static string GetTeacherList()
+        {
+            return @$"{pathController}/GetTeacherList";
+        }
+        
     }
 }
