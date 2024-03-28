@@ -1,5 +1,56 @@
 ﻿@page "/admin/lession"
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+    .button-control .btn-setting {
+        color: #fff;
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+        margin-right: 20px;
+    }
+
+    .button-control .btn-add {
+        color: #fff;
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    .control-curse {
+        border: 1px solid #ccc;
+        margin-bottom: 20px;
+        background: white;
+        padding: 20px;
+        overflow-x: auto;
+    }
+
+    .control-curse .btn-add-curse {
+        color: #fff !important;
+        background-color: #28a745;
+        border-color: #28a745;
+        margin: 10px 0;
+        padding: 5px 10px;
+    }
+
+    .table thead th {
+        border-top: none;
+        font-size: 17px;
+    }
+
+    .table tr td {
+        font-size: 15px;
+    }
+
+    .table td, .table th {
+        vertical-align: sub;
+    }
+
+    .btn-status li {
+        margin: 0 5px;
+        color: #007bff;
+        cursor: pointer;
+    }
+
+</style>
 
 <div class="h-100" style="background: #f5f5f5; padding-top: 20px;">
     <div class="container">
@@ -7,7 +58,6 @@
             <a class="btn btn-setting" href="/" style="">Cài đặt chung</a>
             <a class="btn btn-add" href="/">+ Thêm chương</a>
         </div>
-
         <div class="control-curse">
             <table class="table">
                 <thead>
@@ -52,11 +102,15 @@
                         <td style="color: #007bff;">01:26:00</td>
                         <td>
                             <ul class="d-flex btn-status">
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
+                                <li><i class="fa-solid fa-thumbtack"></i></li>
+                                <li><i class="fa-solid fa-lock"></i></li>
+                                <li><i class="fa-solid fa-eye-slash"></i></li>
+                                <li>
+                                    <div @onclick="() => OnShowModalEditLession()">
+                                        <i class="fa-solid fa-file"></i>
+                                    </div>
+                                </li>
+                                <li><i class="fa-solid fa-gear"></i></li>
                                 <li><i class="fa-solid fa-pen-to-square"></i></li>
                                 <li><i class="fa-solid fa-trash"></i></li>
                                 <li><i class="fa-solid fa-copy"></i></li>
@@ -70,56 +124,18 @@
     </div>
 </div>
 
-<style>
-    .button-control .btn-setting{
-        color: #fff;
-        background-color: #17a2b8;
-        border-color: #17a2b8;
-        margin-right: 20px;
-    }
+<Modal @ref="modal" Size="ModalSize.Large" Title="Nội dung bài học">
+    <BodyTemplate>
+        ẻhergergregergre
+    </BodyTemplate>
+</Modal>
 
-    .button-control .btn-add {
-        color: #fff;
-        background-color: #28a745;
-        border-color: #28a745;
-    }
-
-    .control-curse{
-        border: 1px solid #ccc;
-        margin-bottom: 20px;
-        background: white;
-        padding: 20px;
-        overflow-x: auto;
-    }
-
-    .control-curse .btn-add-curse{
-        color: #fff !important;
-        background-color: #28a745;
-        border-color: #28a745;
-        margin: 10px 0;
-        padding: 5px 10px;
-    }
-
-    .table thead th {
-        border-top: none;
-        font-size: 17px;
-    }
-
-    .table tr td {
-        font-size: 15px;
-    }
-    .table td, .table th {
-        vertical-align: sub;
-    }
-
-    .btn-status li{
-        margin: 0 5px;
-        color: #007bff;
-        cursor: pointer;
-    }
-
-
-</style>
 @code{
+    Modal modal = default!;
 
+    private async Task OnShowModalEditLession()
+    {
+        //modal.Title = titleLessionItem;
+        await modal.ShowAsync();
+    }
 }
