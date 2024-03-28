@@ -16,7 +16,7 @@ namespace CourseProject.Services.Base
         Task<T> RequestAuthenPostAsync<T>(string url, object model = null);
         Task<ResponseOutput<T>> RequestFullAuthenPostAsync<T>(string url, object model = null);
         Task<T> RequestAuthenGetAsync<T>(string url);
-        Task<ResponseOutput<T>> RequestFileAsync<T>(string url, List<IBrowserFile> selectedFile = null, object model = null);
+        Task<ResponseOutput<T>> RequestFileAsync<T>(string url, IDictionary<string, IBrowserFile> selectedFile = null, object model = null);
     }
 
     public class BaseService : IBaseService
@@ -217,7 +217,7 @@ namespace CourseProject.Services.Base
             return responseObject;
         }
 
-        public async Task<ResponseOutput<T>> RequestFileAsync<T>(string url, List<IBrowserFile> selectedFile = null, object model = null)
+        public async Task<ResponseOutput<T>> RequestFileAsync<T>(string url, IDictionary<string, IBrowserFile> selectedFile = null, object model = null)
         {
             using (var httpClient = new HttpClient())
             {
@@ -231,9 +231,13 @@ namespace CourseProject.Services.Base
                     // Thêm ảnh vào form data
                     foreach (var item in selectedFile)
                     {
-                        formData.Add(new StreamContent(item.OpenReadStream()), "file", item.Name);
+                        var fileObject = item.Value;
+                        var filePropName = item.Key;
+                        if (item.Value != null)
+                        {
+                            formData.Add(new StreamContent(fileObject.OpenReadStream()), filePropName, fileObject.Name);
+                        }
                     }
-
 
                     var accessToken = await GetItemAsync("token");
                     // nếu có accessToken thì mới đưa Bearer Token vào

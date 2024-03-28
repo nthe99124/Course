@@ -1,16 +1,14 @@
-﻿using AspNetCoreRateLimit;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using CourseProject.API.Common.Cache;
+﻿using CourseProject.API.Common.Cache;
 using CourseProject.API.Common.Mappings;
 using CourseProject.API.Common.Repository;
 using CourseProject.API.Common.Ulti;
-using CourseProject.API.Repositories;
 using CourseProject.API.Services;
 using CourseProject.Model.ViewModel;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
 
 #region Config service
@@ -24,6 +22,13 @@ var configuration = new ConfigurationBuilder()
     .Build();
 
 services.AddSingleton(configuration);
+#endregion
+
+#region Config File
+services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = long.MaxValue;
+});
 #endregion
 
 #region config http

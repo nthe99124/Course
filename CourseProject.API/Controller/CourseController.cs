@@ -1,6 +1,5 @@
 ﻿using CourseProject.API.Common.Attribute;
 using CourseProject.API.Common.Constant;
-using CourseProject.API.Common.Ulti;
 using CourseProject.API.Controller.Base;
 using CourseProject.API.Services;
 using CourseProject.Model.ViewModel;
@@ -91,9 +90,9 @@ namespace CourseProject.API.Controller
         /// <returns></returns>
         [HttpPost("CreateCourseMaster")]
         [Roles(RoleConstant.Admin, RoleConstant.Teacher)]
-        public async Task<IActionResult> CreateCourseMaster(CreateCourseVM createCourseParam)
+        public async Task<IActionResult> CreateCourseMaster([FromForm] Dictionary<string, IFormFile> listFile, [FromForm] CreateCourseVM createCourseParam)
         {
-            _res = await _courseService.CreateCourseMaster(createCourseParam);
+            _res = await _courseService.CreateCourseMaster(listFile, createCourseParam);
             return Ok(_res);
         }
     }

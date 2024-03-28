@@ -7,6 +7,7 @@ using CourseProject.Model.BaseEntity;
 using CourseProject.Model.DTO;
 using CourseProject.Model.ViewModel;
 using CourseProject.Model.ViewModel.Course;
+using Microsoft.AspNetCore.Components.Forms;
 using System.Diagnostics;
 using System.Linq.Expressions;
 
@@ -19,7 +20,7 @@ namespace CourseProject.API.Services
         IEnumerable<MyCourseVM> GetListCourseByUser();
         Task<CourseDetailVM> GetDetailCourse(Guid courseId);
         Task<IEnumerable<CourseGeneric>> GetCourseSearchCourseByCondition(SearchCourseParam searchCourseParam);
-        Task<RestOutput> CreateCourseMaster(CreateCourseVM createCourseParam);
+        Task<RestOutput> CreateCourseMaster(Dictionary<string, IFormFile> listFile, CreateCourseVM createCourseParam);
     }
     public class CourseService : BaseService, ICourseService
     {
@@ -181,7 +182,7 @@ namespace CourseProject.API.Services
         /// CreatedBy ntthe 24.03.2024
         /// </summary>
         /// <returns></returns>
-        public async Task<RestOutput> CreateCourseMaster(CreateCourseVM createCourseParam)
+        public async Task<RestOutput> CreateCourseMaster(Dictionary<string, IFormFile> listFile, CreateCourseVM createCourseParam)
         {
             var res = new RestOutput();
             var authorCurrent = GetUserAuthen().UserName;
@@ -234,6 +235,18 @@ namespace CourseProject.API.Services
                 }
 
                 await _unitOfWork.CommitAsync();
+
+                // thêm file vào server
+                var keysFileList = listFile.Keys.ToList();
+                for (int i = 0; i < keysFileList.Count; i++)
+                {
+                    var key = keysFileList[i];
+                    var file = listFile[key];
+                    if (file != null)
+                    {
+                        _ = await _fileUlti.SaveFile(file);
+                    }
+                }
             }
             res.SuccessEventHandler();
             return res;

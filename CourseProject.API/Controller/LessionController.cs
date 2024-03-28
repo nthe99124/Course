@@ -36,9 +36,9 @@ namespace CourseProject.API.Controller
         /// <returns></returns>
         [HttpPost("EditLession")]
         [Roles(RoleConstant.Admin, RoleConstant.Teacher)]
-        public async Task<IActionResult> EditLession(LessionEditParam lession)
+        public async Task<IActionResult> EditLession([FromForm] Dictionary<string, IFormFile> listFile, [FromForm] LessionEditParam lession)
         {
-            _res = await _lessionService.EditLession(lession);
+            _res = await _lessionService.EditLession(listFile, lession);
             return Ok(_res);
         }
         /// <summary>

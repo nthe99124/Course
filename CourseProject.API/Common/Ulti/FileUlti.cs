@@ -23,14 +23,14 @@ namespace CourseProject.API.Common.Ulti
 
         public async Task<string> SaveFileBase64(FileBase64Infor fileBase64)
         {
-            byte[] bytes = Convert.FromBase64String(fileBase64.base64File);
+            byte[] bytes = Convert.FromBase64String(fileBase64.Base64File);
             MemoryStream stream = new(bytes);
 
             //item.File = new FormFile(stream, 0, bytes.Length, item.SeoFilename, item.SeoFilename);
-            var fileItem = new FormFile(stream, 0, stream.Length, null, fileBase64.filename)
+            var fileItem = new FormFile(stream, 0, stream.Length, null, fileBase64.FileName)
             {
                 Headers = new HeaderDictionary(),
-                ContentType = fileBase64.contentType
+                ContentType = fileBase64.ContentType
             };
             var fileName = await SaveFile(fileItem);
             return fileName;
