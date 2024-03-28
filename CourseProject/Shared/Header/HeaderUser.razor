@@ -20,7 +20,7 @@
                 </div>
             </div>
 
-            <div class="col-xl-6 col-lg-6 col-md-2 d-none d-lg-block col-sm-12">
+            @* <div class="col-xl-6 col-lg-6 col-md-2 d-none d-lg-block col-sm-12">
                 <div class="icon right-icon">
                     <ul class="nav justify-content-end">
 
@@ -36,7 +36,7 @@
                         </li>
                     </ul>
                 </div>
-            </div>
+            </div> *@
         </div>
     </div>
 </div>
@@ -59,7 +59,7 @@
                 </div>
 
                 <!-- Cart Dropdown goes here -->
-                <div class="dropdown course-list-dropdown corner-triangle top-right" style="display: none;">
+                @* <div class="dropdown course-list-dropdown corner-triangle top-right" style="display: none;">
                     <!-- Just remove the display none from the css to make it work -->
                     <div class="list-wrapper">
                         <div class="item-list">
@@ -100,7 +100,7 @@
                         <p>Giỏ hàng của bạn trống.</p>
                         <a href="">Keep Shopping</a>
                     </div>
-                </div>
+                </div> *@
             </div>
             <div class="main-nav-wrap">
                 <div class="mobile-overlay"></div>
@@ -142,7 +142,7 @@
                                 </a>
                             </li>
 
-                            <li class="all-category-devided mb-0 p-0">
+                            @* <li class="all-category-devided mb-0 p-0">
                                 <a href="https://4user.net/home/exercise" class="py-3">
                                     <span class="icon"><i class="fas fa-graduation-cap"></i></span>
                                     <span>Bài tập</span>
@@ -155,17 +155,10 @@
                                     <span class="icon"><i class="fas fa-cart-arrow-down"></i></span>
                                     <span>Cửa hàng tài khoản</span>
                                 </a>
-                            </li>
+                            </li> *@
 
                         </ul>
                     </li>
-                    <div class="sign-in-box btn-group d-none">
-
-                        <button type="button" class="btn btn-sign-in" data-toggle="modal" data-target="#signInModal">Log In</button>
-
-                        <button type="button" class="btn btn-sign-up" data-toggle="modal" data-target="#signUpModal">Sign Up</button>
-
-                    </div>
                     <li class="user-dropdown-menu-item" @onclick='() => NavigateToUrl("/user/my_courses")'><a><i class="far fa-gem"></i>Khóa học của tôi</a></li>
                     <li class="user-dropdown-menu-item" @onclick='() => NavigateToUrl("/user/my_wishlist")'><a><i class="far fa-heart"></i>Khóa học yêu thích</a></li>
                     <li class="user-dropdown-menu-item" @onclick='() => NavigateToUrl("/user/purchase_history")'><a><i class="fas fa-shopping-cart"></i>Lịch sử mua hàng</a></li>
@@ -175,7 +168,7 @@
                 </ul>
             </div>
 
-            <form class="inline-form me-2" action="https://4user.net/home/search" method="get" style="width: 100%;">
+            <form class="inline-form me-auto" action="https://4user.net/home/search" method="get">
                 <div class="input-group search-box mobile-search">
                     <input type="text" name="query" value="" class="form-control" placeholder="Tìm kiếm các khóa học">
                     <div class="input-group-append">
@@ -184,20 +177,22 @@
                 </div>
             </form>
 
-
-            <div class="instructor-box menu-icon-box ms-md-3 d-none d-lg-block">
-                <div class="icon" @onclick='() => NavigateToUrl("/teacher/become_an_instructor")'>
-                    <a style="border: 1px solid transparent; margin: 0px; padding: 0px 10px; font-size: 14px; width: max-content; border-radius: 5px; height: 40px; line-height: 40px;">Giảng viên</a>
+            @if (!string.IsNullOrEmpty(Token))
+            {
+                <div class="instructor-box menu-icon-box ms-md-3 d-none d-lg-block">
+                    <div class="icon" @onclick='() => NavigateToUrl("/teacher/become_an_instructor")'>
+                        <a style="border: 1px solid transparent; margin: 0px; padding: 0px 10px; font-size: 14px; width: max-content; border-radius: 5px; height: 40px; line-height: 40px;">Giảng viên</a>
+                    </div>
                 </div>
-            </div>
 
-            <div class="instructor-box menu-icon-box d-none d-lg-block">
-                <div class="icon" @onclick='() => NavigateToUrl("/user/my_courses")'>
-                    <a style="border: 1px solid transparent; margin: 0px; padding: 0px 10px; font-size: 14px; width: max-content; border-radius: 5px; height: 40px; line-height: 40px;">Khóa học của tôi</a>
+                <div class="instructor-box menu-icon-box d-none d-lg-block">
+                    <div class="icon" @onclick='() => NavigateToUrl("/user/my_courses")'>
+                        <a style="border: 1px solid transparent; margin: 0px; padding: 0px 10px; font-size: 14px; width: max-content; border-radius: 5px; height: 40px; line-height: 40px;">Khóa học của tôi</a>
+                    </div>
                 </div>
-            </div>
+            }
 
-            <div class="wishlist-box menu-icon-box" id="wishlist_items">
+            @* <div class="wishlist-box menu-icon-box" id="wishlist_items">
                 <div class="icon">
                     <a href=""><i class="far fa-heart"></i></a>
                     <span class="number">0</span>
@@ -217,9 +212,9 @@
                         <a href="">Khám phá các khóa học</a>
                     </div>
                 </div>
-            </div>
+            </div> *@
 
-            <div class="cart-box menu-icon-box d-none d-lg-block" id="cart_items">
+            @* <div class="cart-box menu-icon-box d-none d-lg-block" id="cart_items">
                 <div class="icon">
                     <a href="https://4user.net/home/shopping_cart"><i class="fas fa-shopping-cart"></i></a>
                     <span class="number">1</span>
@@ -268,27 +263,32 @@
                         <a href="">Keep Shopping</a>
                     </div>
                 </div>
-            </div>
+            </div> *@
 
 
-
-            <div class="user-box menu-icon-box">
-                <div class="icon">
-                    <a href="javascript:;">
-                        <img src="https://4user.net/uploads/user_image/placeholder.png" alt="" class="img-fluid">
-                    </a>
+            @if (!string.IsNullOrEmpty(Token))
+            {
+                <div class="user-box menu-icon-box">
+                    <div class="icon">
+                        <a href="javascript:;">
+                            <img src="https://4user.net/uploads/user_image/placeholder.png" alt="" class="img-fluid">
+                        </a>
+                    </div>
+                    <div class="dropdown user-dropdown corner-triangle top-right radius-10">
+                        <ul class="user-dropdown-menu radius-10">
+                        </ul>
+                    </div>
                 </div>
-                <div class="dropdown user-dropdown corner-triangle top-right radius-10">
-                    <ul class="user-dropdown-menu radius-10">
-                    </ul>
+            }
+            else
+            {
+                <div class="sign-in-box btn-group">
+                    <a @onclick='() => NavigateToUrl("/login")' class="btn btn-sign-in-simple">Đăng nhập</a>
+                    <a @onclick='() => NavigateToUrl("/register")' class="btn btn-sign-up">Đăng ký</a>
                 </div>
-            </div>
-
-
+            }
 
             <span class="signin-box-move-desktop-helper"></span>
-            <!--  sign-in-box end -->
-
 
         </nav>
     </div>
@@ -298,27 +298,31 @@
     private string Email { get; set; }
     private string FullName { get; set; }
     private string LinkAvatar { get; set; }
+    private string Token { get; set; }
 
     protected override async Task HandleAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            // var userInfor = await GetUserInfor();
-            // if (userInfor != null)
-            // {
-            //     Email = userInfor.Email;
-            //     FullName = userInfor.FullName;
-            //     LinkAvatar = userInfor.ImgAvatar;
-            //     StateHasChanged();
-            // }
+            var userInfor = await GetUserInfor();
+            if (userInfor != null)
+            {
+                Email = userInfor.Email;
+                FullName = userInfor.FullName;
+                LinkAvatar = userInfor.ImgAvatar;
+                Token = userInfor.Token;
+                StateHasChanged();
+            }
         }
     }
 
     protected async Task LogoutAction()
     {
         await _accountService.Logout();
-        NavigateToUrl("/login");
+        // đồng thời xóa token +infor cache
+        await RemoveSessionStorage("token");
+        await RemoveSessionStorage("userInfor");
 
-        // xóa infor cache
+        NavigateToUrl("/login", true);
     }
 }

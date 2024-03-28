@@ -32,7 +32,7 @@ services.AddRazorPages();
 services.AddServerSideBlazor();
 services.AddHttpClient();
 services.AddWMBSC();
-services.AddBlazorise().AddBlazorBootstrap().AddBootstrapProviders();
+services.AddBlazorise().AddBlazorBootstrap();
 services.Configure<FormOptions>(options =>
 {
     options.MultipartBodyLengthLimit = long.MaxValue;

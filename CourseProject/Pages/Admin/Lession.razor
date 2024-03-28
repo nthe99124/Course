@@ -1,5 +1,4 @@
-﻿@page "/admin/lession"
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+﻿@page "/admin/lession/{courseId}"
 
 <div class="h-100" style="background: #f5f5f5; padding-top: 20px;">
     <div class="container">
@@ -65,11 +64,15 @@
                     </tr>
                 </tbody>
             </table>
-            <a class="btn-add-curse btn">+ Thêm bài học</a>
+            <a class="btn-add-curse btn" @onclick="OnAdd">+ Thêm bài học</a>
         </div>
     </div>
 </div>
-
+<Modal @ref="modal" Size="ModalSize.Large" Title="Ahihi">
+    <BodyTemplate>
+        <span>1</span>
+    </BodyTemplate>
+</Modal>
 <style>
     .button-control .btn-setting{
         color: #fff;
@@ -121,5 +124,11 @@
 
 </style>
 @code{
+    [Parameter]
+    public string CourseId { get; set; }
 
+    private Modal modal = default!;
+    private async Task OnAdd() {
+        var a = 1;
+    }
 }

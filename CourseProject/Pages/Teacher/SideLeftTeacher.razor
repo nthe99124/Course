@@ -11,13 +11,13 @@
     <!--- Sidemenu -->
     <ul class="metismenu side-nav side-nav-light in">
         <li class="side-nav-title side-nav-item">Điều hướng</li>
-        <li class="side-nav-item @(isSelected == 0 ? "active": "") " @onclick='() => NavigateToUrl(" /teacher/become_an_instructor")'>
+        <li class="side-nav-item @(isSelected == 0 ? "active": "") " @onclick='() => NavigateToUrl("/teacher/become_an_instructor")'>
             <a class="side-nav-link active">
                 <i class="dripicons-archive"></i>
                 <span>Trở thành giảng viên</span>
             </a>
         </li>
-        <li class="side-nav-item @(isSelected == 1 ? "active": "") " @onclick='() => NavigateToUrl(" /user/user_profile")'>
+        <li class="side-nav-item @(isSelected == 1 ? "active": "") " @onclick='() => NavigateToUrl("/user/user_profile", true)'>
             <a class="side-nav-link">
                 <i class="dripicons-user"></i>
                 <span>Quản lý hồ sơ</span>

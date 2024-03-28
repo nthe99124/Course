@@ -118,17 +118,12 @@
                                         </div>
 
                                         <div class="row setup-content" id="step-2">
-                                            <div class="col-md-11 col-md-offset-1">
-                                                <div class="row section">
-                                                    <div class="col-sm-12">
-                                                         <label class="control-label">Giới thiệu khóa học <span class="text-danger">*</span>
-                                                        </label>
-                                                        <textarea id="course_info" cols="100" name="course_info" rows="10" @bind="createCourse.Introduce">
+                                            <div class="form-group col-md-12 row">
+                                                <label class="control-label" style="margin-left: 5px;">Giới thiệu khóa học <span class="text-danger">*</span>
+                                                </label>
+                                                <textarea id="course_info" class="form-control" cols="100" name="course_info" style="margin-left: 15px;" rows="10" @bind="createCourse.Introduce">
 
-                                                        </textarea>
-                                                        
-                                                    </div>
-                                                </div>
+                                                </textarea>
                                             </div>
                                         </div>
                                     <div class="row setup-content section" id="step-4">
@@ -147,13 +142,13 @@
                                                             <label class="label_radio d-flex" style="column-gap: 5px">
                                                                 <input type="radio" value="limit" name="type_expired" @onchange="() => OnChangeTimePeriod(TypeOfTerm.MonthLimit)">
                                                                 <span class="my-auto">Có thời hạn</span>
-                                                                <input type="number" class="form-control input-number" value="0" style="width: 80px" disabled="@(createCourse.TypeOfTerm == TypeOfTerm.DateLimit)" name="month_expired" min="1">
+                                                                <input type="number" class="form-control input-number" value="0" style="width: 80px" disabled="@(createCourse.TypeOfTerm == TypeOfTerm.Lifetime || createCourse.TypeOfTerm == TypeOfTerm.DateLimit)" name="month_expired" min="1">
                                                                 <span class="my-auto">tháng</span>
                                                             </label>
                                                             <label class="label_radio d-flex" style="column-gap: 5px">
                                                                 <input type="radio" value="limit-day" name="type_expired" @onchange="() => OnChangeTimePeriod(TypeOfTerm.DateLimit)">
                                                                 <span class="my-auto">Có thời hạn</span>
-                                                                <input type="number" class="form-control input-number" value="0" style="width: 80px" disabled="@(createCourse.TypeOfTerm == TypeOfTerm.MonthLimit)" name="day_expired" min="1">
+                                                                <input type="number" class="form-control input-number" value="0" style="width: 80px" disabled="@(createCourse.TypeOfTerm == TypeOfTerm.Lifetime || createCourse.TypeOfTerm == TypeOfTerm.MonthLimit)" name="day_expired" min="1">
                                                                 <span class="my-auto">ngày</span>
                                                             </label>
                                                         </div>
@@ -188,7 +183,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12 item-filedset mt-0">
-                                                            <div class="currency-filedset-zone" id="hide-paid" style="display: block;">
+                                                            <div class="currency-filedset-zone " id="hide-paid" style="@(createCourse.TypeOfPurchase == TypeOfPurchase.Paid ? "display: block": "display: none")" >
                                                                 <div class="row">
                                                                     <div class="col-md-6">
                                                                         <h4 class="leanheader">Giá thành</h4>
@@ -324,9 +319,10 @@
             }
 
             var res = await _courseService.CreateCourseMaster(createCourse);
-            if (res != null && res.IsSuccess)
+            if (res != null && res.IsSuccess && res.Data != null)
             {
                 ShowMessage(ToastType.Success, "Đăng ký khóa học thành công, tiếp tục thực hiện đăng ký các bài học.");
+                NavigateToUrl($"/admin/lession/{res.Data}", true);
             }
             else
             {

@@ -27,7 +27,6 @@ namespace CourseProject.API.Services.Base
             if (userContext != null && userContext.Identity != null && userContext.Identity.IsAuthenticated)
             {
                 userInfor.UserName = userContext?.FindFirst(JwtRegisteredClaimsNamesConstant.Sub)?.Value;
-                userInfor.Coin = long.Parse(userContext?.FindFirst(JwtRegisteredClaimsNamesConstant.Coin)?.Value);
                 userInfor.AccoutantId = Guid.Parse(userContext?.FindFirst(JwtRegisteredClaimsNamesConstant.AccId)?.Value);
                 userInfor.RoleList = userContext.FindAll(JwtRegisteredClaimsNamesConstant.Role).Select(c => c.Value).ToList();
             }

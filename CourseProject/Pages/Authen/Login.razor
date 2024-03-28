@@ -76,6 +76,8 @@
                     {
                         Email = loginViewModel.Email,
                         ImgAvatar = res.Data.ImgAvatar,
+                        FullName = res.Data.FullName,
+                        Token = res.Data.Token,
                     };
                 var userInforJson = JsonSerializer.Serialize(userInfor);
                 await SetSessionStorage("userInfor", userInforJson);
@@ -85,11 +87,11 @@
                 if (res.Data.RoleList.Contains(RoleConstant.Admin) || res.Data.RoleList.Contains(RoleConstant.Teacher))
                 {
                     // là nhân viên hoặc admin thì bay luôn sang admin
-                    NavigateToUrl($"/admin/course");
+                    NavigateToUrl($"/admin/course", true);
                 }
                 else
                 {
-                    NavigateToUrl($"/home");
+                    NavigateToUrl($"/home", true);
                 }
             }
             else

@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/css/section.css?time=1697609396">
     <link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/plugins/ckeditor/contents.css?v=1.0.0">
     <link href="https://hocvienthueonline.edubit.vn/statics/css/common_css.css?v=1.2.7" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- JavaScripts -->
     
 <div class="">
@@ -331,7 +332,7 @@
 
     protected async Task LogoutAction()
     {
-        NavigateToUrl("/login");
+        NavigateToUrl("/login", true);
 
         // xóa infor cache
     }

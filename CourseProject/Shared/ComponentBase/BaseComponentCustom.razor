@@ -49,9 +49,9 @@
         await _js.InvokeVoidAsync(method, args);
     }
 
-    protected void NavigateToUrl(string url)
+    protected void NavigateToUrl(string url, bool forceLoad = false)
     {
-        _navigationManager.NavigateTo(url);
+        _navigationManager.NavigateTo(url, forceLoad);
     }
 
     protected string GetLinkImage(string imgFileName)

@@ -235,8 +235,11 @@ namespace CourseProject.API.Services
                 }
 
                 await _unitOfWork.CommitAsync();
+
+                res.SuccessEventHandler(courseInsert.Id);
             }
             res.SuccessEventHandler();
+
             return res;
 
         }
