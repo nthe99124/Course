@@ -8,8 +8,10 @@ using CourseProject.Model.BaseEntity;
 using CourseProject.Model.DTO.Account;
 using CourseProject.Model.ViewModel;
 using CourseProject.Model.ViewModel.Account;
+using CourseProject.Model.ViewModel.Course;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -27,6 +29,7 @@ namespace CourseProject.API.Services
         Task<RestOutput> UpdateUserInfor(AccountUpdate account);
         Task<RestOutput> ChangePassword(string newPassword, string oldPassword);
         Task<AccountUpdate> GetUserInforGeneric();
+        Dictionary<Guid, string> GetTeacherList();
     }
     public class AccountService: BaseService, IAccountService
     {
@@ -257,6 +260,25 @@ namespace CourseProject.API.Services
             }
 
             return res;
+        }
+
+        /// <summary>
+        /// Hàm lấy danh sách giáo viên
+        /// CreatedBy ntthe 24.03.2024
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<Guid, string> GetTeacherList()
+        {
+            var listTeacher = (from a in _unitOfWork.AccountRepository.Get()
+                              join ra in _unitOfWork.RoleAccountRepository.Get() on a.Id equals ra.AccountId
+                              join r in _unitOfWork.RoleRepository.Get() on ra.RoleId equals r.Id
+                              where r.RoleName == RoleConstant.Teacher
+                              select new 
+                              {
+                                  Id = a.Id,
+                                  TeacherName = a.LastName + " " + a.FirstName,
+                              }).ToDictionary(item => item.Id, item => item.TeacherName);
+            return listTeacher;
         }
 
         #region Private Method

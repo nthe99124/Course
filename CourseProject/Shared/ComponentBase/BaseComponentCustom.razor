@@ -1,4 +1,6 @@
-﻿@using CourseProject.Model.ViewModel.Account
+﻿@using BlazorBootstrap
+@using CourseProject.Model.ViewModel
+@using CourseProject.Model.ViewModel.Account
 @using Microsoft.JSInterop;
 @using System.Net;
 @using System.Text.Json
@@ -47,15 +49,29 @@
         await _js.InvokeVoidAsync(method, args);
     }
 
-    protected void NavigateToUrl(string url)
+    protected void NavigateToUrl(string url, bool forceLoad = false)
     {
-        _navigationManager.NavigateTo(url);
+        _navigationManager.NavigateTo(url, forceLoad);
     }
 
     protected string GetLinkImage(string imgFileName)
     {
         var baseUrlApiImage = config.GetSection("BaseUrlApiImage").Value;
         return baseUrlApiImage + imgFileName;
+    }
+
+    protected async Task<FileBase64Infor> ConvertFileToBase64(IBrowserFile file)
+    {
+        using MemoryStream ms = new();
+        await file.OpenReadStream().CopyToAsync(ms);
+        var fileBytes = ms.ToArray();
+        var fileInfor = new FileBase64Infor
+        {
+            Base64File = Convert.ToBase64String(fileBytes),
+            ContentType = file.ContentType,
+            FileName = file.Name
+        };
+        return fileInfor;
     }
 
     #region show toast

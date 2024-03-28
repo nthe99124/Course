@@ -37,6 +37,7 @@
     <Compile Include="ViewModel\Course\MyCourseVM.cs" />
     <Compile Include="ViewModel\Course\CourseGeneric.cs" />
     <Compile Include="ViewModel\Course\SearchCourseParam.cs" />
+    <Compile Include="ViewModel\FileModel.cs" />
     <Compile Include="ViewModel\Lession\LessionDeleteParam.cs" />
     <Compile Include="ViewModel\Lession\LessionEditParam.cs" />
     <Compile Include="ViewModel\Lession\LessionCreateParam.cs" />
@@ -47,6 +48,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.15" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.16" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.16">
       <PrivateAssets>all</PrivateAssets>

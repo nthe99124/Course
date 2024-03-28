@@ -1,12 +1,14 @@
 ﻿@page "/login"
+@using BlazorBootstrap
 @using CourseProject.Common.Constant
 @using CourseProject.Model.ViewModel.Account
-@using StoriesProject.Services
+@using CourseProject.Services
 @using System.Text.Json
+@using CourseProject.Shared.ComponentBase
 
 @inject IAccountService _accountService;
 @inherits BaseComponentCustom
-
+<Toasts class="p-3" Messages="messages" Placement="toastsPlacement" />
 <div class="category-course-list-area">
     <div class="container">
         <div class="row mb-5 mt-3">
@@ -27,7 +29,7 @@
                             <label for="login-email">Email</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-white" for="email"><i class="fas fa-envelope"></i></span>
-                                <input type="email" name="email" class="form-control" placeholder="Email" data-rule="required|email" data-name="Email" @bind="loginViewModel.Email">
+                                <input type="email" data-field="email" class="form-control" placeholder="Email" data-rule="required|email" data-name="Email" @bind="loginViewModel.Email">
                             </div>
                         </div>
 
@@ -35,7 +37,7 @@
                             <label for="login-password">Mật khẩu</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-white" for="password"><i class="fas fa-key"></i></span>
-                                <input type="password" name="password" class="form-control" placeholder="Mật khẩu" data-rule="required|password" data-name="Mật khẩu" @bind="loginViewModel.Password">
+                                <input type="password" data-field="password" class="form-control" placeholder="Mật khẩu" data-rule="required|password" data-name="Mật khẩu" @bind="loginViewModel.Password">
                             </div>
                             <a class="text-muted text-12px fw-500 float-end" href="https://4user.net/login/forgot_password_request">Quên mật khẩu?</a>
                         </div>
@@ -74,26 +76,32 @@
                     {
                         Email = loginViewModel.Email,
                         ImgAvatar = res.Data.ImgAvatar,
+                        FullName = res.Data.FullName,
+                        Token = res.Data.Token,
                     };
                 var userInforJson = JsonSerializer.Serialize(userInfor);
                 await SetSessionStorage("userInfor", userInforJson);
                 // lưu quyền trên session chỉ phục vụ hiển thị màn hình thôi, các nghiệp vụ check quyền dưới BE hết
                 // await ShowToast("Đăng nhập thành công");
                 await Task.Delay(2000);
-                if (res.Data.RoleList.Contains(RoleConstant.Admin))
+                if (res.Data.RoleList.Contains(RoleConstant.Admin) || res.Data.RoleList.Contains(RoleConstant.Teacher))
                 {
                     // là nhân viên hoặc admin thì bay luôn sang admin
-                    NavigateToUrl($"/admin");
+                    NavigateToUrl($"/admin/course", true);
                 }
                 else
                 {
-                    NavigateToUrl($"/home");
+                    NavigateToUrl($"/home", true);
                 }
             }
             else
             {
-                await ShowToast(res?.Message);
+                ShowMessage(ToastType.Danger, res.Message, ToastsPlacement.MiddleCenter);
             }
+        }
+        else
+        {
+            ShowMessage(ToastType.Danger, messError, ToastsPlacement.MiddleCenter);
         }
     }
 }

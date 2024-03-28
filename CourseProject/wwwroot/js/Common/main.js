@@ -310,3 +310,17 @@ function validateForm(formId) {
 
 	return null
 }
+
+
+window.openFilePicker = function (fileInput) {
+	fileInput.click();
+	// Xử lý sự kiện khi người dùng đã chọn file
+	fileInput.addEventListener('change', function () {
+		var reader = new FileReader();
+		reader.onload = function (e) {
+			var imgPreview = document.getElementById('previewImage');
+			imgPreview.src = e.target.result;
+		};
+		reader.readAsDataURL(fileInput.files[0]);
+	});
+};

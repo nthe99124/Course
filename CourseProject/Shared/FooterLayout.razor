@@ -1,5 +1,6 @@
 ﻿@using CourseProject.Common.Constant
 @using CourseProject.Shared.Footer
+@using CourseProject.Shared
 @inject NavigationManager _navigationManager;
 @inherits AuthorBaseComponent
 @if (role == RoleConstant.Admin)
@@ -13,9 +14,10 @@ else if (role == RoleConstant.Teacher)
 else
 {
     <FooterUser></FooterUser>
+    <ModalComponent></ModalComponent>
+    <RatingComponent></RatingComponent>
 }
-<ModalComponent></ModalComponent>
-<RatingComponent></RatingComponent>
+
 
 @code {
     private string role { get; set; } = RoleConstant.Customer;

@@ -1,11 +1,14 @@
 ﻿@page "/register"
+@using BlazorBootstrap
 @using CourseProject.Common.Constant
 @using CourseProject.Model.ViewModel.Account
 @using System.Text.Json
-@using StoriesProject.Services
+@using CourseProject.Services
+@using CourseProject.Shared.ComponentBase
 
 @inject IAccountService _accountService;
 @inherits BaseComponentCustom
+
 <Toasts class="p-3" Messages="messages" Placement="toastsPlacement" />
 <section class="category-course-list-area">
     <div class="container">

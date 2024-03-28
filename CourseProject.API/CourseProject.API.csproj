@@ -53,6 +53,8 @@
     <Compile Include="Migrations\20240325193857_add-colum-time-chapter-lession.Designer.cs" />
     <Compile Include="Migrations\20240325194636_add-column-lession.cs" />
     <Compile Include="Migrations\20240325194636_add-column-lession.Designer.cs" />
+    <Compile Include="Migrations\20240327185703_add-column-course.cs" />
+    <Compile Include="Migrations\20240327185703_add-column-course.Designer.cs" />
     <Compile Include="Migrations\CourseContextModelSnapshot.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Repositories\AccountRepository.cs" />

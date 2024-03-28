@@ -140,5 +140,20 @@ namespace CourseProject.API.Controller
             _res.SuccessEventHandler(userInfor);
             return Ok(_res);
         }
+
+        /// <summary>
+        /// Hàm xử lấy danh sách giảng viên
+        /// CreatedBy ntthe 24.03.2024
+        /// </summary>
+        /// <param name="acc"></param>
+        /// <returns></returns>
+        [HttpGet("GetTeacherList")]
+        [Roles(RoleConstant.Admin, RoleConstant.Teacher)]
+        public IActionResult GetTeacherList()
+        {
+            var teacherList = _accountService.GetTeacherList();
+            _res.SuccessEventHandler(teacherList);
+            return Ok(_res);
+        }
     }
 }

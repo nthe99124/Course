@@ -1,4 +1,5 @@
-﻿using BlazorBootstrap;
+﻿using Amazon.S3;
+using BlazorBootstrap;
 using Blazorise;
 using Blazorise.Bootstrap;
 using CourseProject.Common.Cache;
@@ -8,9 +9,10 @@ using CourseProject.Services;
 using CourseProject.Services.Base;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Localization;
-using StoriesProject.Services;
-using Syncfusion.Blazor;
 using System.Globalization;
+using Amazon.S3;
+using Microsoft.Web.Administration;
+using Microsoft.AspNetCore.Http.Features;
 
 #region Config service
 var builder = WebApplication.CreateBuilder(args);
@@ -30,7 +32,11 @@ services.AddRazorPages();
 services.AddServerSideBlazor();
 services.AddHttpClient();
 services.AddWMBSC();
-services.AddBlazorise().AddBlazorBootstrap().AddBootstrapProviders();
+services.AddBlazorise().AddBlazorBootstrap();
+services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = long.MaxValue;
+});
 
 #endregion
 
@@ -97,7 +103,6 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
-
 
 app.UseRouting();
 

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting.Internal;
 using CourseProject.API.Common.Cache;
 using CourseProject.API.Common.Repository;
 using CourseProject.API.Services.Base;
+using CourseProject.Model.ViewModel;
 
 namespace CourseProject.API.Common.Ulti
 {
@@ -10,6 +11,7 @@ namespace CourseProject.API.Common.Ulti
     {
         Task<string> SaveFile(IFormFile file);
         Task<FileStream> ReadFile(string fileName);
+        Task<string> SaveFileBase64(FileBase64Infor fileBase64);
     }
     public class FileUlti : IFileUlti
     {
@@ -17,6 +19,21 @@ namespace CourseProject.API.Common.Ulti
         public FileUlti(IWebHostEnvironment hostingEnvironment)
         {
             _hostingEnvironment = hostingEnvironment;
+        }
+
+        public async Task<string> SaveFileBase64(FileBase64Infor fileBase64)
+        {
+            byte[] bytes = Convert.FromBase64String(fileBase64.Base64File);
+            MemoryStream stream = new(bytes);
+
+            //item.File = new FormFile(stream, 0, bytes.Length, item.SeoFilename, item.SeoFilename);
+            var fileItem = new FormFile(stream, 0, stream.Length, null, fileBase64.FileName)
+            {
+                Headers = new HeaderDictionary(),
+                ContentType = fileBase64.ContentType
+            };
+            var fileName = await SaveFile(fileItem);
+            return fileName;
         }
         public async Task<string> SaveFile(IFormFile file)
         {

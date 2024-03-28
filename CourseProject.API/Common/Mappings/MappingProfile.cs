@@ -10,7 +10,7 @@ namespace CourseProject.API.Common.Mappings
         public MappingProfile()
         {
             CreateMap<AccountRegister, Account>();
-            CreateMap<Course, CreateCourseVM>();
+            CreateMap<CreateCourseVM, Course>();
         }
     }
 }

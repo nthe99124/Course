@@ -1,26 +1,29 @@
 ﻿using AutoMapper;
 using CourseProject.API.Common.Cache;
 using CourseProject.API.Common.Repository;
+using CourseProject.API.Common.Ulti;
 using CourseProject.API.Services.Base;
 using CourseProject.Model.BaseEntity;
 using CourseProject.Model.ViewModel;
 using CourseProject.Model.ViewModel.Course;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace CourseProject.API.Services
 {
     public interface ILessionService
     {
         Task<RestOutput> CreateLession(LessionCreateParam lession);
-        Task<RestOutput> EditLession(LessionEditParam lession);
+        Task<RestOutput> EditLession(Dictionary<string, IFormFile> listFile, LessionEditParam lession);
         Task<RestOutput> DeleteLession(LessionDeleteParam lession);
     }
     public class LessionService : BaseService, ILessionService
     {
+        private IFileUlti _fileUlti;
         public LessionService(IHttpContextAccessor httpContextAccessor,
                                 IDistributedCacheCustom cache,
-                                IUnitOfWork unitOfWork, IMapper mapper) : base(httpContextAccessor, cache, unitOfWork, mapper)
+                                IUnitOfWork unitOfWork, IMapper mapper, IFileUlti fileUlti) : base(httpContextAccessor, cache, unitOfWork, mapper)
         {
-            
+            _fileUlti = fileUlti;
         }
 
         /// <summary>
@@ -66,7 +69,7 @@ namespace CourseProject.API.Services
         /// CreatedBy ntthe 24.03.2024
         /// </summary>
         /// <returns></returns>
-        public async Task<RestOutput> EditLession(LessionEditParam lession)
+        public async Task<RestOutput> EditLession(Dictionary<string, IFormFile> listFile, LessionEditParam lession)
         {
             var res = new RestOutput();
             if (lession != null)
@@ -96,6 +99,18 @@ namespace CourseProject.API.Services
                     }
 
                     await _unitOfWork.CommitAsync();
+
+                    // thêm file vào server
+                    var keysFileList = listFile.Keys.ToList();
+                    for (int i = 0; i < keysFileList.Count; i++)
+                    {
+                        var key = keysFileList[i];
+                        var file = listFile[key];
+                        if (file != null)
+                        {
+                            _ = await _fileUlti.SaveFile(file);
+                        }
+                    }
                 }
                 else
                 {

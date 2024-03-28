@@ -1,4 +1,5 @@
-﻿@page "/admin/lession"
+﻿@page "/admin/lession/{courseId}"
+@page "/admin/lession"
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
@@ -129,8 +130,59 @@
         ẻhergergregergre
     </BodyTemplate>
 </Modal>
+<style>
+    .button-control .btn-setting{
+        color: #fff;
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+        margin-right: 20px;
+    }
 
+    .button-control .btn-add {
+        color: #fff;
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    .control-curse{
+        border: 1px solid #ccc;
+        margin-bottom: 20px;
+        background: white;
+        padding: 20px;
+        overflow-x: auto;
+    }
+
+    .control-curse .btn-add-curse{
+        color: #fff !important;
+        background-color: #28a745;
+        border-color: #28a745;
+        margin: 10px 0;
+        padding: 5px 10px;
+    }
+
+    .table thead th {
+        border-top: none;
+        font-size: 17px;
+    }
+
+    .table tr td {
+        font-size: 15px;
+    }
+    .table td, .table th {
+        vertical-align: sub;
+    }
+
+    .btn-status li{
+        margin: 0 5px;
+        color: #007bff;
+        cursor: pointer;
+    }
+
+
+</style>
 @code{
+    [Parameter]
+    public string CourseId { get; set; }
     Modal modal = default!;
 
     private async Task OnShowModalEditLession()

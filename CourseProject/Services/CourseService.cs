@@ -1,9 +1,11 @@
 ﻿using CourseProject.Common.Cache;
 using CourseProject.Model.BaseEntity;
+using CourseProject.Model.ViewModel;
 using CourseProject.Model.ViewModel.Course;
 using CourseProject.Pages.Course;
 using CourseProject.Services.ApiUrldefinition;
 using CourseProject.Services.Base;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 
 namespace CourseProject.Services
@@ -15,6 +17,7 @@ namespace CourseProject.Services
         Task<List<MyCourseVM>> GetListCourseByUser();
         Task<CourseDetailVM> GetDetailCourse(Guid courseId);
         Task<List<CourseGeneric>> GetCourseSearchCourseByCondition(SearchCourseParam searchCourseParam);
+        Task<ResponseOutput<Guid?>> CreateCourseMaster(CreateCourseVM createCourseParam);
     }
 
     public class CourseService : BaseService, ICourseService
@@ -65,7 +68,7 @@ namespace CourseProject.Services
         public async Task<CourseDetailVM> GetDetailCourse(Guid courseId)
         {
             var url = CourseApiUrlDef.GetDetailCourse(courseId);
-            return await RequestGetAsync<CourseDetailVM>(url);
+            return await RequestAuthenGetAsync<CourseDetailVM>(url);
         }
 
         /// <summary>
@@ -78,6 +81,17 @@ namespace CourseProject.Services
             var url = CourseApiUrlDef.GetCourseSearchCourseByCondition();
             return await RequestPostAsync<List<CourseGeneric>>(url,searchCourseParam);
         }
-        
+
+        /// <summary>
+        /// Hàm xử lý thêm khóa học
+        /// CreatedBy ntthe 24.03.2024
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ResponseOutput<Guid?>> CreateCourseMaster(CreateCourseVM createCourseParam)
+        {
+            var url = CourseApiUrlDef.CreateCourseMaster();
+            return await RequestFullAuthenPostAsync<Guid?>(url, createCourseParam);
+        }
+
     }
 }
