@@ -13,8 +13,9 @@ namespace CourseProject.Common._3rdApi.Service
             // Đây là một ví dụ đơn giản, bạn cần thay thế nó bằng mã thực tế
             // Xem thêm tài liệu AWS SDK để biết cách sử dụng
             // https://docs.aws.amazon.com/sdk-for-net/latest/developer-guide/s3-apis-intro.html
-            var BucketName = "courseproject01";
-            var s3Client = new AmazonS3Client("AKIA6GBMGLAJ5MXKYJKI", "jIoY0IuhKZxMXyu+rEH0q7x6ZgVitMdO05bOoHTE", RegionEndpoint.APSoutheast1);
+            // ẩn key để múc sang github, azure nó check
+            var BucketName = "";
+            var s3Client = new AmazonS3Client();
 
             using (var client = s3Client)
             {
@@ -46,14 +47,15 @@ namespace CourseProject.Common._3rdApi.Service
 
         static async Task<string> GetVideoFromS3Url(string s3VideoUrl)
         {
-            var s3Client = new AmazonS3Client("AKIA6GBMGLAJ5MXKYJKI", "jIoY0IuhKZxMXyu+rEH0q7x6ZgVitMdO05bOoHTE", RegionEndpoint.APSoutheast1);
+            // ẩn key để múc sang github, azure nó check
+            var s3Client = new AmazonS3Client();
             try
             {
                 // Lấy tên bucket và khóa đối tượng (object key) từ URL của video trên S3
                 Uri uri = new Uri(s3VideoUrl);
                 string objectKey = uri.AbsolutePath.TrimStart('/');
 
-                var bucketName = "courseproject01";
+                var bucketName = "";
                 // Tạo yêu cầu để lấy đối tượng từ bucket S3
                 GetObjectRequest request = new GetObjectRequest
                 {
