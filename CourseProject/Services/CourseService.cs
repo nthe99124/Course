@@ -17,7 +17,7 @@ namespace CourseProject.Services
         Task<List<MyCourseVM>> GetListCourseByUser();
         Task<CourseDetailVM> GetDetailCourse(Guid courseId);
         Task<List<CourseGeneric>> GetCourseSearchCourseByCondition(SearchCourseParam searchCourseParam);
-        Task<ResponseOutput<string>> CreateCourseMaster(Dictionary<string, IBrowserFile> listFile, CreateCourseVM createCourseParam);
+        Task<ResponseOutput<string>> CreateCourseMaster(CreateCourseVM createCourseParam);
     }
 
     public class CourseService : BaseService, ICourseService
@@ -87,10 +87,10 @@ namespace CourseProject.Services
         /// CreatedBy ntthe 24.03.2024
         /// </summary>
         /// <returns></returns>
-        public async Task<ResponseOutput<string>> CreateCourseMaster(Dictionary<string, IBrowserFile> listFile, CreateCourseVM createCourseParam)
+        public async Task<ResponseOutput<string>> CreateCourseMaster(CreateCourseVM createCourseParam)
         {
             var url = CourseApiUrlDef.CreateCourseMaster();
-            return await RequestFileAsync<string>(url, listFile, createCourseParam);
+            return await RequestFullAuthenPostAsync<string>(url, createCourseParam);
         }
 
     }

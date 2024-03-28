@@ -90,9 +90,9 @@ namespace CourseProject.API.Controller
         /// <returns></returns>
         [HttpPost("CreateCourseMaster")]
         [Roles(RoleConstant.Admin, RoleConstant.Teacher)]
-        public async Task<IActionResult> CreateCourseMaster([FromForm] Dictionary<string, IFormFile> listFile, [FromForm] CreateCourseVM createCourseParam)
+        public async Task<IActionResult> CreateCourseMaster(CreateCourseVM createCourseParam)
         {
-            _res = await _courseService.CreateCourseMaster(listFile, createCourseParam);
+            _res = await _courseService.CreateCourseMaster(createCourseParam);
             return Ok(_res);
         }
     }

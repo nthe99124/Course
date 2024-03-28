@@ -322,7 +322,7 @@
             {
                 createCourse.ImgCourseFile = await ConvertFileToBase64(selectedFile);    
             }
-            
+
             var res = await _courseService.CreateCourseMaster(createCourse);
             if (res != null && res.IsSuccess)
             {
