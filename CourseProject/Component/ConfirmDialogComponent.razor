@@ -1,0 +1,64 @@
+﻿<ConfirmDialog @ref="dialog" />
+
+@code {
+    [Parameter]
+    public string YesButtonText { get; set; } = "Đồng ý";
+
+    [Parameter]
+    public ButtonColor YesButtonColor { get; set; } = ButtonColor.Success;
+
+    [Parameter]
+    public string NoButtonText { get; set; } = "Hủy";
+
+    [Parameter]
+    public ButtonColor NoButtonColor { get; set; } = ButtonColor.Danger;
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public string ContenMessage1 { get; set; }
+
+    [Parameter]
+    public string ContenMessage2 { get; set; }
+
+    [Parameter]
+    public Action CallbackConfirm { get; set; }
+
+    [Parameter]
+    public Action CallbackCancel { get; set; }
+
+    private ConfirmDialog dialog = default!;
+
+    private async Task ShowSaveConfirmationAsync()
+    {
+        var options = new ConfirmDialogOptions
+            {
+                YesButtonText = YesButtonText,
+                YesButtonColor = YesButtonColor,
+                NoButtonText = NoButtonText,
+                NoButtonColor = NoButtonColor
+            };
+
+        var confirmation = await dialog.ShowAsync(
+            title: Title,
+            message1: ContenMessage1,
+            message2: ContenMessage2,
+            confirmDialogOptions: options);
+
+        if (confirmation)
+        {
+            if (CallbackConfirm != null)
+            {
+                CallbackConfirm();
+            }
+        }
+        else
+        {
+            if (CallbackCancel != null)
+            {
+                CallbackCancel();
+            }
+        }
+    }
+}

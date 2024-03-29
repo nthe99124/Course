@@ -1,0 +1,68 @@
+﻿<style>
+    .modal-confirm-buttons{
+        padding-top: 10px; 
+        justify-content: flex-end;
+    }
+    .modal-confirm-buttons button{
+        margin: 0 5px 0 0;
+    }
+</style>
+
+<Modal @ref="modal" Size="Size" Title="@Title">
+    <BodyTemplate>
+        <div class="content-form-modal">
+            @Content
+        </div>
+        <div class="modal-confirm-buttons d-flex">
+            <Button Color="YesButtonColor" onclick="ConfirmClicked">@YesButtonText</Button>
+            <Button Color="NoButtonColor" onclick="CancelClicked">@NoButtonText</Button>
+        </div>
+    </BodyTemplate>
+</Modal>
+
+@code {
+
+    [Parameter]
+    public ModalSize Size { get; set; } = ModalSize.Small;
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public string YesButtonText { get; set; } = "Đồng ý";
+
+    [Parameter]
+    public ButtonColor YesButtonColor { get; set; } = ButtonColor.Success;
+
+    [Parameter]
+    public string NoButtonText { get; set; } = "Hủy";
+
+    [Parameter]
+    public ButtonColor NoButtonColor { get; set; } = ButtonColor.Danger;
+
+    [Parameter]
+    public RenderFragment Content { get; set; }
+
+    [Parameter]
+    public EventCallback CallbackConfirm { get; set; }
+
+    [Parameter]
+    public EventCallback CallbackCancel { get; set; }
+
+    Modal modal = default!;
+
+    private async Task ConfirmClicked()
+    {
+        await CallbackConfirm.InvokeAsync();
+    }
+
+    private async Task CancelClicked()
+    {
+        await CallbackCancel.InvokeAsync();
+    }
+
+    public async Task ShowAsync()
+    {
+        await modal.ShowAsync();
+    }
+}
