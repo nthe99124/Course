@@ -150,6 +150,8 @@ services.AddTransient<IUnitOfWork, UnitOfWork>();
 services.AddScoped<IAccountService, AccountService>();
 services.AddScoped<ICourseService, CourseService>();
 services.AddScoped<ITagService, TagService>();
+services.AddScoped<IChapterService, ChapterService>();
+services.AddScoped<ILessionService, LessionService>();
 
 //Ulti
 services.AddTransient<IFileUlti, FileUlti>();
@@ -173,7 +175,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 #region CORS
 app.UseCors("AllowAnyOrigin");

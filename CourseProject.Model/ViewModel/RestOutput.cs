@@ -3,7 +3,7 @@
     public interface IRestOutput
     {
         void SuccessEventHandler(object data = null, string message = null);
-        void ErrorEventHandler(object data = null, string message = "Đã có lỗi xảy ra");
+        void ErrorEventHandler(string message = "Đã có lỗi xảy ra", object data = null);
     }
     public class RestOutput : IRestOutput
     {
@@ -24,7 +24,7 @@
             }
         }
 
-        public void ErrorEventHandler(object data = null, string message = "Đã có lỗi xảy ra")
+        public void ErrorEventHandler(string message = "Đã có lỗi xảy ra", object data = null)
         {
             IsSuccess = false;
             if (data != null)

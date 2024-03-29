@@ -22,7 +22,7 @@ namespace CourseProject.API.Controller
         /// </summary>
         /// <returns></returns>
         [HttpPost("CreateChapter")]
-        [Roles(RoleConstant.Admin, RoleConstant.Teacher)]
+        //[Roles(RoleConstant.Admin, RoleConstant.Teacher)]
         public async Task<IActionResult> CreateChapter(ChapterCreateParam chapter)
         {
             _res = await _chapterService.CreateChapter(chapter);

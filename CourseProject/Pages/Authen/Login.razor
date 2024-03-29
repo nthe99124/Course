@@ -96,12 +96,12 @@
             }
             else
             {
-                ShowMessage(ToastType.Danger, res.Message, ToastsPlacement.MiddleCenter);
+                ShowErrorMessage(res.Message);
             }
         }
         else
         {
-            ShowMessage(ToastType.Danger, messError, ToastsPlacement.MiddleCenter);
+            ShowErrorMessage(messError);
         }
     }
 }

@@ -1,0 +1,186 @@
+﻿#lessons strong.pull-left {
+    padding: 10px 0px;
+}
+
+#lessons .parent {
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    background: white;
+}
+
+    #lessons .parent .parent-title {
+        background: white;
+        padding: 5px 0;
+    }
+
+    #lessons .parent .lesson-content {
+        border-bottom: 1px solid #ccc;
+        padding: 5px 10px;
+    }
+
+    #lessons .parent .child-item {
+        border-bottom: 1px dotted #6b6868;
+        background: white;
+        padding: 0;
+    }
+
+#lessons .pd-10-0 {
+    padding: 10px 0;
+}
+
+#lessons .text-bold {
+    font-weight: bold;
+    padding: 10px 0;
+}
+
+#lessons .action a {
+    margin-right: 7px;
+}
+
+#lessons .text-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#list_lessons .text-title {
+    cursor: move;
+}
+
+#lessons .row {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+
+#page-courses .type-course .description p {
+}
+
+#course-lessons-setting .label_radio {
+    display: block;
+}
+
+.block-condition-lesson {
+    margin-top: 40px;
+}
+
+.block-condition-course .select2-container {
+    width: 100% !important;
+}
+
+#tab-dashboard-menu {
+    border-bottom: 0;
+}
+
+.create-first-course {
+    color: #218838;
+    font-size: 18px;
+}
+
+.btn-back-to-list-course {
+    padding: 0;
+}
+
+.container-page-courses {
+    background: #f5f5f5;
+}
+
+.certificate-status-label {
+    margin-right: 10px;
+}
+
+.currency-filedset-zone {
+    display: none;
+}
+
+.currency-filedset {
+    width: 200px;
+}
+
+.btn-create-course-status {
+    margin-bottom: 10px;
+}
+
+.container-page-courses .manage-attachment {
+    display: none;
+}
+
+.btn-back-link-custom {
+    padding: 0;
+    color: #02e1f7;
+}
+
+.container-edit-course-bg {
+    background: #f5f5f5;
+}
+
+.clear-both-zone {
+    clear: both;
+}
+
+.see-status-label {
+    margin-right: 10px;
+}
+
+.container-edit-course .manage-attachment {
+    display: none;
+}
+
+.add-chapter-zone {
+    text-align: right;
+}
+
+#list_lessons {
+    width: 100%;
+}
+
+#list-course-cond {
+    display: none;
+}
+
+.time_close_lesson {
+    width: 55px;
+    display: inline-block;
+}
+
+#open_time_lesson {
+    width: 55px;
+    display: inline-block;
+}
+
+#open_time_next_lesson {
+    width: 55px;
+    display: inline-block;
+}
+
+.container-page-edit-course .select2-hidden-accessible {
+    border: 0 !important;
+    clip: rect(0 0 0 0) !important;
+    -webkit-clip-path: inset(50%) !important;
+    clip-path: inset(50%) !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    position: relative !important;
+    */ width: 1px !important;
+    white-space: nowrap !important;
+}
+
+.container-page-edit-course .select2-container {
+    display: inherit;
+}
+
+.nav-tabs {
+    border-bottom: unset;
+}
+
+.btn-success {
+    color: #fff !important;
+}
+
+.zone-upload {
+    border: 4px dashed #ccc;
+    width: 70%;
+    margin: 0 auto;
+    padding: 30px;
+    text-align: center;
+}

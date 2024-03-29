@@ -312,15 +312,17 @@ function validateForm(formId) {
 }
 
 
-window.openFilePicker = function (fileInput) {
+window.openFilePicker = function (fileInput, isPreview = true) {
 	fileInput.click();
 	// Xử lý sự kiện khi người dùng đã chọn file
-	fileInput.addEventListener('change', function () {
-		var reader = new FileReader();
-		reader.onload = function (e) {
-			var imgPreview = document.getElementById('previewImage');
-			imgPreview.src = e.target.result;
-		};
-		reader.readAsDataURL(fileInput.files[0]);
-	});
+	if (isPreview) {
+		fileInput.addEventListener('change', function () {
+			var reader = new FileReader();
+			reader.onload = function (e) {
+				var imgPreview = document.getElementById('previewImage');
+				imgPreview.src = e.target.result;
+			};
+			reader.readAsDataURL(fileInput.files[0]);
+		});
+    }
 };

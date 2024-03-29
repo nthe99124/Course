@@ -8,21 +8,7 @@
 @inject ICourseService _courseService;
 @inherits AuthorBaseComponent
 
-<link href="https://hocvienthueonline.edubit.vn/statics/plugins/player/7.20.2/video-js.css" rel="stylesheet">
-<link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/plugins/player/videojs-watermark/videojs-watermark.css">
-<link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/plugins/player/videojs-resolution-switcher/videojs-resolution-switcher.css">
-<script src="https://hocvienthueonline.edubit.vn/statics/plugins/player/7.20.2/video.min.js"></script>
-<script src="https://hocvienthueonline.edubit.vn/statics/plugins/player/js/videojs-playlist.js"></script>
-<script src="https://hocvienthueonline.edubit.vn/statics/plugins/player/js/Youtube.js"></script>
-<script src="https://hocvienthueonline.edubit.vn/statics/plugins/player/videojs-vimeo/videojs-vimeo.umd.js"></script>
-<script src="https://hocvienthueonline.edubit.vn/statics/plugins/player/videojs-watermark/videojs-watermark.js"></script>
-<script src="https://hocvienthueonline.edubit.vn/statics/plugins/player/videojs-resolution-switcher/videojs-resolution-switcher.min.js"></script>
-<script type="text/javascript" src="https://hocvienthueonline.edubit.vn/statics/plugins/bootstrap-daterangepicker/moment.js"></script>
 <link href="https://hocvienthueonline.edubit.vn/statics/css/detail_course.css" rel="stylesheet">
-<link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/plugins/bootstrap-tagsinput/dist/jquery.tagsinput.min.css">
-<link rel="stylesheet" type="text/css" media="all" href="https://hocvienthueonline.edubit.vn/statics/plugins/select/css/select2.min.css">
-<script type="text/javascript" src="https://hocvienthueonline.edubit.vn/statics/plugins/select/js/select2.min.js"></script>
-<link href="https://hocvienthueonline.edubit.vn/statics/css/common_css.css?v=1.2.7" rel="stylesheet">
 <link href="/css/Page/Admin/courseManager.css" rel="stylesheet">
 
 <Toasts class="p-3" Messages="messages" Placement="toastsPlacement" />
@@ -33,12 +19,12 @@
             <h4><a href="https://hocvienthueonline.edubit.vn/manage#courses" class="btn btn-link back-link-custom btn-back-link-custom"><i class="fas fa-chevron-circle-left"></i></a> Khóa học: @createCourse.CourseName</h4>
             <div class="clear-both-zone"></div>
             <Tabs>
-                <Tab Title="Giới thiệu">
+                <Tab Title="Giới thiệu" IsActive @onclick='(() => NavigateToUrl("/admin/course"))'>
                     <Content>
                         
                     </Content>
                 </Tab>
-                <Tab Title="Bài học">
+                <Tab Title="Bài học" Disabled="@(courseId == null)"  IsActive @onclick='NavigateToLession'>
                     <Content>
                         
                     </Content>
@@ -213,7 +199,7 @@
                                     <div class="row setup-content section">
                                         <div class="col-md-10 col-md-offset-1 mt-10">
                                             <div id="save_button">
-                                                <div class="btn btn-successp" type="button" @onclick="async() => await CreateOrUpdateCourse()"><i class="fa fa-save"></i> Cập nhật
+                                                <div class="btn btn-success" type="button" @onclick="async() => await CreateOrUpdateCourse()"><i class="fa fa-save"></i> Cập nhật
                                                 </div>
                                             </div>
                                         </div>
@@ -290,6 +276,7 @@
 </div>
 @code {
     private CreateCourseVM createCourse { get; set; } = new CreateCourseVM();
+    private Guid? courseId { get; set; }
     private Dictionary<Guid, string> listTeacher { get; set; } = new Dictionary<Guid, string>();
     private IBrowserFile selectedFile;
     private InputFile fileInput;
@@ -321,12 +308,13 @@
             var res = await _courseService.CreateCourseMaster(createCourse);
             if (res != null && res.IsSuccess && res.Data != null)
             {
-                ShowMessage(ToastType.Success, "Đăng ký khóa học thành công, tiếp tục thực hiện đăng ký các bài học.");
-                NavigateToUrl($"/admin/lession/{res.Data}", true);
+                ShowSuccessMessage("Đăng ký khóa học thành công, tiếp tục thực hiện đăng ký các bài học.");
+                courseId = res.Data;
+                NavigateToLession();
             }
             else
             {
-                ShowMessage(ToastType.Danger, "Lỗi", ToastsPlacement.MiddleCenter);
+                ShowErrorMessage(res.Message);
             }
         }
     }
@@ -342,5 +330,13 @@
     {
         await InvokeVoidAsync("openFilePicker", fileInput.Element);
         StateHasChanged();
+    }
+
+    public void NavigateToLession()
+    {
+        if (courseId != null)
+        {
+            NavigateToUrl($"/admin/lession/{courseId}", true);
+        }
     }
 }

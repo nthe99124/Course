@@ -148,7 +148,7 @@ namespace CourseProject.API.Controller
         /// <param name="acc"></param>
         /// <returns></returns>
         [HttpGet("GetTeacherList")]
-        [Roles(RoleConstant.Admin, RoleConstant.Teacher)]
+        //[Roles(RoleConstant.Admin, RoleConstant.Teacher)]
         public IActionResult GetTeacherList()
         {
             var teacherList = _accountService.GetTeacherList();

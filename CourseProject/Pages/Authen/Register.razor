@@ -84,19 +84,19 @@
             var res = await _accountService.Register(accRegister);
             if (res != null && res.IsSuccess)
             {
-                ShowMessage(ToastType.Success, res.Data);
+                ShowSuccessMessage(res.Data);
                 await Task.Delay(2000);
 
                 NavigateToUrl($"/login");
             }
             else
             {
-                ShowMessage(ToastType.Danger, res.Data);
+                ShowErrorMessage(res.Message);
             }
         }
         else
         {
-            ShowMessage(ToastType.Danger, messError, ToastsPlacement.MiddleCenter);
+            ShowErrorMessage(messError);
         }
     }
 }

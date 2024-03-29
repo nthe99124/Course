@@ -58,9 +58,13 @@ namespace CourseProject.API.Services
                 }
 
                 await _unitOfWork.CommitAsync();
+                res.SuccessEventHandler(lessionInsert.Id);
             }
-
-            res.SuccessEventHandler();
+            else
+            {
+                res.ErrorEventHandler("Thông tin không hợp lệ");
+                return res;
+            }
             return res;
         }
 
@@ -74,17 +78,11 @@ namespace CourseProject.API.Services
             var res = new RestOutput();
             if (lession != null)
             {
-                if (string.IsNullOrEmpty(lession.LessionName))
-                {
-                    res.ErrorEventHandler("Tên bài học không được để trống");
-                    return res;
-                }
                 var lessionCurrent = await _unitOfWork.LessionRepository.FirstOrDefault(item => item.Id == lession.Id);
                 if (lessionCurrent != null)
                 {
                     var oldTotalTimeLession = lessionCurrent.TotalTimeLession;
                     // cập nhật bài học
-                    lessionCurrent.LessionName = lession.LessionName;
                     lessionCurrent.VideoLink = lession.VideoLink;
                     lessionCurrent.TestLink = lession.TestLink;
                     lessionCurrent.LessionLink = lession.LessionLink;

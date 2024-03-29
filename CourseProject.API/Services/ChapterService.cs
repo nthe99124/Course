@@ -37,6 +37,11 @@ namespace CourseProject.API.Services
                     res.ErrorEventHandler("Tên chapter không được để trống");
                     return res;
                 }
+                else if (chapter.CourseId == default)
+                {
+                    res.ErrorEventHandler("Mã khóa học không được để trống");
+                    return res;
+                }
 
                 // insert chương
                 var chapterInsert = new Chapter()
@@ -47,8 +52,15 @@ namespace CourseProject.API.Services
                 _unitOfWork.ChapterRepository.Create(chapterInsert);
 
                 await _unitOfWork.CommitAsync();
+
+                res.SuccessEventHandler(chapterInsert.Id);
             }
-            res.SuccessEventHandler();
+            else
+            {
+                res.ErrorEventHandler("Thông tin không hợp lệ");
+                return res;
+            }
+            
             return res;
         }
 

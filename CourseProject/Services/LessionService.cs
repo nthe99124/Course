@@ -12,7 +12,7 @@ namespace CourseProject.Services
 {
     public interface ILessionService : IBaseService
     {
-        Task<ResponseOutput<string>> CreateLession(LessionCreateParam lession);
+        Task<ResponseOutput<Guid?>> CreateLession(LessionCreateParam lession);
         Task<ResponseOutput<string>> EditLession(Dictionary<string, IBrowserFile> listFile, LessionEditParam lession);
         Task<ResponseOutput<string>> DeleteLession(LessionDeleteParam lession);
     }
@@ -29,10 +29,10 @@ namespace CourseProject.Services
         /// CreatedBy ntthe 24.03.2024
         /// </summary>
         /// <returns></returns>
-        public async Task<ResponseOutput<string>> CreateLession(LessionCreateParam lession)
+        public async Task<ResponseOutput<Guid?>> CreateLession(LessionCreateParam lession)
         {
             var url = LessionApiUrlDef.CreateLession();
-            return await RequestFullAuthenPostAsync<string>(url, lession);
+            return await RequestFullAuthenPostAsync<Guid?>(url, lession);
         }
 
         /// <summary>

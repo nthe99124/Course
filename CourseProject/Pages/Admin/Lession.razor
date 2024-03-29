@@ -1,9 +1,14 @@
 ﻿@page "/admin/lession/{courseId}"
 @page "/admin/lession"
+@using CourseProject.Common._3rdApi.Service
 @using CourseProject.Component
 @using CourseProject.Model.ViewModel.Course
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+@inject IChapterService _chapterService;
+@inject ILessionService _lessionService;
+@inherits AuthorBaseComponent
+
+<link rel="stylesheet" href="/css/Page/Admin/lession.css">
 <style>
     .button-control .btn-setting {
         color: #fff;
@@ -55,164 +60,503 @@
 
 </style>
 
-<div class="h-100" style="background: #f5f5f5; padding-top: 20px;">
-    <div class="container">
-        <div style="margin-bottom: 1rem;" class="button-control d-flex justify-content-end">
-            <a class="btn btn-setting" href="/" style="">Cài đặt chung</a>
-            <a class="btn btn-add" @onclick="AddChapter">+ Thêm chương</a>
+<Toasts class="p-3" Messages="messages" Placement="toastsPlacement" />
+<div id="detail_course" class="tabs container-page container-page-edit-course">
+    <div class="container-fluid bg">
+        <div class="container">
+            <input type="hidden" id="page-redirect" value="1">
+            <h4><a href="https://hocvienthueonline.edubit.vn/manage#courses" class="btn btn-link back-link-custom btn-back-link-custom"><i class="fas fa-chevron-circle-left"></i></a></h4>
+            <div class="clear-both-zone"></div>
+            <Tabs>
+                <Tab Title="Giới thiệu" @onclick='(() => NavigateToUrl("/admin/course"))'>
+                    <Content>
+                        
+                    </Content>
+                </Tab>
+                <Tab Title="Bài học" IsActive>
+                    <Content>
+                        
+                    </Content>
+                </Tab>
+                <Tab Title="Cài đặt">
+                    <Content>
+                        
+                    </Content>
+                </Tab>
+            </Tabs>
         </div>
-        <div class="control-curse">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">
-                            <strong>Mục lục bài giảng</strong>
-                        </th>
-                        <th scope="col">
-                            <b>Học thử</b>
-                        </th>
-                        <th scope="col">
-                            <b>Thời lượng</b>
-                        </th>
-                        <th scope="col">
-                            <b>Xem</b>
-                        </th>
-                        <th scope="col">
-                            <ul class="d-flex btn-status">
-                                <li><i class="fa-solid fa-thumbtack"></i></li>
-                                <li><i class="fa-solid fa-lock"></i></li>
-                                <li><i class="fa-solid fa-pen-to-square"></i></li>
-                                <li><i class="fa-solid fa-trash"></i></li>
-                                <li><i class="fa-solid fa-copy"></i></li>
-                            </ul>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <div><b>Bài 1: Job + Danh từ</b></div>
-                            <div style="margin-top: 10px"><u>Tài liệu</u></div>
-                            <div><a href="/"><i class="fa-solid fa-file"></i> Buổi 1 lớp 2</a></div>
-                        </td>
-                        <td>
-                            <label class="container">
-                                <input type="checkbox">
-                                <span class="checkmark"></span>
-                            </label>
-                        </td>
-                        <td style="color: #007bff;"><i class="fa-solid fa-circle-play"></i></td>
-                        <td style="color: #007bff;">01:26:00</td>
-                        <td>
-                            <ul class="d-flex btn-status">
-                                <li><i class="fa-solid fa-thumbtack"></i></li>
-                                <li><i class="fa-solid fa-lock"></i></li>
-                                <li><i class="fa-solid fa-eye-slash"></i></li>
-                                <li>
-                                    <div @onclick="() => OnShowModalEditLession()">
-                                        <i class="fa-solid fa-file"></i>
+    </div>
+    <div class=" container tab-pane upload_files_lesson active show" id="lessons" style="padding-top: 20px;">
+            <div class="col-sm form-group list-unstyled add-chapter-zone">
+                @* <a class="btn btn-small btn-info"><i class="fa fa-cog"></i> Cài đặt chung</a> *@
+                <a class="btn btn-small btn-success btn-add-chapter" @onclick="OpenAddChapterPopup"><i class="fa fa-plus"></i> Thêm chương</a>
+            </div>
+            <div class="col-sm">
+                <div id="list_lessons" class="list_lessons ui-sortable">
+                @if (lessionChapter != null && lessionChapter.Count > 0)
+                {
+                    @for (int i = 0; i < lessionChapter.Count; i++)
+                    {
+                        var currentChapter = lessionChapter[i];
+                        var currentIndex = i;
+                        if (currentChapter != null)
+                        {
+                            <div class="parent clearfix parent-lession">   
+                                <div class="lesson-content"> 
+                                    <div class="well row parent-title">   
+                                        <div class="col-sm-6" style="display: flex; gap: 14px; align-items: center;">   
+                                            <strong class="pull-left text-title">   
+                                                <i class="fa fa-arrows-alt" aria-hidden="true"></i>       
+                                                <span id="edit_64b6c8dae275cb7e148b4579"> 
+                                                    <span class="edit-name-chapter">@currentChapter.ChapterName</span>       
+                                                </span>   
+                                            </strong>   
+                                            <button type="button" class="btn btn-default my-1 js-change-show-hide" @onclick="async() => await ShowHideContentLession(currentIndex)">
+                                                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                                            </button>
+                                        </div>   
+                                        @* <div class="col-sm-1 text-center text-bold">Học thử</div>    *@
+                                        <div class="col-sm-1 text-center text-bold">Xem</div>   
+                                        <div class="col-sm-1 text-center text-bold">Thời lượng</div>   
+                                        <div class="col-sm-3 text-center text-bold action">    
+                                           @*<a title="Ghim lên đầu">
+                                                <i class="fa fa-thumb-tack"></i>
+                                            </a>*@
+                                            @* <a title="Công khai">
+                                                <i class="fa fa-unlock"></i>
+                                            </a> *@
+                                            <a title="Sửa tên chương">
+                                                <i class="fa fa-edit"></i>
+                                            </a>  
+                                            <a title="Xóa Chương học">
+                                                <i class="fas fa-trash-alt fs_15"></i>
+                                            </a>   
+                                            @* <a title="Nhân Bản Chương học">
+                                                <i class="fa fa-copy fs_15"></i>
+                                            </a> *@
+                                        </div> 
+                                        <div class="clearfix"></div>   
                                     </div>
-                                </li>
-                                <li><i class="fa-solid fa-gear"></i></li>
-                                <li><i class="fa-solid fa-pen-to-square"></i></li>
-                                <li><i class="fa-solid fa-trash"></i></li>
-                                <li><i class="fa-solid fa-copy"></i></li>
-                            </ul>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <a class="btn-add-curse btn">+ Thêm bài học</a>
+                                    @if (currentChapter.LessionDetailList != null && currentChapter.LessionDetailList.Count > 0)
+                                    {
+                                        @for (int j = 0; j < currentChapter.LessionDetailList.Count; j++)
+                                        {
+                                            var currentLession = currentChapter.LessionDetailList[j];
+                                            <div class="childs-lession js-show-hide ui-sortable"> 
+                                                <div class="well child-item row ui-sortable-handle">
+                                                    <div class="col-sm-6">   
+                                                        <strong class="pull-left text-title">              
+                                                            <span>
+                                                                <span>
+                                                                    <i class="fa fa-play-circle"></i>
+                                                                </span> 
+                                                                <span class="edit-name-chapter">@currentLession.LessionName</span>       
+                                                            </span>   
+                                                        </strong>
+                                                    </div>
+                                                    @* <div class="col-sm-1 text-center pd-10-0">
+                                                        <i class="fa fa-check text-success try-lesson"></i>
+                                                    </div> *@
+                                                    <div class="col-sm-1 text-center pd-10-0">
+                                                        @if (!string.IsNullOrEmpty(currentLession.VideoLink))
+                                                        {
+                                                            <a title="Xem trước" @onclick="() => OnShowModalVideoClick(currentLession.LessionName, currentLession.VideoLink)">
+                                                                <i class="fa fa-play-circle"></i>
+                                                            </a>
+                                                        }
+                                                    </div>
+                                                    <div class="col-sm-1 text-center pd-10-0">
+                                                        <a title="Thời lượng video" class="duration-64b6c91be275cb89158b457c">@(!string.IsNullOrEmpty(currentLession.TotalHourTimeLession)?currentLession.TotalHourTimeLession:"")</a>
+                                                    </div>
+                                                    <div class="col-sm-3 text-center pd-10-0 action">     
+                                                        <a title="Ghim lên đầu">
+                                                            <i class="fa fa-thumb-tack"></i>
+                                                        </a>     
+                                                        @* <a title="Công khai">
+                                                            <i class="fa fa-unlock"></i>
+                                                        </a>     
+                                                        <a title="Học thử">
+                                                            <i class="fa fa-eye fs_15"></i>
+                                                        </a>   *@   
+                                                        <a title="Video bài học và Tài liệu" @onclick="() => OnShowModalEditLession(currentChapter.ChapterId, currentLession.LessionId)">
+                                                            <i class="fa fa-file fs_15"></i>
+                                                        </a>          
+                                                        @* <a title="Cài đặt chung">
+                                                            <i class="fa fa-cog fs_15"></i>
+                                                        </a>        *@    
+                                                        <a title="Sửa tên bài học" @onclick="() => OpenAddLessionMasterPopup(currentChapter.ChapterId)">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>     
+                                                        <a title="Xóa bài học">
+                                                            <i class="fas fa-trash-alt fs_15"></i>
+                                                        </a>   
+                                                        @* <a title="Nhân Bản Bài học">
+                                                            <i class="fa fa-copy fs_15"></i>
+                                                        </a> *@
+                                                    </div>
+                                                    <div class="col-sm-12 text-right"></div>
+                                                    @* <div class="col-sm-12">
+                                                        <u>Tài liệu</u> 
+                                                        <ul class="list-unstyled" style="padding: 0;">
+                                                            <li>
+                                                                <a href="https://file.unica.vn/storage/c6616619696b6b30489726fbfae5d6231ad5d368/buoi-1-lop-2.pptx" target="_blank">
+                                                                    <i class="fas fa-file"></i> buổi 1 lớp 2 
+                                                                </a>
+                                                            </li> 
+                                                        </ul>
+                                                    </div>  *@
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                    
+                                    <div class="clearfix add-lession" style="padding: 10px;">
+                                        <a title="Thêm bài học" class="btn btn-success" @onclick="() => OpenAddLessionMasterPopup(currentChapter.ChapterId)">
+                                            <i class="fa fa-plus fs_15" ></i> Thêm bài học
+                                        </a>
+                                    </div>
+                                </div>
+                        </div>
+                        }
+                    }
+                }
         </div>
+            </div>
     </div>
 </div>
 
-<ModalConfirmDialog @ref="modalAddDetailLession" Size="ModalSize.Large" Title="(Nội dung bài học)">
+<ModalConfirmDialog @ref="modalAddDetailLession" Size="ModalSize.Large" Title="Nội dung bài học" CallbackConfirm="AddLessionDetail">
     <Content>
-        aaaaa                       
+        <Tabs>
+            <Tab Title="Video">
+                <Content>
+                    <div style="background: white; padding: 10px 0">
+                        <div class="w-100 d-flex justify-content-center">
+                            <h3>Upload video đã học</h3>
+                        </div>
+                        <div class="w-100 d-flex justify-content-center">
+                            <p>(Các định dạng file hỗ trợ .mp4, link youtube, vimeo)</p>
+                        </div>
+                        <div class="w-100 d-flex justify-content-center">
+                            <p>Lưu ý: Tên file không chứa các ký tự đặc biệt</p>
+                        </div>
+                        <br />
+                        <div class="zone-upload">
+                            <InputFile OnChange="HandleVideoFileSelected" id="fileInputVideo" style="display:none" @ref="fileInputVideo" />
+                            <div class="progressing-bar"></div>
+                            <button @onclick="addFileVideo" class="btn btn-success">
+                                <i class="fa fa-upload">Tải lên</i>
+                            </button>
+                        </div>
+                    </div> 
+                </Content>
+            </Tab>
+            @* <Tab Title="Bài kiểm tra">
+                <Content>
+                    
+                </Content>
+            </Tab>
+            <Tab Title="Bài giảng" IsActive>
+                <Content>
+                        
+                </Content>
+            </Tab> *@
+            <Tab Title="Text">
+                <Content>
+                        
+                </Content>
+            </Tab>
+            <Tab Title="Tài liệu đính kèm">
+                <Content>
+                    <div style="background: white; padding: 10px 0">
+                        <div class="w-100 d-flex justify-content-center">
+                            <h3>File tải lên được đính kèm vào bài học</h3>
+                        </div>
+                        <div class="w-100 d-flex justify-content-center">
+                            <p>(Các định dạng file hỗ trợ .zip, .rar, .png, .jpg, .pdf, .docx, .doc, .xls, .xlsx, .ppt,.pptx, .mp3 , .wav)</p>
+                        </div>
+                        <div class="w-100 d-flex justify-content-center">
+                            <p>Lưu ý: Tên file không chứa các ký tự đặc biệt</p>
+                        </div>
+                        <br />
+                        <div class="zone-upload">
+                            <InputFile OnChange="HandleDocFileSelected" id="fileInputDoc" style="display:none" @ref="fileInputDoc" />
+                            <div class="progressing-bar"></div>
+                            <button @onclick="addFileDoc" class="btn btn-success">
+                                <i class="fa fa-upload">Tải lên</i>
+                            </button>
+                        </div>
+                    </div> 
+                </Content>
+            </Tab>
+        </Tabs>           
     </Content>
 </ModalConfirmDialog>
-<ModalConfirmDialog @ref="modalAddChapter" Size="ModalSize.Large" Title="Thêm chương">
+<ModalConfirmDialog @ref="modalAddChapter" Size="ModalSize.Large" Title="Thêm chương" CallbackConfirm="AddChapter">
     <Content>
         <div class="form-group">
-            <InputText DisplayName="Tên chương" CssClass="form-control" placeholder="Nhập tên chương" @bind-Value="chapter.ChapterName"></InputText>
+            <input type="text" class="form-control input-step" placeholder="Nhập tên chương" @bind="chapter.ChapterName">
         </div>
     </Content>
 </ModalConfirmDialog>
-<ModalConfirmDialog @ref="modalAddLession" Size="ModalSize.Small" Title="Thêm bài học">
+<ModalConfirmDialog @ref="modalAddLession" Size="ModalSize.Small" Title="Thêm bài học" CallbackConfirm="AddLessionMaster">
     <Content>
-        ẻhergergregergre
+        <div class="form-group">
+            <input type="text" class="form-control input-step" placeholder="Nhập tên bài học" @bind="lession.LessionName">
+        </div>
     </Content>
 </ModalConfirmDialog>
-<style>
-    .button-control .btn-setting{
-        color: #fff;
-        background-color: #17a2b8;
-        border-color: #17a2b8;
-        margin-right: 20px;
-    }
 
-    .button-control .btn-add {
-        color: #fff;
-        background-color: #28a745;
-        border-color: #28a745;
-    }
+<Modal @ref="modalVideo" Size="ModalSize.Large" Title="@titleLession">
+    <BodyTemplate>
+        <VideoPlayer @key="videoPlayerKey" UrlVideo="@urlVideoLession">
+        </VideoPlayer>
+    </BodyTemplate>
+</Modal>
 
-    .control-curse{
-        border: 1px solid #ccc;
-        margin-bottom: 20px;
-        background: white;
-        padding: 20px;
-        overflow-x: auto;
-    }
-
-    .control-curse .btn-add-curse{
-        color: #fff !important;
-        background-color: #28a745;
-        border-color: #28a745;
-        margin: 10px 0;
-        padding: 5px 10px;
-    }
-
-    .table thead th {
-        border-top: none;
-        font-size: 17px;
-    }
-
-    .table tr td {
-        font-size: 15px;
-    }
-    .table td, .table th {
-        vertical-align: sub;
-    }
-
-    .btn-status li{
-        margin: 0 5px;
-        color: #007bff;
-        cursor: pointer;
-    }
-
-
-</style>
+<script src="js/Page/Admin/lession.js"></script>
 @code{
     [Parameter]
     public string CourseId { get; set; }
+    public Guid CourseIdGuid { get; set; }
     ModalConfirmDialog modalAddDetailLession;
     ModalConfirmDialog modalAddChapter;
     ModalConfirmDialog modalAddLession;
+    private Modal modalVideo = default!;
 
     private ChapterCreateParam chapter = new ChapterCreateParam();
+    private LessionCreateParam lession = new LessionCreateParam();
+    private LessionEditParam lessionDetail = new LessionEditParam();
+    public Guid CurrentChapterId { get; set; }
+    public Guid CurrentLessionId { get; set; }
 
+    private Dictionary<string, IBrowserFile> listFile = new Dictionary<string, IBrowserFile>();
+    private InputFile fileInputVideo;
+    private InputFile fileInputDoc;
 
-    private async Task AddChapter()
+    private List<ChapterDetail> lessionChapter = new List<ChapterDetail>();
+    // private List<ChapterDetail> lessionChapter = new List<ChapterDetail>()
+    // {
+    //     new ChapterDetail
+    //     {
+    //         ChapterId = Guid.NewGuid(),
+    //         ChapterName = "Chương 1",
+    //         LessionDetailList = new List<LessionDetail>
+    //         {
+    //             new LessionDetail
+    //             {
+    //                 LessionId = Guid.NewGuid(),
+    //                 LessionName = "Bài học 1",
+    //                 TotalHourTimeLession = "26:04:12",
+    //                 VideoLink = "https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4",
+    //             }
+    //         }
+    //     }
+    // };
+
+    private string titleLession { get; set; }
+    private string urlVideoLession { get; set; }
+    private int videoPlayerKey = 0;
+
+    private async Task OpenAddChapterPopup()
     {
-        //modal.Title = titleLessionItem;
         await modalAddChapter.ShowAsync();
     }
 
-    private async Task OnShowModalEditLession()
+    protected override async Task OnInitializedAsync()
     {
-        //modal.Title = titleLessionItem;
+        if (!string.IsNullOrEmpty(CourseId) && Guid.TryParse(CourseId, out Guid courseIdGuid))
+        {
+            CourseIdGuid = courseIdGuid;
+        }
+        else
+        {
+            NavigateToUrl("/admin/course");
+        }
+    }
+
+    private async Task AddChapter()
+    {
+        if (chapter != null && !string.IsNullOrEmpty(chapter.ChapterName))
+        {
+            chapter.CourseId = CourseIdGuid;
+            var res = await _chapterService.CreateChapter(chapter);
+            if (IsSuccessRequest(res))
+            {
+                ShowSuccessMessage("Thêm mới chương thành công");
+                await modalAddChapter.HideAsync();
+
+                // sau khi thêm mới chương học thì thêm vào model
+                lessionChapter.Add(new ChapterDetail
+                {
+                    ChapterId = (Guid)res.Data,
+                    ChapterName = chapter.ChapterName,
+                    LessionDetailList = new List<LessionDetail>()
+                });
+
+                StateHasChanged();
+            }
+            else
+            {
+                ShowErrorMessage(res.Message);
+            }
+        }
+        else
+        {
+            ShowErrorMessage("Không được để trống tên chương");
+        }
+    }
+
+    private async Task OpenAddLessionMasterPopup(Guid chapterId)
+    {
+        CurrentChapterId = chapterId;
+        await modalAddLession.ShowAsync();
+    }
+
+    private async Task AddLessionMaster()
+    {
+        if (lession != null && !string.IsNullOrEmpty(lession.LessionName))
+        {
+            lession.ChapterId = CurrentChapterId;
+            lession.CourseId = CourseIdGuid;
+            var res = await _lessionService.CreateLession(lession);
+            if (IsSuccessRequest(res))
+            {
+                ShowSuccessMessage("Thêm mới bài học thành công");
+                await modalAddLession.HideAsync();
+            }
+            else
+            {
+                ShowErrorMessage(res.Message);
+            }
+
+            // sau khi thêm mới bài học thì thêm vào model
+            if (lessionChapter != null && lessionChapter.Count > 0)
+            {
+                foreach (var item in lessionChapter)
+                {
+                    if (item != null && item.ChapterId == lession.ChapterId)
+                    {
+                        item.LessionDetailList.Add(new LessionDetail
+                            {
+                                LessionId = (Guid)res.Data,
+                                LessionName = lession.LessionName
+                            });
+                    }
+                }
+            }
+
+            StateHasChanged();
+        }
+        else
+        {
+            ShowErrorMessage("Không được để trống tên bài học");
+        }
+    }
+
+    private async Task AddLessionDetail()
+    {
+        if (lessionDetail != null)
+        {
+            lessionDetail.Id = CurrentLessionId;
+            lessionDetail.CourseId = CourseIdGuid;
+            var res = await _lessionService.EditLession(listFile, lessionDetail);
+            if (IsSuccessRequest(res))
+            {
+                ShowSuccessMessage("Sửa nội dung bài học thành công");
+                await modalAddChapter.HideAsync();
+            }
+            else
+            {
+                ShowErrorMessage(res.Message);
+            }
+
+            StateHasChanged();
+        }
+        else
+        {
+            ShowErrorMessage("Không có dữ liệu để thay đổi bài học");
+        }
+    }
+
+    private async Task OnShowModalEditLession(Guid chapterId, Guid lessionId)
+    {
+        CurrentChapterId = chapterId;
+        CurrentLessionId = lessionId;
         await modalAddDetailLession.ShowAsync();
     }
+
+    private async Task OnShowModalVideoClick(string titleLessionItem, string urlVideoLessionItem)
+    {
+        if (!string.IsNullOrEmpty(urlVideoLessionItem))
+        {
+            urlVideoLession = urlVideoLessionItem;
+            videoPlayerKey++;
+            StateHasChanged();
+            modalVideo.Title = titleLessionItem;
+            await modalVideo.ShowAsync();
+        }
+    }
+
+    private async Task ShowHideContentLession(int indexChap)
+    {
+        await InvokeVoidAsync("handleShowHideContentLession", indexChap);
+
+    }
+
+    private async Task HandleVideoFileSelected(InputFileChangeEventArgs e)
+    {
+        var files = e.GetMultipleFiles();
+        if (files != null && files.Count > 0)
+        {
+            if (listFile.ContainsKey("VideoLink"))
+            {
+                listFile["VideoLink"] = files.FirstOrDefault();    
+            }
+            else
+            {
+                listFile.Add("VideoLink", files.FirstOrDefault());
+            }
+            var lessionChapterCurrent = lessionChapter.FirstOrDefault(item => item.ChapterId == CurrentChapterId);
+            if (lessionChapter != null)
+            {
+                lessionDetail.VideoLink = listFile["VideoLink"].Name;
+            }
+        }
+    }
+
+    private async Task HandleDocFileSelected(InputFileChangeEventArgs e)
+    {
+        var files = e.GetMultipleFiles();
+        if (files != null && files.Count > 0)
+        {
+            if (listFile.ContainsKey("AttachmentsLink"))
+            {
+                listFile["AttachmentsLink"] = files.FirstOrDefault();    
+            }
+            else
+            {
+                listFile.Add("AttachmentsLink", files.FirstOrDefault());
+            }
+
+            var lessionChapterCurrent = lessionChapter.FirstOrDefault(item => item.ChapterId == CurrentChapterId);
+            if (lessionChapter != null)
+            {
+                lessionDetail.AttachmentsLink = listFile["AttachmentsLink"].Name;
+            }
+        }
+    }
+
+    public async Task addFileDoc()
+    {
+        await InvokeVoidAsync("openFilePicker", fileInputDoc.Element, false);
+        StateHasChanged();
+    }
+
+    public async Task addFileVideo()
+    {
+        await InvokeVoidAsync("openFilePicker", fileInputVideo.Element, false);
+        StateHasChanged();
+    }
+    
 }

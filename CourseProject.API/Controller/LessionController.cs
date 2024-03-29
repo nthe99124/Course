@@ -5,6 +5,7 @@ using CourseProject.API.Services;
 using CourseProject.Model.ViewModel;
 using CourseProject.Model.ViewModel.Course;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace CourseProject.API.Controller
 {
@@ -22,7 +23,7 @@ namespace CourseProject.API.Controller
         /// </summary>
         /// <returns></returns>
         [HttpPost("CreateLession")]
-        [Roles(RoleConstant.Admin, RoleConstant.Teacher)]
+        //[Roles(RoleConstant.Admin, RoleConstant.Teacher)]
         public async Task<IActionResult> CreateLession(LessionCreateParam lession)
         {
             _res = await _lessionService.CreateLession(lession);
@@ -35,10 +36,16 @@ namespace CourseProject.API.Controller
         /// </summary>
         /// <returns></returns>
         [HttpPost("EditLession")]
-        [Roles(RoleConstant.Admin, RoleConstant.Teacher)]
-        public async Task<IActionResult> EditLession([FromForm] Dictionary<string, IFormFile> listFile, [FromForm] LessionEditParam lession)
+        //[Roles(RoleConstant.Admin, RoleConstant.Teacher)]
+        public async Task<IActionResult> EditLession([FromForm] IFormFile attachmentsLink, [FromForm] IFormFile videoLink, [FromForm] string lession)
         {
-            _res = await _lessionService.EditLession(listFile, lession);
+            var lessionObject = JsonSerializer.Deserialize<LessionEditParam>(lession);
+            var listFile = new Dictionary<string, IFormFile>()
+            {
+                { "AttachmentsLink", attachmentsLink },
+                { "VideoLink", videoLink },
+            };
+            _res = await _lessionService.EditLession(listFile, lessionObject);
             return Ok(_res);
         }
         /// <summary>

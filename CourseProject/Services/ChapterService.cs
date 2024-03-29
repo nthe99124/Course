@@ -10,7 +10,7 @@ namespace CourseProject.Services
 {
     public interface IChapterService : IBaseService
     {
-        Task<ResponseOutput<string>> CreateChapter(ChapterCreateParam chapter);
+        Task<ResponseOutput<Guid?>> CreateChapter(ChapterCreateParam chapter);
         Task<ResponseOutput<string>> EditChapter(ChapterEditParam chapter);
     }
 
@@ -26,10 +26,10 @@ namespace CourseProject.Services
         /// CreatedBy ntthe 24.03.2024
         /// </summary>
         /// <returns></returns>
-        public async Task<ResponseOutput<string>> CreateChapter(ChapterCreateParam chapter)
+        public async Task<ResponseOutput<Guid?>> CreateChapter(ChapterCreateParam chapter)
         {
             var url = ChapterApiUrlDef.CreateChapter();
-            return await RequestFullAuthenPostAsync<string>(url, chapter);
+            return await RequestFullAuthenPostAsync<Guid?>(url, chapter);
         }
 
         /// <summary>

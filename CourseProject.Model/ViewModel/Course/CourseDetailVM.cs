@@ -3,7 +3,7 @@
     public class CourseDetailVM
     {
         public CourseGeneric CourseMaster { get; set; }
-        public IEnumerable<ChapterDetail> CourseDetailList { get; set; }
+        public List<ChapterDetail> CourseDetailList { get; set; }
     }
 
     public class ChapterDetail
