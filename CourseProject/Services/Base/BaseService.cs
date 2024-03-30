@@ -235,7 +235,7 @@ namespace CourseProject.Services.Base
                         var filePropName = item.Key;
                         if (item.Value != null)
                         {
-                            formData.Add(new StreamContent(fileObject.OpenReadStream()), filePropName, fileObject.Name);
+                            formData.Add(new StreamContent(fileObject.OpenReadStream(4294967295)), filePropName, fileObject.Name);
                         }
                     }
 
@@ -245,6 +245,8 @@ namespace CourseProject.Services.Base
                     {
                         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
                     }
+
+                    httpClient.Timeout = Timeout.InfiniteTimeSpan;
                     var response = await httpClient.PostAsync(_remoteServiceBaseUrl + url, formData);
 
                     // Kiểm tra xem cuộc gọi API có thành công không

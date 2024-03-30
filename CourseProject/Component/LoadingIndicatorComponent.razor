@@ -1,0 +1,18 @@
+﻿@* @using Blazorise.LoadingIndicator
+<LoadingIndicator @ref="loadingIndicator" FullScreen FadeIn>
+    <ChildContent>
+        <Button Clicked="ShowIndicator" Color="Color.Primary">Show indicator</Button>
+    </ChildContent>
+    <IndicatorTemplate>
+        <Animate Animation="Animations.FadeDownRight" Auto Duration="TimeSpan.FromMilliseconds( 700 )">
+            <Div>
+                <SpinKit Type="SpinKitType.Wave" Size="100px" />
+            </Div>
+        </Animate>
+    </IndicatorTemplate>
+</LoadingIndicator>
+
+@code {
+
+}
+ *@

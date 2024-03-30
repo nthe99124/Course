@@ -1,24 +1,21 @@
 ﻿@inherits AuthorBaseComponent
 <link rel="icon" href="https://edubit.vn/data/share/logo/favicon.png" type="image/x-icon">
-    <!-- StyleSheets -->
-    <style data-fullcalendar=""></style><link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/css/fonts/font-awesome.min.css">
-    <link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/fonts/font-awesome/css/fontawesome-all.min.css">
-    <link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/plugins/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/plugins/confirm/jquery-confirm.min.css?v=1.0">
-    <!-- <link href="https://hocvienthueonline.edubit.vn/statics/css/slick.css" rel="stylesheet"> -->
-    <link href="https://hocvienthueonline.edubit.vn/statics/css/slick-theme.css?time=1697609396" rel="stylesheet">
-    <link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/plugins/datatimepicker/bootstrap-timepicker.min.css">
-    <link rel="stylesheet" type="text/css" media="all" href="https://hocvienthueonline.edubit.vn/statics/plugins/select/css/select2.min.css">
-    <link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/css/j-ui.css">
-    <!-- CSS -->
-    <link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/kidstar/css/animation.css?time=1711360996">
-    <link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/css/style.css?time=1711360996">
-    <link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/css/section.css?time=1697609396">
-    <link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/plugins/ckeditor/contents.css?v=1.0.0">
-    <link href="https://hocvienthueonline.edubit.vn/statics/css/common_css.css?v=1.2.7" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- JavaScripts -->
+<!-- StyleSheets -->
+<link rel="stylesheet" href="/css/Lib/font-awesome.min.css">
+<link rel="stylesheet" href="/css/Lib/fontawesome-all.min.css">
+<link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/plugins/bootstrap/css/bootstrap.min.css">
+<!-- CSS -->
+<link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/css/style.css?time=1711360996">
+<link rel="stylesheet" href="https://hocvienthueonline.edubit.vn/statics/css/section.css?time=1697609396">
+<link href="https://hocvienthueonline.edubit.vn/statics/css/common_css.css?v=1.2.7" rel="stylesheet">
+@* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"> *@
+<!-- JavaScripts -->
     
+<style>
+    .dropdown-info-user .dropdown-item {
+        cursor: pointer
+    }
+</style>
 <div class="">
     <nav class="navbar navbar-content-header navbar-expand-lg navbar-light" id="">
         <hgroup>
@@ -286,22 +283,19 @@
                 </li>
             </ul>
             <ul class="navbar-nav my-2 my-lg-0 menu-content-header">
-                <div class="form-inline dropdown user-info">
+                <div class="form-inline dropdown user-info" @onclick="() => {ShowDropdownInfor = !ShowDropdownInfor; StateHasChanged(); }">
                     <div class="" data-toggle="dropdown" id="dropdownMenuButton">
                         <!-- <span><strong style="color: #0077a5;" class="user-name"> Lê Minh Thuý </strong></span> -->
                         <img width="40"
                              height="40"
                              class="rounded-circle user-info-avatar"
                              title="Lê Minh Thuý"
-                             src="https://edubit.vn/data/avatars/nophoto.png" />
+                             src="@GetLinkImage(LinkAvatar)" />
                     </div>
-                    <div class="dropdown-menu dropdown-info-user">
-                        <a class="dropdown-item" href="/update-profile">Hồ sơ</a>
+                    <div class="dropdown-menu dropdown-info-user" style="@(ShowDropdownInfor ? "display:block": "display:none")">
+                        <a class="dropdown-item" @onclick='() => NavigateToUrl("/user/user_profile")'>Hồ sơ</a>
 
-                        <a class="dropdown-item"
-                           href="https://hocvienthueonline.edubit.vn/affiliate/dashboard">Affiliate</a>
-
-                        <a class="dropdown-item" href="/id/logout">Đăng xuất</a>
+                        <a class="dropdown-item" @onclick='LogoutAction'>Đăng xuất</a>
                     </div>
                 </div>
             </ul>
@@ -311,22 +305,25 @@
 
 
 @code {
+    private bool ShowDropdownInfor { get; set; }
     private string Email { get; set; }
     private string FullName { get; set; }
     private string LinkAvatar { get; set; }
+    private string Token { get; set; }
 
     protected override async Task HandleAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            // var userInfor = await GetUserInfor();
-            // if (userInfor != null)
-            // {
-            //     Email = userInfor.Email;
-            //     FullName = userInfor.FullName;
-            //     LinkAvatar = userInfor.ImgAvatar;
-            //     StateHasChanged();
-            // }
+            var userInfor = await GetUserInfor();
+            if (userInfor != null)
+            {
+                Email = userInfor.Email;
+                FullName = userInfor.FullName;
+                LinkAvatar = userInfor.ImgAvatar;
+                Token = userInfor.Token;
+                StateHasChanged();
+            }
         }
     }
 
@@ -335,5 +332,10 @@
         NavigateToUrl("/login", true);
 
         // xóa infor cache
+    }
+
+    private void ShowHideDropdownInfor()
+    {
+        
     }
 }

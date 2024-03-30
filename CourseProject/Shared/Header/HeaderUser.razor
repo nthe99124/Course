@@ -1,5 +1,8 @@
 ﻿@inject IAccountService _accountService;
 @inherits AuthorBaseComponent
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.3.1/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.3.1/css/fontawesome.min.css">
 <link rel="stylesheet" href="css/Common/main.css">
 <link rel="stylesheet" href="css/Common/responsive.css">
 <link rel="stylesheet" href="css/Common/custom.css">
@@ -102,7 +105,7 @@
                     </div>
                 </div> *@
             </div>
-            <div class="main-nav-wrap">
+            @* <div class="main-nav-wrap">
                 <div class="mobile-overlay"></div>
 
                 <ul class="mobile-main-nav">
@@ -142,21 +145,6 @@
                                 </a>
                             </li>
 
-                            @* <li class="all-category-devided mb-0 p-0">
-                                <a href="https://4user.net/home/exercise" class="py-3">
-                                    <span class="icon"><i class="fas fa-graduation-cap"></i></span>
-                                    <span>Bài tập</span>
-                                </a>
-                            </li>
-
-
-                            <li class="all-category-devided m-0 p-0">
-                                <a href="https://4user.net/ebook" class="py-3">
-                                    <span class="icon"><i class="fas fa-cart-arrow-down"></i></span>
-                                    <span>Cửa hàng tài khoản</span>
-                                </a>
-                            </li> *@
-
                         </ul>
                     </li>
                     <li class="user-dropdown-menu-item" @onclick='() => NavigateToUrl("/user/my_courses")'><a><i class="far fa-gem"></i>Khóa học của tôi</a></li>
@@ -166,7 +154,7 @@
                     <li class="dropdown-user-logout user-dropdown-menu-item radius-bottom-10" @onclick='LogoutAction'><a class="radius-bottom-10 py-3"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
                     <div class="mobile-menu-helper-bottom"></div>
                 </ul>
-            </div>
+            </div> *@
 
             <form class="inline-form me-auto" action="https://4user.net/home/search" method="get">
                 <div class="input-group search-box mobile-search">
@@ -276,6 +264,55 @@
                     </div>
                     <div class="dropdown user-dropdown corner-triangle top-right radius-10">
                         <ul class="user-dropdown-menu radius-10">
+                            <li class="dropdown-user-info">
+                                <a href="javascript:;" class="radius-top-10">
+                                    <div class="clearfix">
+                                        <div class="user-image float-start">
+                                            <img src="https://4user.net/uploads/user_image/placeholder.png" alt="">
+                                        </div>
+                                        <div class="user-details">
+                                            <div class="user-name">
+                                                <span class="hi">Xin chào,</span>@FullName
+                                            </div>
+                                            <div class="user-email">
+                                                <span class="email">@Email</span>
+                                                <span class="welcome">Chào mừng trở lại</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        
+                            <li class="user-dropdown-menu-item" @onclick='() => NavigateToUrl("/user/my_courses")'>
+                                <a >
+                                    <i class="far fa-gem"></i>
+                                    Khóa học của tôi
+                                </a>
+                            </li>
+                            <li class="user-dropdown-menu-item" @onclick='() => NavigateToUrl("/user/my_wishlist")'>
+                                <a >
+                                    <i class="far fa-heart"></i>
+                                    Khóa học yêu thích
+                                </a>
+                            </li>
+                            <li class="user-dropdown-menu-item" @onclick='() => NavigateToUrl("/user/purchase_history")'>
+                                <a >
+                                    <i class="fas fa-shopping-cart"></i>
+                                    Lịch sử mua hàng
+                                </a>
+                            </li>
+                            <li class="user-dropdown-menu-item"  @onclick='() => NavigateToUrl("/user/user_profile")'>
+                                <a>
+                                    <i class="fas fa-user"></i>
+                                    Hồ sơ người dùng
+                                </a>
+                            </li>
+                            <li class="dropdown-user-logout user-dropdown-menu-item radius-bottom-10" @onclick='LogoutAction'>
+                                <a class="radius-bottom-10 py-3">
+                                    <i class="fas fa-sign-out-alt"></i> 
+                                    Đăng xuất
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>

@@ -9,7 +9,7 @@
 @inject IAccountService _accountService;
 @inherits BaseComponentCustom
 
-<Toasts class="p-3" Messages="messages" Placement="toastsPlacement" />
+<Toasts class="p-3" Messages="messages" Placement="toastsPlacement" AutoHide="true" Delay="6000" />
 <section class="category-course-list-area">
     <div class="container">
         <div class="row mb-5 mt-3">
@@ -84,19 +84,19 @@
             var res = await _accountService.Register(accRegister);
             if (res != null && res.IsSuccess)
             {
-                ShowMessage(ToastType.Success, res.Data);
+                ShowSuccessMessage(res.Data);
                 await Task.Delay(2000);
 
                 NavigateToUrl($"/login");
             }
             else
             {
-                ShowMessage(ToastType.Danger, res.Data);
+                ShowErrorMessage(res.Message);
             }
         }
         else
         {
-            ShowMessage(ToastType.Danger, messError, ToastsPlacement.MiddleCenter);
+            ShowErrorMessage(messError);
         }
     }
 }

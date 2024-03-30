@@ -5,6 +5,7 @@ using CourseProject.API.Services;
 using CourseProject.Model.ViewModel;
 using CourseProject.Model.ViewModel.Course;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace CourseProject.API.Controller
 {
@@ -36,11 +37,25 @@ namespace CourseProject.API.Controller
         /// <returns></returns>
         [HttpPost("EditLession")]
         [Roles(RoleConstant.Admin, RoleConstant.Teacher)]
-        public async Task<IActionResult> EditLession([FromForm] Dictionary<string, IFormFile> listFile, [FromForm] LessionEditParam lession)
+        public async Task<IActionResult> EditLession(LessionEditParam lession)
         {
-            _res = await _lessionService.EditLession(listFile, lession);
+            _res = await _lessionService.EditLession(lession);
             return Ok(_res);
         }
+
+        /// <summary>
+        /// Hàm xử lý sửa tên bài học
+        /// CreatedBy ntthe 24.03.2024
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("EditLessionName")]
+        [Roles(RoleConstant.Admin, RoleConstant.Teacher)]
+        public async Task<IActionResult> EditLessionName(LessionCreateParam lession)
+        {
+            _res = await _lessionService.EditLessionName(lession);
+            return Ok(_res);
+        }
+
         /// <summary>
         /// Hàm xử lý xóa bài học
         /// CreatedBy ntthe 24.03.2024

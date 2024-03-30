@@ -20,6 +20,7 @@
 		<Compile Include="Common\3rdApi\Model\DropboxUploadResponse.cs" />
 		<Compile Include="Common\3rdApi\Service\AmazonS3.cs" />
 		<Compile Include="Common\3rdApi\Service\DropboxService.cs" />
+		<Compile Include="Common\3rdApi\Service\OneDrive.cs" />
 		<Compile Include="Common\Cache\DistributedCacheCustom.cs" />
 		<Compile Include="Common\Constant\CacheKeyConstant.cs" />
 		<Compile Include="Common\Constant\RoleConstant.cs" />
@@ -27,9 +28,11 @@
 		<Compile Include="Program.cs" />
 		<Compile Include="Services\ApiUrldefinition\LessionApiUrlDef.cs" />
 		<Compile Include="Services\ApiUrldefinition\ChapterApiUrlDef.cs" />
+		<Compile Include="Services\ApiUrldefinition\FileApiUrlDef.cs" />
 		<Compile Include="Services\ApiUrldefinition\TagApiUrlDef.cs" />
 		<Compile Include="Services\LessionService.cs" />
 		<Compile Include="Services\ChapterService.cs" />
+		<Compile Include="Services\FileService.cs" />
 		<Compile Include="Services\TagService.cs" />
 		<Compile Include="Services\CourseService.cs" />
 		<Compile Include="Services\AccountService.cs" />
@@ -39,7 +42,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Remove="Component\ModalConfirmDialog.razor" />
 		<None Remove="Pages\Authen\Login.razor" />
 		<None Remove="Pages\Authen\Register.razor" />
 		<None Remove="Pages\Course\Course.razor" />
@@ -80,7 +82,6 @@
 		<Content Include="Shared\NavMenu.razor.css" />
 		<Content Include="Pages\Home.razor" />
 		<Content Include="Pages\Admin\CourseManager.razor" />
-		<Content Include="Pages\Admin\CourseDetail.razor" />
 		<Content Include="Pages\Admin\Lession.razor" />
 	</ItemGroup>
 
@@ -115,6 +116,9 @@
 		<PackageReference Include="Dropbox.Api" Version="6.37.0" />
 		<PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.3.0" />
 		<PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.2" />
+		<PackageReference Include="Microsoft.Graph" Version="5.46.0" />
+		<PackageReference Include="Microsoft.Identity.Client" Version="4.60.0" />
+		<PackageReference Include="Microsoft.Identity.Web.MicrosoftGraph" Version="2.17.4" />
 		<PackageReference Include="Microsoft.Web.Administration" Version="11.1.0" />
 		<PackageReference Include="Syncfusion.Blazor.DropDowns" Version="25.1.35" />
 		<PackageReference Include="Syncfusion.Blazor.Themes" Version="25.1.35" />
@@ -124,6 +128,7 @@
 	<ItemGroup>
 		<Folder Include="wwwroot\js\Common\" />
 		<Folder Include="wwwroot\js\Component\" />
+		<Folder Include="wwwroot\js\Page\Admin\" />
 		<Folder Include="wwwroot\js\Page\Teacher\" />
 	</ItemGroup>
 

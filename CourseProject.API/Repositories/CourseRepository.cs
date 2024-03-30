@@ -3,10 +3,7 @@ using CourseProject.API.Repositories.Base;
 using CourseProject.Model.BaseEntity;
 using CourseProject.Model.DTO;
 using CourseProject.Model.ViewModel.Course;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using static CourseProject.Model.Enum.DataType;
 
 namespace CourseProject.API.Repositories
 {
@@ -53,50 +50,7 @@ namespace CourseProject.API.Repositories
         /// <returns></returns>
         public async Task<IEnumerable<CourseGeneric>> GetCourseByCondition(int? courseNumber, List<SortedPaging> sortedList, Expression<Func<CourseGeneric, bool>> predicateFilter = null)
         {
-            var courseGeneric = from c in _context.Courses
-                                join a in _context.Accounts on c.Teacher equals a.Id
-                                join ct in _context.CourseTags on c.Id equals ct.CourseId
-                                join t in _context.Tags on ct.TagId equals t.Id
-                                group new { c, t } by new
-                                {
-                                    c.Id,
-                                    c.CourseName,
-                                    c.Rating,
-                                    c.Price,
-                                    c.PriceAfterDiscount,
-                                    c.ImgCourse,
-                                    c.TotalTime,
-                                    c.TotalLectures,
-                                    c.TotalPerRating,
-                                    c.CourseCode,
-                                    a.ImgAvatar,
-                                    a.FirstName,
-                                    c.ModifiedDate,
-                                    c.Description,
-                                    AccountId = a.Id,
-                                    c.TypeOfPurchase
-                                } into grp
-                                select new CourseGeneric
-                                {
-                                    Id = grp.Key.Id,
-                                    CourseName = grp.Key.CourseName,
-                                    Rating = grp.Key.Rating,
-                                    Price = grp.Key.Price,
-                                    PriceAfterDiscount = grp.Key.PriceAfterDiscount,
-                                    ImgCourse = grp.Key.ImgCourse,
-                                    TotalTime = grp.Key.TotalTime,
-                                    TotalLectures = grp.Key.TotalLectures,
-                                    TotalPerRating = grp.Key.TotalPerRating,
-                                    CourseCode = grp.Key.CourseCode,
-                                    TagString = string.Join(", ", grp.Select(x => x.t.TagName)),
-                                    TagId = string.Join(", ", grp.Select(x => x.t.Id)),
-                                    ImgTeacher = grp.Key.ImgAvatar,
-                                    TeacherName = grp.Key.FirstName,
-                                    ModifiedDate = grp.Key.ModifiedDate,
-                                    Description = grp.Key.Description,
-                                    CourseOfTeacher = grp.Count(),
-                                    TypeOfPurchase = grp.Key.TypeOfPurchase,
-                                };
+            var courseGeneric = ExecuteStoredProcedureObject<CourseGeneric>("GetAllCourseNotCondition").AsQueryable();
             if (predicateFilter != null)
             {
                 courseGeneric = courseGeneric.Where(predicateFilter);
@@ -118,16 +72,20 @@ namespace CourseProject.API.Repositories
         public IEnumerable<CourseDetailGeneric> GetDetailCourse(Guid courseId)
         {
             var courseDetailGeneric = from c in _context.Chapters
-                                join l in _context.Lessions on c.Id equals l.ChapterId
+                                join l in _context.Lessions on c.Id equals l.ChapterId into LessionGroup
+                                from l2 in LessionGroup
                                 where c.CourseId == courseId
                                 select new CourseDetailGeneric
                                 {
                                     ChapterId = c.Id,
-                                    LessionId = l.Id,
-                                    LessionName = l.LessionName,
-                                    TotalTimeLession = l.TotalTimeLession,
+                                    LessionId = l2.Id,
+                                    LessionName = l2.LessionName,
+                                    TotalTimeLession = l2.TotalTimeLession,
                                     ChapterName = c.ChapterName,
-                                    VideoLink = l.VideoLink,
+                                    VideoLink = l2.VideoLink,
+                                    TestLink = l2.TestLink,
+                                    Text = l2.Text,
+                                    AttachmentsLink = l2.AttachmentsLink,
                                 };
             return courseDetailGeneric.ToList();
 

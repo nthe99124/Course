@@ -11,7 +11,7 @@ namespace CourseProject.API.Services
     public interface IChapterService
     {
         Task<RestOutput> CreateChapter(ChapterCreateParam chapter);
-        Task<RestOutput> EditChapter(ChapterEditParam chapter);
+        Task<RestOutput> EditChapter(ChapterCreateParam chapter);
     }
     public class ChapterService : BaseService, IChapterService
     {
@@ -37,6 +37,11 @@ namespace CourseProject.API.Services
                     res.ErrorEventHandler("Tên chapter không được để trống");
                     return res;
                 }
+                else if (chapter.CourseId == default)
+                {
+                    res.ErrorEventHandler("Mã khóa học không được để trống");
+                    return res;
+                }
 
                 // insert chương
                 var chapterInsert = new Chapter()
@@ -47,8 +52,15 @@ namespace CourseProject.API.Services
                 _unitOfWork.ChapterRepository.Create(chapterInsert);
 
                 await _unitOfWork.CommitAsync();
+
+                res.SuccessEventHandler(chapterInsert.Id);
             }
-            res.SuccessEventHandler();
+            else
+            {
+                res.ErrorEventHandler("Thông tin không hợp lệ");
+                return res;
+            }
+            
             return res;
         }
 
@@ -57,7 +69,7 @@ namespace CourseProject.API.Services
         /// CreatedBy ntthe 24.03.2024
         /// </summary>
         /// <returns></returns>
-        public async Task<RestOutput> EditChapter(ChapterEditParam chapter)
+        public async Task<RestOutput> EditChapter(ChapterCreateParam chapter)
         {
             var res = new RestOutput();
             if (chapter != null)

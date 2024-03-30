@@ -7,8 +7,10 @@
 @using CourseProject.Shared.ComponentBase
 
 @inject IAccountService _accountService;
+@* @inject ILoadingIndicatorService ApplicationLoadingIndicatorService *@
+
 @inherits BaseComponentCustom
-<Toasts class="p-3" Messages="messages" Placement="toastsPlacement" />
+<Toasts class="p-3" Messages="messages" Placement="toastsPlacement" AutoHide="true" Delay="6000" />
 <div class="category-course-list-area">
     <div class="container">
         <div class="row mb-5 mt-3">
@@ -67,6 +69,7 @@
         var messError = await InvokeAsync<string>("validateForm", "sign_up");
         if (string.IsNullOrEmpty(messError))
         {
+            // await ApplicationLoadingIndicatorService.Show();
             var res = await _accountService.Login(loginViewModel);
             if (res != null && res.IsSuccess && res.Data != null)
             {
@@ -83,7 +86,8 @@
                 await SetSessionStorage("userInfor", userInforJson);
                 // lưu quyền trên session chỉ phục vụ hiển thị màn hình thôi, các nghiệp vụ check quyền dưới BE hết
                 // await ShowToast("Đăng nhập thành công");
-                await Task.Delay(2000);
+                // await ApplicationLoadingIndicatorService.Show();
+                ShowSuccessMessage("Đăng nhập thành công");
                 if (res.Data.RoleList.Contains(RoleConstant.Admin) || res.Data.RoleList.Contains(RoleConstant.Teacher))
                 {
                     // là nhân viên hoặc admin thì bay luôn sang admin
@@ -91,17 +95,17 @@
                 }
                 else
                 {
-                    NavigateToUrl($"/home", true);
+                    NavigateToUrl($"/", true);
                 }
             }
             else
             {
-                ShowMessage(ToastType.Danger, res.Message, ToastsPlacement.MiddleCenter);
+                ShowErrorMessage(res.Message);
             }
         }
         else
         {
-            ShowMessage(ToastType.Danger, messError, ToastsPlacement.MiddleCenter);
+            ShowErrorMessage(messError);
         }
     }
 }

@@ -21,6 +21,7 @@ namespace CourseProject.API.Services
         Task<CourseDetailVM> GetDetailCourse(Guid courseId);
         Task<IEnumerable<CourseGeneric>> GetCourseSearchCourseByCondition(SearchCourseParam searchCourseParam);
         Task<RestOutput> CreateCourseMaster(CreateCourseVM createCourseParam);
+        RestOutput CheckUserHasPermissionCourse(Guid courseId);
     }
     public class CourseService : BaseService, ICourseService
     {
@@ -120,12 +121,18 @@ namespace CourseProject.API.Services
                     // nếu không gồm key thì add vào
                     if (!courseDetailList.ContainsKey(item.ChapterId))
                     {
-                        var lessionDetailList = courseDetail.Where(item => item.ChapterId == item.ChapterId).Select(item => new LessionDetail
+                        var lessionDetailList = courseDetail.Where(itemChild => item.ChapterId == itemChild.ChapterId).Select(item => new LessionDetail
                         {
                             LessionId = item.LessionId,
                             LessionName = item.LessionName,
                             TotalHourTimeLession = item.TotalHourTimeLession,
+                            TotalTimeLession = item.TotalTimeLession,
                             VideoLink = item.VideoLink,
+                            TestLink = item.TestLink,
+                            LessionLink = item.LessionLink,
+                            Text = item.Text,
+                            AttachmentsLink = item.AttachmentsLink,
+                            CourseId = courseId,
                         }).ToList();
                         courseDetailList.Add(item.ChapterId, new ChapterDetail()
                         {
@@ -242,6 +249,28 @@ namespace CourseProject.API.Services
 
             return res;
 
+        }
+
+        /// <summary>
+        /// Hàm kiểm tra user có quyền xem khóa học không
+        /// </summary>
+        /// <returns></returns>
+        public RestOutput CheckUserHasPermissionCourse(Guid courseId)
+        {
+            var res = new RestOutput();
+            var currentAcc = GetUserAuthen()?.AccoutantId;
+            if (currentAcc != null)
+            {
+                // tìm trong bảng nhiều nhiều có kèm 2 điều kiện là success
+                var rowPermission = _unitOfWork.CourseAccountsRepository.FirstOrDefault(item => item.AccountId == currentAcc && item.CourseId == courseId);
+                if (rowPermission != null)
+                {
+                    res.SuccessEventHandler(true);
+                    return res;
+                }
+            }
+            res.SuccessEventHandler(false);
+            return res;
         }
 
         #region Private Method

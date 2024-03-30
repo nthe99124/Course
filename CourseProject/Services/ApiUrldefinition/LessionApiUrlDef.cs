@@ -33,5 +33,15 @@
         {
             return @$"{pathController}/DeleteLession";
         }
+
+        /// <summary>
+        /// Tạo url sửa tên bài học
+        /// CreatedBy ntthe 27.03.2024
+        /// </summary>
+        /// <returns></returns>
+        public static string EditLessionName()
+        {
+            return @$"{pathController}/EditLessionName";
+        }
     }
 }

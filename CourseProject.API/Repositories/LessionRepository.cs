@@ -1,6 +1,7 @@
 ﻿using CourseProject.API.Common.Repository;
 using CourseProject.API.Repositories.Base;
 using CourseProject.Model.BaseEntity;
+using CourseProject.Model.ViewModel.Course;
 
 namespace CourseProject.API.Repositories
 {

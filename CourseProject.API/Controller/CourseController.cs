@@ -95,5 +95,18 @@ namespace CourseProject.API.Controller
             _res = await _courseService.CreateCourseMaster(createCourseParam);
             return Ok(_res);
         }
+
+        /// <summary>
+        /// Hàm kiểm tra user có quyền xem khóa học không
+        /// CreatedBy ntthe 27.03.2024
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("CheckUserHasPermissionCourse")]
+        [Roles(RoleConstant.Customer)]
+        public IActionResult CheckUserHasPermissionCourse(Guid courseId)
+        {
+            _res = _courseService.CheckUserHasPermissionCourse(courseId);
+            return Ok(_res);
+        }
     }
 }

@@ -1,11 +1,8 @@
 ﻿using CourseProject.Common.Cache;
-using CourseProject.Model.BaseEntity;
 using CourseProject.Model.ViewModel;
 using CourseProject.Model.ViewModel.Course;
-using CourseProject.Pages.Course;
 using CourseProject.Services.ApiUrldefinition;
 using CourseProject.Services.Base;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 
 namespace CourseProject.Services
@@ -18,6 +15,7 @@ namespace CourseProject.Services
         Task<CourseDetailVM> GetDetailCourse(Guid courseId);
         Task<List<CourseGeneric>> GetCourseSearchCourseByCondition(SearchCourseParam searchCourseParam);
         Task<ResponseOutput<Guid?>> CreateCourseMaster(CreateCourseVM createCourseParam);
+        Task<bool> CheckUserHasPermissionCourse(Guid courseId);
     }
 
     public class CourseService : BaseService, ICourseService
@@ -57,7 +55,7 @@ namespace CourseProject.Services
         public async Task<List<MyCourseVM>> GetListCourseByUser()
         {
             var url = CourseApiUrlDef.GetListCourseByUser();
-            return await RequestGetAsync<List<MyCourseVM>>(url);
+            return await RequestAuthenGetAsync<List<MyCourseVM>>(url);
         }
 
         /// <summary>
@@ -93,5 +91,16 @@ namespace CourseProject.Services
             return await RequestFullAuthenPostAsync<Guid?>(url, createCourseParam);
         }
 
+        /// <summary>
+        /// Hàm kiểm tra xem user có quyền xem khóa học không
+        /// CreatedBy ntthe 24.03.2024
+        /// </summary>
+        /// <returns></returns>
+        public async Task<bool> CheckUserHasPermissionCourse(Guid courseId)
+        {
+            var url = CourseApiUrlDef.CheckUserHasPermissionCourse(courseId);
+            return await RequestAuthenGetAsync<bool>(url);
+        }
+        
     }
 }

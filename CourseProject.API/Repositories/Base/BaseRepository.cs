@@ -265,15 +265,18 @@ namespace CourseProject.API.Repositories.Base
                 //Duyệt array sqlparameter để lấy tên tạo câu query
                 var sb = new StringBuilder();
                 sb.Append("exec ").Append(nameProcedure);
-                for (var i = 0; i < array.Length; i++)
+                if (array != null && array.Count() > 0)
                 {
-                    if (i != 0)
+                    for (var i = 0; i < array.Length; i++)
                     {
-                        sb.Append(",").Append(array[i].ParameterName);
-                    }
-                    else
-                    {
-                        sb.Append(" ").Append(array[i].ParameterName);
+                        if (i != 0)
+                        {
+                            sb.Append(",").Append(array[i].ParameterName);
+                        }
+                        else
+                        {
+                            sb.Append(" ").Append(array[i].ParameterName);
+                        }
                     }
                 }
 
@@ -283,7 +286,15 @@ namespace CourseProject.API.Repositories.Base
                 //query là câu lệnh query, 
                 //array là mảng tham số truyền vào theo kiểu dữ liệu SqlParameter
                 _context.Database.SetCommandTimeout(1800);
-                var obj = _context.Set<N>().FromSqlRaw(sqlRaw, array).ToList();
+                IEnumerable<N> obj = null;
+                if (array != null && array.Count() > 0)
+                {
+                    obj = _context.Set<N>().FromSqlRaw(sqlRaw, array).ToList();
+                }
+                else
+                {
+                    obj = _context.Set<N>().FromSqlRaw(sqlRaw).ToList();
+                }
                 return obj;
 
             }

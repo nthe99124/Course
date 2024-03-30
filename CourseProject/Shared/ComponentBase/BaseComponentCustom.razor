@@ -35,10 +35,10 @@
         return null;
     }
 
-    protected async Task ShowToast(string message, params object[] args)
-    {
-        await _js.InvokeVoidAsync("showToast", message, args);
-    }
+    // protected async Task ShowToast(string message, params object[] args)
+    // {
+    //     await _js.InvokeVoidAsync("showToast", message, args);
+    // }
 
     protected async Task<T> InvokeAsync<T>(string method, params object[] args)
     {
@@ -60,6 +60,12 @@
         return baseUrlApiImage + imgFileName;
     }
 
+    protected string GetLinkVideo(string videoFileName)
+    {
+        var baseUrlApiImage = config.GetSection("BaseUrlApiVideo").Value;
+        return baseUrlApiImage + videoFileName;
+    }
+
     protected async Task<FileBase64Infor> ConvertFileToBase64(IBrowserFile file)
     {
         using MemoryStream ms = new();
@@ -77,6 +83,22 @@
     #region show toast
     protected ToastsPlacement toastsPlacement = ToastsPlacement.TopRight;
     protected List<ToastMessage> messages = new List<ToastMessage>();
+
+    protected void ShowErrorMessage(string message = "Đã có lỗi xảy ra", ToastsPlacement placement = ToastsPlacement.MiddleCenter, string title = "Lỗi")
+    {
+        ShowMessage(ToastType.Danger, message, placement, title);
+    }
+
+    protected void ShowSuccessMessage(string message, ToastsPlacement placement = ToastsPlacement.TopRight, string title = "Thành công")
+    {
+        ShowMessage(ToastType.Success, message, placement, title);
+    }
+
+    protected void ShowWarningMessage(string message, ToastsPlacement placement = ToastsPlacement.TopRight, string title = "Cảnh báo")
+    {
+        ShowMessage(ToastType.Warning, message, placement, title);
+    }
+
     protected void ShowMessage(ToastType toastType, string message, ToastsPlacement placement = ToastsPlacement.TopRight, string title = null)
     {
         toastsPlacement = placement;
@@ -95,7 +117,7 @@
                     break;
             }    
         }
-        
+
         messages.Add(CreateToastMessage(toastType, message, title));
     }
 
@@ -107,6 +129,26 @@
             // HelpText = $"{DateTime.Now}",
             Message = message,
         };
+    #endregion
+
+    #region HttpCheckRequest
+    protected T GetDataRequestSuccess<T>(ResponseOutput<T> res)
+    {
+        if (res != null && res.IsSuccess && res.Data != null)
+        {
+            return res.Data;
+        }
+        return default;
+    }
+
+    protected bool IsSuccessRequest<T>(ResponseOutput<T> res)
+    {
+        if (res != null && res.IsSuccess)
+        {
+            return true;
+        }
+        return false;
+    }
     #endregion
     #endregion
 }

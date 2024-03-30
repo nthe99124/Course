@@ -3,14 +3,8 @@
 @inject NavigationManager _navigationManager;
 @inherits AuthorBaseComponent
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.3.1/css/all.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.3.1/css/fontawesome.min.css">
-<link rel="stylesheet" href="https://4user.net/assets/backend/css/font-awesome-icon-picker/fontawesome-iconpicker.min.css" >
-
 <link rel="stylesheet" href="css/Lib/tagify.css">
 <link rel="stylesheet" href="css/Lib/jquery.webui-popover.min.css">
-@* <link rel="stylesheet" href="css/Lib/slick.css">
-<link rel="stylesheet" href="css/Lib/slick-theme.css"> *@
 <link rel="stylesheet" href="css/Lib/toastr.css">
 <script src="js/site.js"></script>
 @if (role == RoleConstant.Admin)
@@ -25,7 +19,7 @@ else
 {
     <HeaderUser></HeaderUser>
 }
-<Toasts class="p-3" Messages="messages" Placement="toastsPlacement" />
+<Toasts class="p-3" Messages="messages" Placement="toastsPlacement" AutoHide="true" Delay="6000" />
 
 <script src="js/Lib/modernizr-3.5.0.min.js"></script>
 <script src="js/Lib/popper.min.js"></script>

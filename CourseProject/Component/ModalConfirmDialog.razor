@@ -14,8 +14,8 @@
             @Content
         </div>
         <div class="modal-confirm-buttons d-flex">
-            <Button Color="YesButtonColor" onclick="ConfirmClicked">@YesButtonText</Button>
-            <Button Color="NoButtonColor" onclick="CancelClicked">@NoButtonText</Button>
+            <Button Color="YesButtonColor" @onclick="ConfirmClicked">@YesButtonText</Button>
+            <Button Color="NoButtonColor" @onclick="CancelClicked">@NoButtonText</Button>
         </div>
     </BodyTemplate>
 </Modal>
@@ -44,25 +44,44 @@
     public RenderFragment Content { get; set; }
 
     [Parameter]
-    public EventCallback CallbackConfirm { get; set; }
+    public Func<Task> CallbackConfirm { get; set; }
 
     [Parameter]
-    public EventCallback CallbackCancel { get; set; }
+    public Func<Task> CallbackCancel { get; set; }
 
     Modal modal = default!;
 
     private async Task ConfirmClicked()
     {
-        await CallbackConfirm.InvokeAsync();
+        if (CallbackConfirm == null)
+        {
+            await modal.HideAsync();
+        }
+        else
+        {
+            await CallbackConfirm.Invoke();
+        }
     }
 
     private async Task CancelClicked()
     {
-        await CallbackCancel.InvokeAsync();
+        if (CallbackCancel == null)
+        {
+            await modal.HideAsync();
+        }
+        else
+        {
+            await CallbackCancel.Invoke();
+        }
     }
 
     public async Task ShowAsync()
     {
         await modal.ShowAsync();
+    }
+
+    public async Task HideAsync()
+    {
+        await modal.HideAsync();
     }
 }

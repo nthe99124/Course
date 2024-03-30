@@ -1,20 +1,18 @@
-﻿using Amazon.Runtime.Internal.Transform;
-using CourseProject.Common.Cache;
-using CourseProject.Model.BaseEntity;
+﻿using CourseProject.Common.Cache;
 using CourseProject.Model.ViewModel;
 using CourseProject.Model.ViewModel.Course;
 using CourseProject.Services.ApiUrldefinition;
 using CourseProject.Services.Base;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 
 namespace CourseProject.Services
 {
     public interface ILessionService : IBaseService
     {
-        Task<ResponseOutput<string>> CreateLession(LessionCreateParam lession);
-        Task<ResponseOutput<string>> EditLession(Dictionary<string, IBrowserFile> listFile, LessionEditParam lession);
+        Task<ResponseOutput<Guid?>> CreateLession(LessionCreateParam lession);
+        Task<ResponseOutput<string>> EditLession(LessionEditParam lession);
         Task<ResponseOutput<string>> DeleteLession(LessionDeleteParam lession);
+        Task<ResponseOutput<string>> EditLessionName(LessionCreateParam lession);
     }
 
     public class LessionService : BaseService, ILessionService
@@ -29,10 +27,10 @@ namespace CourseProject.Services
         /// CreatedBy ntthe 24.03.2024
         /// </summary>
         /// <returns></returns>
-        public async Task<ResponseOutput<string>> CreateLession(LessionCreateParam lession)
+        public async Task<ResponseOutput<Guid?>> CreateLession(LessionCreateParam lession)
         {
             var url = LessionApiUrlDef.CreateLession();
-            return await RequestFullAuthenPostAsync<string>(url, lession);
+            return await RequestFullAuthenPostAsync<Guid?>(url, lession);
         }
 
         /// <summary>
@@ -40,17 +38,10 @@ namespace CourseProject.Services
         /// CreatedBy ntthe 24.03.2024
         /// </summary>
         /// <returns></returns>
-        public async Task<ResponseOutput<string>> EditLession(Dictionary<string, IBrowserFile>  listFile, LessionEditParam lession)
+        public async Task<ResponseOutput<string>> EditLession(LessionEditParam lession)
         {
-            //var listFile = new Dictionary<string, IBrowserFile>()
-            //{
-            //    { "VideoFile", lession.VideoFile },
-            //    { "TestFile", lession.TestFile },
-            //    { "LessionFile", lession.LessionFile },
-            //    { "AttachmentsFile", lession.AttachmentsFile },
-            //};
             var url = LessionApiUrlDef.EditLession();
-            return await RequestFileAsync<string>(url, listFile, lession);
+            return await RequestFullAuthenPostAsync<string>(url, lession);
         }
 
         /// <summary>
@@ -63,5 +54,18 @@ namespace CourseProject.Services
             var url = LessionApiUrlDef.DeleteLession();
             return await RequestFullAuthenPostAsync<string>(url, lession);
         }
+
+        /// <summary>
+        /// Hàm xử lý sửa tên bài học
+        /// CreatedBy ntthe 24.03.2024
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ResponseOutput<string>> EditLessionName(LessionCreateParam lession)
+        {
+            var url = LessionApiUrlDef.CreateLession();
+            return await RequestFullAuthenPostAsync<string>(url, lession);
+        }
+
+        
     }
 }

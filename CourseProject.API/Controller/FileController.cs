@@ -21,36 +21,37 @@ namespace CourseProject.API.Controller
             return File(imageFileStream, "image/jpeg");
         }
 
+        [HttpGet]
+        [Route("video/{videoName}")]
+        public async Task<IActionResult> GetVideo(string videoName)
+        {
+            var imageFileStream = await _fileUlti.ReadFile(videoName);
+            return File(imageFileStream, "video/mp4");
+        }
+
         [HttpPost("video/upload")]
         public async Task<IActionResult> UploadVideo([FromForm]IFormFile videoFile)
         {
-            try
+            var fileName = await _fileUlti.SaveFile(videoFile);
+            _res.SuccessEventHandler(fileName);
+            return Ok(_res);
+        }
+
+        // API để xóa video
+        [HttpPost("video/{videoName}")]
+        public IActionResult DeleteVideo(string videoName)
+        {
+            var isSuccess = _fileUlti.DeleteFile(videoName);
+            
+            if (isSuccess)
             {
-                string UploadsDirectory = "uploads";
-                // Tạo thư mục lưu trữ nếu nó chưa tồn tại
-                if (!Directory.Exists(UploadsDirectory))
-                {
-                    Directory.CreateDirectory(UploadsDirectory);
-                }
-
-                // Tạo đường dẫn lưu trữ cho video
-                var filePath = Path.Combine(UploadsDirectory, Guid.NewGuid().ToString() + Path.GetExtension(videoFile.FileName));
-
-                // Mở một luồng để ghi dữ liệu từ tệp tải lên
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    // Ghi dữ liệu từ tệp tải lên vào luồng
-                    await videoFile.CopyToAsync(stream);
-                }
-
-                // Trả về đường dẫn tới video đã tải lên
-                return Ok(new { filePath });
+                _res.SuccessEventHandler();
             }
-            catch (Exception ex)
+            else
             {
-                // Trả về lỗi nếu có bất kỳ vấn đề nào xảy ra
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = $"Failed to upload video: {ex.Message}" });
+                _res.ErrorEventHandler();
             }
+            return Ok(_res);
         }
     }
 }

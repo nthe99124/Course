@@ -13,8 +13,9 @@ namespace CourseProject.API.Services
     public interface ILessionService
     {
         Task<RestOutput> CreateLession(LessionCreateParam lession);
-        Task<RestOutput> EditLession(Dictionary<string, IFormFile> listFile, LessionEditParam lession);
+        Task<RestOutput> EditLession(LessionEditParam lession);
         Task<RestOutput> DeleteLession(LessionDeleteParam lession);
+        Task<RestOutput> EditLessionName(LessionCreateParam lession);
     }
     public class LessionService : BaseService, ILessionService
     {
@@ -58,18 +59,22 @@ namespace CourseProject.API.Services
                 }
 
                 await _unitOfWork.CommitAsync();
+                res.SuccessEventHandler(lessionInsert.Id);
             }
-
-            res.SuccessEventHandler();
+            else
+            {
+                res.ErrorEventHandler("Thông tin không hợp lệ");
+                return res;
+            }
             return res;
         }
 
         /// <summary>
-        /// Hàm xử lý sửa bài học
+        /// Hàm xử lý sửa tên bài học
         /// CreatedBy ntthe 24.03.2024
         /// </summary>
         /// <returns></returns>
-        public async Task<RestOutput> EditLession(Dictionary<string, IFormFile> listFile, LessionEditParam lession)
+        public async Task<RestOutput> EditLessionName(LessionCreateParam lession)
         {
             var res = new RestOutput();
             if (lession != null)
@@ -79,12 +84,40 @@ namespace CourseProject.API.Services
                     res.ErrorEventHandler("Tên bài học không được để trống");
                     return res;
                 }
-                var lessionCurrent = await _unitOfWork.LessionRepository.FirstOrDefault(item => item.Id == lession.Id);
+
+                var lessionCurrent = await _unitOfWork.LessionRepository.FirstOrDefault(item => item.Id == lession.LessionId);
                 if (lessionCurrent != null)
                 {
                     var oldTotalTimeLession = lessionCurrent.TotalTimeLession;
                     // cập nhật bài học
                     lessionCurrent.LessionName = lession.LessionName;
+
+                    await _unitOfWork.CommitAsync();
+                }
+                else
+                {
+                    res.ErrorEventHandler("Bài học không tồn tại.");
+                    return res;
+                }
+            }
+            return res;
+        }
+
+        /// <summary>
+        /// Hàm xử lý sửa bài học
+        /// CreatedBy ntthe 24.03.2024
+        /// </summary>
+        /// <returns></returns>
+        public async Task<RestOutput> EditLession(LessionEditParam lession)
+        {
+            var res = new RestOutput();
+            if (lession != null)
+            {
+                var lessionCurrent = await _unitOfWork.LessionRepository.FirstOrDefault(item => item.Id == lession.Id);
+                if (lessionCurrent != null)
+                {
+                    var oldTotalTimeLession = lessionCurrent.TotalTimeLession;
+                    // cập nhật bài học
                     lessionCurrent.VideoLink = lession.VideoLink;
                     lessionCurrent.TestLink = lession.TestLink;
                     lessionCurrent.LessionLink = lession.LessionLink;
@@ -99,18 +132,6 @@ namespace CourseProject.API.Services
                     }
 
                     await _unitOfWork.CommitAsync();
-
-                    // thêm file vào server
-                    var keysFileList = listFile.Keys.ToList();
-                    for (int i = 0; i < keysFileList.Count; i++)
-                    {
-                        var key = keysFileList[i];
-                        var file = listFile[key];
-                        if (file != null)
-                        {
-                            _ = await _fileUlti.SaveFile(file);
-                        }
-                    }
                 }
                 else
                 {

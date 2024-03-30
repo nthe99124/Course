@@ -36,7 +36,7 @@ namespace CourseProject.API.Controller
         /// <returns></returns>
         [HttpPost("EditChapter")]
         [Roles(RoleConstant.Admin, RoleConstant.Teacher)]
-        public async Task<IActionResult> EditChapter(ChapterEditParam chapter)
+        public async Task<IActionResult> EditChapter(ChapterCreateParam chapter)
         {
             _res = await _chapterService.EditChapter(chapter);
             return Ok(_res);

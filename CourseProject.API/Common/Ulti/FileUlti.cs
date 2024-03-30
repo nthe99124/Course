@@ -1,9 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.Extensions.Hosting.Internal;
-using CourseProject.API.Common.Cache;
-using CourseProject.API.Common.Repository;
-using CourseProject.API.Services.Base;
-using CourseProject.Model.ViewModel;
+﻿using CourseProject.Model.ViewModel;
+using MediaInfoLib;
+using Microsoft.AspNetCore.Hosting.Server;
+
 
 namespace CourseProject.API.Common.Ulti
 {
@@ -12,6 +10,7 @@ namespace CourseProject.API.Common.Ulti
         Task<string> SaveFile(IFormFile file);
         Task<FileStream> ReadFile(string fileName);
         Task<string> SaveFileBase64(FileBase64Infor fileBase64);
+        bool DeleteFile(string fileName);
     }
     public class FileUlti : IFileUlti
     {
@@ -43,7 +42,7 @@ namespace CourseProject.API.Common.Ulti
             }
 
             // Tạo một tên file duy nhất bằng cách kết hợp tên và định dạng mở rộng
-            var fileName = file.FileName;
+            var fileName = file.FileName.ToLower();
 
             // Đường dẫn đến thư mục lưu trữ file (ví dụ: wwwroot/uploads)
             var uploadFolder = Path.Combine(_hostingEnvironment.ContentRootPath, "uploads");
@@ -55,12 +54,15 @@ namespace CourseProject.API.Common.Ulti
             }
 
             // Đường dẫn đến file lưu trữ trên server
-            var filePath = Path.Combine(uploadFolder, file.FileName);
+            var filePath = Path.Combine(uploadFolder, fileName);
 
-            // Mở luồng để ghi dữ liệu file từ yêu cầu vào file trên server
-            using (var stream = new FileStream(filePath, FileMode.Create))
+            if (!File.Exists(filePath))
             {
-                await file.CopyToAsync(stream);
+                // Mở luồng để ghi dữ liệu file từ yêu cầu vào file trên server
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
             }
 
             return fileName; // Trả về tên file đã lưu
@@ -73,6 +75,18 @@ namespace CourseProject.API.Common.Ulti
             var imageFileStream = System.IO.File.OpenRead(filePath);
             // Đọc dữ liệu từ file
             return imageFileStream;
+        }
+
+        public bool DeleteFile(string fileName)
+        {
+            string filePath = Path.Combine("uploads", fileName);
+            if (File.Exists(filePath))
+            {
+                // Xóa video nếu tồn tại
+                File.Delete(filePath);
+                return true;
+            }
+            return false;
         }
     }
 }

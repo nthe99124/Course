@@ -20,4 +20,8 @@ public class CourseDetailGeneric
         }
         private set { }
     }
+    public string TestLink { get; set; }
+    public string LessionLink { get; set; }
+    public string Text { get; set; }
+    public string AttachmentsLink { get; set; }
 }

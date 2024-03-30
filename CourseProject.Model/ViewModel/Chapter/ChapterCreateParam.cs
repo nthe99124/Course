@@ -6,4 +6,5 @@ public class ChapterCreateParam
 {
     public string ChapterName { get; set; }
     public Guid CourseId { get; set; }
+    public Guid ChapterId { get; set; }
 }

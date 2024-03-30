@@ -5557,3 +5557,7 @@ border: none;
         object-fit: cover;
         max-width: 100%
     }
+
+.user-dropdown-menu-item {
+    cursor: pointer
+}

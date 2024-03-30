@@ -1,4 +1,5 @@
 ﻿using CourseProject.Model.BaseEntity;
+using CourseProject.Model.ViewModel.Course;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
@@ -29,6 +30,7 @@ public partial class CourseContext : DbContext
 
     public virtual DbSet<Tag> Tags { get; set; }
     public virtual DbSet<CourseAccount> CourseAccounts { get; set; }
+    public virtual DbSet<CourseGeneric> CourseGeneric { get; set; }
     
     #endregion
 
@@ -133,6 +135,9 @@ public partial class CourseContext : DbContext
 
             entity.Property(e => e.Id).ValueGeneratedNever();
         });
+
+        modelBuilder.Entity<CourseGeneric>().HasNoKey();
+
         OnModelCreatingPartial(modelBuilder);
     }
 

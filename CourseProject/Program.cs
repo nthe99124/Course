@@ -1,7 +1,5 @@
 ﻿using Amazon.S3;
-using BlazorBootstrap;
 using Blazorise;
-using Blazorise.Bootstrap;
 using CourseProject.Common.Cache;
 using CourseProject.Common.MiddleWare;
 using CourseProject.Model.ViewModel;
@@ -10,9 +8,9 @@ using CourseProject.Services.Base;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Localization;
 using System.Globalization;
-using Amazon.S3;
-using Microsoft.Web.Administration;
 using Microsoft.AspNetCore.Http.Features;
+using BlazorBootstrap;
+using Blazorise.Bootstrap;
 
 #region Config service
 var builder = WebApplication.CreateBuilder(args);
@@ -32,7 +30,7 @@ services.AddRazorPages();
 services.AddServerSideBlazor();
 services.AddHttpClient();
 services.AddWMBSC();
-services.AddBlazorise().AddBlazorBootstrap();
+services.AddBlazorise().AddBlazorBootstrap().AddBootstrapProviders();
 services.Configure<FormOptions>(options =>
 {
     options.MultipartBodyLengthLimit = long.MaxValue;
@@ -79,6 +77,9 @@ services.AddScoped<IBaseService, BaseService>();
 services.AddScoped<IAccountService, AccountService>();
 services.AddScoped<ICourseService, CourseService>();
 services.AddScoped<ITagService, TagService>();
+services.AddScoped<ILessionService, LessionService>();
+services.AddScoped<IChapterService, ChapterService>();
+services.AddScoped<IFileService, FileService>();
 #endregion  
 
 

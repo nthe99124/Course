@@ -63,5 +63,15 @@
         {
             return @$"{pathController}/CreateCourseMaster";
         }
+
+        /// <summary>
+        /// Tạo url user có quyền xem khóa học không
+        /// CreatedBy ntthe 27.03.2024
+        /// </summary>
+        /// <returns></returns>
+        public static string CheckUserHasPermissionCourse(Guid courseId)
+        {
+            return @$"{pathController}/CheckUserHasPermissionCourse?courseId={courseId}";
+        }
     }
 }
