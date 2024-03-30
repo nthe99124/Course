@@ -555,8 +555,12 @@
         lession = new LessionCreateParam();
         if (!isAdd)
         {
-            lession.LessionId = (Guid)lessionId;
+            CurrentLessionId = (Guid)lessionId;
             lession.LessionName = lessionName;
+        }
+        else
+        {
+            CurrentLessionId = default;
         }
         CurrentChapterId = chapterId;
         await modalAddLession.ShowAsync();
@@ -568,7 +572,7 @@
         {
             lession.ChapterId = CurrentChapterId;
             lession.CourseId = CourseIdGuid;
-            if (lession.LessionId != default)
+            if (CurrentLessionId != default)
             {
                 lession.LessionId = CurrentLessionId;
                 // nếu có giá trị thì đi update  
@@ -662,7 +666,7 @@
                         {
                             foreach (var itemDetal in item.LessionDetailList)
                             {
-                                if (itemDetal.LessionId == lession.LessionId)
+                                if (itemDetal.LessionId == CurrentLessionId)
                                 {
                                     itemDetal.VideoLink = lessionDetail.VideoLink;
                                     itemDetal.TotalHourTimeLession = lessionDetail.TotalHourTimeLession;

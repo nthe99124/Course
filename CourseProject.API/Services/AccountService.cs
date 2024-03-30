@@ -20,7 +20,7 @@ namespace CourseProject.API.Services
 {
     public interface IAccountService
     {
-        Task<LoginResponse> Login(string email, string password);
+        Task<RestOutput> Login(string email, string password);
         Task<bool> Register(AccountRegister account);
         void Logout();
         AccountGenericDTO GetUserInfor();
@@ -45,8 +45,9 @@ namespace CourseProject.API.Services
         /// <param name="password"></param>
         /// <param name="ipAddress"></param>
         /// <returns></returns>
-        public async Task<LoginResponse> Login(string email, string password)
+        public async Task<RestOutput> Login(string email, string password)
         {
+            var res = new RestOutput();
             var account = await _unitOfWork.AccountRepository.GetUserByUserNameAndPass(email, password);
             if (account != null)
             {
@@ -69,14 +70,14 @@ namespace CourseProject.API.Services
                     result.Email = account.Email;
                     result.FullName = account.LastName + " " + account.FirstName;
                     result.RoleList = listRole.Select(item => item.RoleName).ToList();
-                    return result;
+                    res.SuccessEventHandler(result);
                 }
             }
             else
             {
-                throw new Exception("Sai tài khoản hoặc mật khẩu");
+                res.ErrorEventHandler("Sai tài khoản hoặc mật khẩu");
             }
-            return null;
+            return res;
         }
 
         /// <summary>

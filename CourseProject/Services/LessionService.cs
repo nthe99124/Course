@@ -62,7 +62,7 @@ namespace CourseProject.Services
         /// <returns></returns>
         public async Task<ResponseOutput<string>> EditLessionName(LessionCreateParam lession)
         {
-            var url = LessionApiUrlDef.CreateLession();
+            var url = LessionApiUrlDef.EditLessionName();
             return await RequestFullAuthenPostAsync<string>(url, lession);
         }
 

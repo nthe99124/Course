@@ -55,7 +55,8 @@ namespace CourseProject.API.Services
                 var courseCurrent = await _unitOfWork.CourseRepository.FirstOrDefault(item => item.Id == lession.CourseId);
                 if (courseCurrent != null)
                 {
-                    courseCurrent.TotalLectures += courseCurrent.TotalLectures;
+                    var orgCourseTotalLectures = courseCurrent.TotalLectures;
+                    courseCurrent.TotalLectures = orgCourseTotalLectures + 1;
                 }
 
                 await _unitOfWork.CommitAsync();
@@ -128,7 +129,7 @@ namespace CourseProject.API.Services
                     // cập nhật tổng thời gian khóa học
                     var courseCurrent = await _unitOfWork.CourseRepository.FirstOrDefault(item => item.Id == lession.CourseId);
                     if (courseCurrent != null) {
-                        courseCurrent.TotalLectures = courseCurrent.TotalLectures - oldTotalTimeLession + lessionCurrent.TotalTimeLession;
+                        courseCurrent.TotalTime = courseCurrent.TotalTime - oldTotalTimeLession + lessionCurrent.TotalTimeLession;
                     }
 
                     await _unitOfWork.CommitAsync();

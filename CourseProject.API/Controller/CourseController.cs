@@ -101,7 +101,7 @@ namespace CourseProject.API.Controller
         /// CreatedBy ntthe 27.03.2024
         /// </summary>
         /// <returns></returns>
-        [HttpPost("CheckUserHasPermissionCourse")]
+        [HttpGet("CheckUserHasPermissionCourse")]
         [Roles(RoleConstant.Customer)]
         public IActionResult CheckUserHasPermissionCourse(Guid courseId)
         {

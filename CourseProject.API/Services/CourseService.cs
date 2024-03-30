@@ -206,7 +206,7 @@ namespace CourseProject.API.Services
                     return res;
                 }
 
-                if (createCourseParam.ImgCourse != null)
+                if (createCourseParam.ImgCourseFile != null)
                 {
                     createCourseParam.ImgCourse = await _fileUlti.SaveFileBase64(createCourseParam.ImgCourseFile);
                 }

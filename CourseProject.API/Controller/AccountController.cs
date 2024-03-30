@@ -26,19 +26,7 @@ namespace CourseProject.API.Controller
         [HttpPost("Login")]
         public async Task<IActionResult> Login(LoginViewModel loginInfor)
         {
-            try
-            {
-                var userResult = await _accountService.Login(loginInfor.Email, loginInfor.Password);
-                if (userResult != null && !string.IsNullOrEmpty(userResult.Token))
-                {
-                    _res.SuccessEventHandler(userResult);
-                }
-            }
-            catch (Exception ex)
-            {
-                _res.ErrorEventHandler(null, ex.Message);
-            }
-
+            _res = await _accountService.Login(loginInfor.Email, loginInfor.Password);
             return Ok(_res);
         }
 
